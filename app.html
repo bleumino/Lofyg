@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lo-Fi Vinyl Player</title>
+    <link rel="stylesheet" href="app.css">
+    <script src="https://www.youtube.com/iframe_api"></script>
+</head>
+<body>
+
+    <h2>Lo-Fi Vinyl Player 🎵</h2>
+    
+    <div id="music-player">
+        <h2 id="song-title">Now Playing: No Song</h2>
+        
+        <!-- 🎵 Vinyl Record -->
+        <div id="vinyl-container">
+            <img id="vinyl" src="Pink Vinyl Record Icon.png">
+        </div>
+
+        <div id="progress-container">
+            <div id="progress-bar"></div>
+        </div>
+        <p id="time-remaining">0:00</p>
+
+        <!-- 🎶 Button Container for Play, Next -->
+        <div class="button-container">
+            <button id="play">Play / Pause</button>
+            <button id="next">Next</button>
+        </div>
+        
+        <ul id="queue"></ul>
+    </div>
+
+    <!-- 🎶 Loop Mode Buttons -->
+    <div class="button-container">
+        <button id="loop-single" class="mode-toggle">Loop Single Song</button>
+        <button id="loop-playlist" class="mode-toggle">Loop Playlist</button>
+    </div>
+
+    <!-- 🎶 YouTube Player -->
+    <div id="player-container">
+        <div id="youtube-player"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

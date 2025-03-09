@@ -1,0 +1,124 @@
+/* 🎀 Sakura Pink Vinyl Aesthetic */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #ffe6f2; /* Soft Sakura Pink */
+    color: #d63384; /* Deep Pink for contrast */
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+/* 💿 Music Player Styling */
+#music-player {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+}
+
+/* 💿 Vinyl Record */
+#vinyl-container {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    position: relative;
+    margin: 20px auto;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#vinyl {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures it fills the container properly */
+    border-radius: 50%;
+    animation: spin 5s linear infinite;
+}
+
+/* 🔥 Remove unwanted "Spinning Vinyl" text */
+#vinyl-container::before {
+    content: none !important;
+    display: none;
+}
+
+/* 🌀 Vinyl Spin Animation */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* 🎵 Cute Buttons */
+button {
+    background: #ff99cc;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #ff66a3;
+}
+
+/* 📊 Progress Bar */
+#progress-container {
+    width: 80%;
+    height: 8px;
+    background: #ff99cc;
+    margin: 10px auto;
+    border-radius: 10px;
+}
+
+#progress-bar {
+    height: 100%;
+    background: #ff007f;
+    border-radius: 10px;
+}
+
+/* 🌀 Highlight Loop Modes */
+button.active-mode {
+    background: #ff007f; /* Bright pink for active state */
+    color: white;
+}
+
+#loop-single.active-mode {
+    background: #ff007f; /* Highlight active loop-single button */
+}
+
+#loop-playlist.active-mode {
+    background: #ff007f; /* Highlight active loop-playlist button */
+}
+
+/* 📀 Center Buttons Container */
+.button-container {
+    display: flex;
+    justify-content: center; /* Centers buttons horizontally */
+    align-items: center;     /* Centers buttons vertically */
+    gap: 10px;               /* Optional: space between buttons */
+    width: 100%;             /* Ensure it takes full width */
+    height: 100px;           /* You can adjust the height as needed */
+    margin: 20px 0;          /* Optional: add margin to separate from other content */
+}
+
+/* Optional: Add button styling */
+button {
+    padding: 12px 24px;
+    font-size: 18px;
+    background-color: #ff99cc;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #ff66a3;
+}
