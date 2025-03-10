@@ -1,5 +1,5 @@
-// 🎵 List of YouTube Video IDs & Titles
-const songQueue = [
+// 🎵 Playlist Data
+const playlist = [
     { id: "xakBzg5atsM", title: "massobeats - rose water (royalty free lofi music)" },
     { id: "HGMQbVfYVmI", title: "massobeats - honey jam (royalty free lofi music)" },
     { id: "6eWIffP2M3Y", title: "(no copyright music) jazz type beat “bread” | royalty free youtube music | prod. by lukrembo)" },
@@ -7,133 +7,125 @@ const songQueue = [
     { id: "y7KYdqVND4o", title: "lukrembo - marshmallow (royalty free vlog music)" }
 ];
 
-// 🎧 HTML Elements
-const playerContainer = document.getElementById("player-container");
-const queueList = document.getElementById("queue");
-const playButton = document.getElementById("play");
-const nextButton = document.getElementById("next");
-const vinylRecord = document.getElementById("vinyl");
-const songTitle = document.getElementById("song-title");
-const progressBar = document.getElementById("progress-bar");
-const progressContainer = progressBar.parentElement;
-const timeRemaining = document.getElementById("time-remaining");
+// 🎧 DOM Elements
+const elements = {
+    playerContainer: document.getElementById("player-container"),
+    queueList: document.getElementById("queue"),
+    playButton: document.getElementById("play"),
+    nextButton: document.getElementById("next"),
+    vinylRecord: document.getElementById("vinyl"),
+    songTitle: document.getElementById("song-title"),
+    progressBar: document.getElementById("progress-bar"),
+    progressContainer: document.getElementById("progress-bar").parentElement,
+    timeRemaining: document.getElementById("time-remaining"),
+    loopSingleButton: document.getElementById("loop-single"),
+    loopPlaylistButton: document.getElementById("loop-playlist")
+};
 
-let currentSongIndex = 0;
-let isPlaying = false;
 let player;
+let isPlaying = false;
+let currentSongIndex = 0;
 let updateInterval;
-
-// 🔹 Looping Flags
-let loopSingleSong = false;  // 🔄 Toggle for looping a single song
-let loopPlaylist = false;    // 🔄 Toggle for looping the entire playlist
-
-// 🔹 Loop Button Event Listeners
-const loopSingleButton = document.getElementById("loop-single");
-const loopPlaylistButton = document.getElementById("loop-playlist");
-
-loopSingleButton.addEventListener("click", () => {
-    loopSingleSong = !loopSingleSong; // Toggle single song loop
-    loopPlaylist = false; // Disable playlist loop when switching to single song loop
-    toggleActiveMode('loop-single', loopSingleSong);
-    toggleActiveMode('loop-playlist', false);
-});
-
-loopPlaylistButton.addEventListener("click", () => {
-    loopPlaylist = !loopPlaylist; // Toggle playlist loop
-    loopSingleSong = false; // Disable single song loop when switching to playlist loop
-    toggleActiveMode('loop-playlist', loopPlaylist);
-    toggleActiveMode('loop-single', false);
-});
+let loopSingle = false;
+let loopPlaylist = false;
 
 // 🔹 Load YouTube IFrame API
 function onYouTubeIframeAPIReady() {
     player = new YT.Player("youtube-player", {
         height: "0",
         width: "0",
-        videoId: songQueue[currentSongIndex].id, // Load the first song immediately
+        videoId: playlist[currentSongIndex].id,
         playerVars: { autoplay: 0, controls: 0 },
         events: {
-            onReady: () => {
-                loadQueue();
-                updateSongInfo(); // Ensure the first song's info is displayed
-            },
-            onStateChange: onPlayerStateChange
+            onReady: initializePlayer,
+            onStateChange: handlePlayerStateChange
         }
     });
 }
 
-// 🔹 Load the queue
+// 🔹 Initialize Player
+function initializePlayer() {
+    loadQueue();
+    updateSongInfo();
+}
+
+// 🔹 Load Queue
 function loadQueue() {
-    queueList.innerHTML = "";
-    songQueue.forEach((song, index) => {
+    elements.queueList.innerHTML = "";
+    playlist.forEach((song, index) => {
         let listItem = document.createElement("li");
         listItem.textContent = song.title;
         listItem.dataset.index = index;
         listItem.addEventListener("click", () => playSong(index));
-        queueList.appendChild(listItem);
+        elements.queueList.appendChild(listItem);
     });
 }
 
-// 🔹 Update song title
+// 🔹 Update Song Information
 function updateSongInfo() {
-    songTitle.textContent = songQueue[currentSongIndex].title;
+    elements.songTitle.textContent = `Now Playing: ${playlist[currentSongIndex].title}`;
 }
 
-// 🔹 Play a song from the queue
+// 🔹 Play Song
 function playSong(index) {
-    if (index >= songQueue.length) index = 0; // Loop back to first song
+    if (index >= playlist.length) index = 0;
     currentSongIndex = index;
-    player.loadVideoById(songQueue[currentSongIndex].id);
+    player.loadVideoById(playlist[currentSongIndex].id);
     player.playVideo();
     updateSongInfo();
-    isPlaying = true;
-    progressBar.style.width = "0%"; // Reset progress bar to 0% on song change
-    updateVinylAnimation();
+    resetProgressBar();
+    startVinylAnimation();
 }
 
-// 🔹 Play/Pause button
-playButton.addEventListener("click", () => {
-    if (isPlaying) {
-        player.pauseVideo();
-    } else {
-        player.playVideo();
-    }
+// 🔹 Reset Progress Bar
+function resetProgressBar() {
+    elements.progressBar.style.width = "0%";
+}
+
+// 🔹 Toggle Play/Pause
+elements.playButton.addEventListener("click", () => {
+    isPlaying ? player.pauseVideo() : player.playVideo();
 });
 
-// 🔹 Skip song button
-nextButton.addEventListener("click", () => {
+// 🔹 Skip to Next Song
+elements.nextButton.addEventListener("click", () => {
     playSong(currentSongIndex + 1);
 });
 
-// 🔹 Auto-play next song when current ends
-function onPlayerStateChange(event) {
-    if (event.data === YT.PlayerState.ENDED) {
-        if (loopSingleSong) {
-            playSong(currentSongIndex); // 🔁 Replay the same song
-        } else if (loopPlaylist) {
-            playSong(0); // 🔁 Loop the entire playlist from the start
-        } else {
-            playSong(currentSongIndex + 1); // ▶️ Move to the next song
-        }
-    } else if (event.data === YT.PlayerState.PLAYING) {
-        isPlaying = true;
-        startUpdatingTime();
-    } else if (event.data === YT.PlayerState.PAUSED) {
-        isPlaying = false;
+// 🔹 Handle Player State Change
+function handlePlayerStateChange(event) {
+    switch (event.data) {
+        case YT.PlayerState.ENDED:
+            handleEndOfSong();
+            break;
+        case YT.PlayerState.PLAYING:
+            isPlaying = true;
+            startUpdatingTime();
+            break;
+        case YT.PlayerState.PAUSED:
+            isPlaying = false;
+            break;
     }
-    updateVinylAnimation();
+    startVinylAnimation();
 }
 
-// 🔹 Update vinyl record animation
-function updateVinylAnimation() {
-    if (isPlaying) {
-        vinylRecord.classList.add("spinning");
+// 🔹 Handle End of Song
+function handleEndOfSong() {
+    if (loopSingle) {
+        playSong(currentSongIndex); // Repeat the current song
+    } else if (loopPlaylist) {
+        playSong(0); // Restart the playlist
     } else {
-        vinylRecord.classList.remove("spinning");
+        playSong(currentSongIndex + 1); // Move to next song
     }
 }
 
-// 🔹 Update progress bar & time remaining
+// 🔹 Update Vinyl Record Animation
+function startVinylAnimation() {
+    elements.vinylRecord.classList.toggle("spinning", isPlaying);
+}
+
+// 🔹 Update Time and Progress Bar
 function updateTime() {
     if (!player || !player.getDuration) return;
 
@@ -141,46 +133,77 @@ function updateTime() {
     let currentTime = player.getCurrentTime();
     let remainingTime = duration - currentTime;
 
-    // Update progress bar width
-    progressBar.style.width = (currentTime / duration) * 100 + "%";
+    elements.progressBar.style.width = (currentTime / duration) * 100 + "%";
 
-    // Format time display (mm:ss)
     let minutes = Math.floor(remainingTime / 60);
     let seconds = Math.floor(remainingTime % 60);
-    timeRemaining.textContent = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+    elements.timeRemaining.textContent = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
 }
 
-// 🔹 Start updating time every second
+// 🔹 Start Updating Time Every Second
 function startUpdatingTime() {
-    clearInterval(updateInterval); // Clear previous interval to prevent duplicates
-    updateInterval = setInterval(() => {
-        if (isPlaying) updateTime();
-    }, 1000);
+    clearInterval(updateInterval);
+    updateInterval = setInterval(updateTime, 1000);
 }
 
-// 🔹 Seek functionality: Click on progress bar to skip to part of song
-progressContainer.addEventListener("click", (event) => {
+// 🔹 Seek Through Song
+elements.progressContainer.addEventListener("click", (event) => {
     if (!player || !player.getDuration) return;
 
-    let barWidth = progressContainer.clientWidth;
+    let barWidth = elements.progressContainer.clientWidth;
     let clickPosition = event.offsetX;
     let seekTo = (clickPosition / barWidth) * player.getDuration();
     
     player.seekTo(seekTo, true);
-    updateTime(); // Update immediately so progress bar doesn't lag
+    updateTime();
 });
 
-// 🔹 Toggle active state for buttons
-function toggleActiveMode(buttonId, setActive = true) {
-    const button = document.getElementById(buttonId);
-    if (setActive) {
-        button.classList.add('active-mode');
-    } else {
-        button.classList.remove('active-mode');
+// 🔹 Looping Buttons: Single Song / Playlist
+elements.loopSingleButton.addEventListener("click", () => toggleLoopMode('single'));
+elements.loopPlaylistButton.addEventListener("click", () => toggleLoopMode('playlist'));
+
+// 🔹 Toggle Loop Mode
+function toggleLoopMode(mode) {
+    if (mode === 'single') {
+        loopSingle = !loopSingle;
+        loopPlaylist = false;
+    } else if (mode === 'playlist') {
+        loopPlaylist = !loopPlaylist;
+        loopSingle = false;
     }
+
+    updateLoopButtonState();
 }
 
+// 🔹 Update Active Loop Button State
+function updateLoopButtonState() {
+    elements.loopSingleButton.classList.toggle("active-mode", loopSingle);
+    elements.loopPlaylistButton.classList.toggle("active-mode", loopPlaylist);
+}
+
+player = new YT.Player('youtube-player', {
+    height: '390',
+    width: '640',
+    videoId: songQueue[currentSongIndex].id,
+    playerVars: {
+        autoplay: 0,
+        controls: 1,
+        modestbranding: 1,
+        showinfo: 0,
+        rel: 0,
+        fs: 0
+    },
+    events: {
+        onReady: function() {
+            console.log('Player is ready');
+        },
+        onStateChange: onPlayerStateChange
+    }
+});
+
 // 🔹 Load YouTube API Script
-const tag = document.createElement("script");
-tag.src = "https://www.youtube.com/iframe_api";
-document.head.appendChild(tag);
+(function loadYouTubeAPI() {
+    const script = document.createElement("script");
+    script.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(script);
+})();

@@ -3,46 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lo-Fi Vinyl Player</title>
+    <title>Lo-Fi Vinyl Player 🎵</title>
     <link rel="stylesheet" href="app.css?v=1.0.1">
     <script src="https://www.youtube.com/iframe_api"></script>
 </head>
 <body>
 
-    <h2>Lo-Fi Vinyl Player 🎵</h2>
-    
-    <div id="music-player">
-        <h2 id="song-title">Now Playing: No Song</h2>
-        
-        <!-- 🎵 Vinyl Record -->
-        <div id="vinyl-container">
-            <img id="vinyl" src="Pink Vinyl Record Icon.png">
-        </div>
+    <header>
+        <h2>Lo-Fi Vinyl Player 🎶</h2>
+    </header>
 
-        <div id="progress-container">
+    <main id="music-player">
+        <!-- Display Song Title -->
+        <section id="song-info">
+            <h2 id="song-title">Currently Playing: No Song</h2>
+        </section>
+        
+        <!-- Vinyl Record Animation -->
+        <section id="vinyl-container">
+            <img id="vinyl" src="Pink Vinyl Record Icon.png" alt="Vinyl Record">
+        </section>
+
+        <!-- Progress Bar for Song -->
+        <section id="progress-container">
             <div id="progress-bar"></div>
-        </div>
+        </section>
+
+        <!-- Time Remaining Display -->
         <p id="time-remaining">0:00</p>
 
-        <!-- 🎶 Button Container for Play, Next -->
-        <div class="button-container">
+        <!-- Play/Pause & Next Song Buttons -->
+        <section class="button-container">
             <button id="play">Play / Pause</button>
             <button id="next">Next</button>
-        </div>
-        
+        </section>
+
+        <!-- Song Queue -->
         <ul id="queue"></ul>
-    </div>
 
-    <!-- 🎶 Loop Mode Buttons -->
-    <div class="button-container">
-        <button id="loop-single" class="mode-toggle">Loop Single Song</button>
-        <button id="loop-playlist" class="mode-toggle">Loop Playlist</button>
-    </div>
+        <!-- Loop Mode Control Buttons -->
+        <section class="mode-toggle-container">
+            <button id="loop-single" class="mode-toggle">Loop Current Song</button>
+            <button id="loop-playlist" class="mode-toggle">Loop Playlist</button>
+        </section>
 
-    <!-- 🎶 YouTube Player -->
-    <div id="player-container">
-        <div id="youtube-player"></div>
-    </div>
+        <!-- YouTube Player Container -->
+        <section id="player-container">
+            <div id="youtube-player"></div>
+        </section>
+    </main>
 
     <script src="app.js?v=1.0.1"></script>
 </body>
