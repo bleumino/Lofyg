@@ -3,17 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lofi Girl Stream</title>
+    <title>Lo-Fi Vinyl Player 🎵</title>
     <link rel="stylesheet" href="app.css?v=1.0.1">
     <script src="https://www.youtube.com/iframe_api"></script>
 </head>
 <body>
-    <!-- Display Song Title -->
+
+    <header>
+        <h2>Lo-Fi Vinyl Player 🎶</h2>
+    </header>
+
     <main id="music-player">
+        <!-- Display Song Title -->
         <section id="song-info">
             <h2 id="song-title">Currently Playing: No Song</h2>
         </section>
-
+        
         <!-- Vinyl Record Animation -->
         <section id="vinyl-container">
             <img id="vinyl" src="Pink Vinyl Record Icon.png" alt="Vinyl Record">
@@ -24,10 +29,24 @@
             <div id="progress-bar"></div>
         </section>
 
-        <!-- Playlist Display -->
-        <ul id="queue">
-            <!-- Song Titles will be inserted here -->
-        </ul>
+        <!-- Time Remaining Display -->
+        <p id="time-remaining">0:00</p>
+
+        <!-- Play/Pause & Next Song Buttons -->
+        <section class="button-container">
+            <button id="play">Play / Pause</button>
+            <button id="next">Next</button>
+        </section>
+
+        <!-- Song Queue -->
+        <ul id="queue"></ul>
+
+        <!-- Loop Mode Control Buttons -->
+        <section class="mode-toggle-container">
+            <button id="loop-single" class="mode-toggle">Loop Current Song</button>
+            <button id="loop-playlist" class="mode-toggle">Loop Playlist</button>
+            <button onclick="document.location='lofi-girl-stream.html'"> 24 hour lofi radio</button>
+        </section>
 
         <!-- YouTube Player Container -->
         <section id="player-container">
@@ -35,10 +54,6 @@
         </section>
     </main>
 
-    <section class="button-container">
-        <button onclick="document.location='index.html'">Back to Playlist</button>
-    </section>
-
-    <script src="lofi-girl-stream.js?v=1.03"></script>
+    <script src="app.js?v=1.0.1"></script>
 </body>
 </html>
