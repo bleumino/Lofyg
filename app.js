@@ -1,5 +1,5 @@
 // 🎵 Playlist Data
-const playlist = [
+let playlist = [
     { id: "xakBzg5atsM", title: "massobeats - rose water (royalty free lofi music)" },
     { id: "HGMQbVfYVmI", title: "massobeats - honey jam (royalty free lofi music)" },
     { id: "6eWIffP2M3Y", title: "(no copyright music) jazz type beat “bread” | royalty free youtube music | prod. by lukrembo)" },
@@ -29,24 +29,49 @@ let updateInterval;
 let loopSingle = false;
 let loopPlaylist = false;
 
-// 🔹 Load YouTube IFrame API
-function onYouTubeIframeAPIReady() {
-    player = new YT.Player("youtube-player", {
-        height: "0",
-        width: "0",
-        videoId: playlist[currentSongIndex].id,
-        playerVars: { autoplay: 0, controls: 0 },
-        events: {
-            onReady: initializePlayer,
-            onStateChange: handlePlayerStateChange
-        }
+// 🔹 Load YouTube IFrame API (Ensure Asynchronous Loading)
+function loadYouTubeAPI() {
+    return new Promise((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = "https://www.youtube.com/iframe_api";
+        script.onload = () => resolve();
+        script.onerror = () => reject("Error loading YouTube API");
+        document.head.appendChild(script);
     });
 }
 
-// 🔹 Initialize Player
-function initializePlayer() {
-    loadQueue();
-    updateSongInfo();
+// 🔹 Initialize Player and Load Queue (After API is Ready)
+async function initialize() {
+    try {
+        await loadYouTubeAPI(); // Wait for YouTube API to load
+        onYouTubeIframeAPIReady(); // Initialize the player
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// 🔹 Load YouTube IFrame API
+function onYouTubeIframeAPIReady() {
+    player = new YT.Player('youtube-player', {
+        height: '390',
+        width: '640',
+        videoId: playlist[currentSongIndex].id,
+        playerVars: {
+            autoplay: 0,
+            controls: 1,
+            modestbranding: 1,
+            showinfo: 0,
+            rel: 0,
+            fs: 0
+        },
+        events: {
+            onReady: () => {
+                loadQueue();
+                updateSongInfo();
+            },
+            onStateChange: handlePlayerStateChange
+        }
+    });
 }
 
 // 🔹 Load Queue
@@ -112,11 +137,11 @@ function handlePlayerStateChange(event) {
 // 🔹 Handle End of Song
 function handleEndOfSong() {
     if (loopSingle) {
-        playSong(currentSongIndex); // Repeat the current song
+        playSong(currentSongIndex);
     } else if (loopPlaylist) {
-        playSong(0); // Restart the playlist
+        playSong(0);
     } else {
-        playSong(currentSongIndex + 1); // Move to next song
+        playSong(currentSongIndex + 1);
     }
 }
 
@@ -127,7 +152,7 @@ function startVinylAnimation() {
 
 // 🔹 Update Time and Progress Bar
 function updateTime() {
-    if (!player || !player.getDuration) return;
+    if (!player || !player.getDuration()) return;
 
     let duration = player.getDuration();
     let currentTime = player.getCurrentTime();
@@ -148,12 +173,12 @@ function startUpdatingTime() {
 
 // 🔹 Seek Through Song
 elements.progressContainer.addEventListener("click", (event) => {
-    if (!player || !player.getDuration) return;
+    if (!player || !player.getDuration()) return;
 
     let barWidth = elements.progressContainer.clientWidth;
     let clickPosition = event.offsetX;
     let seekTo = (clickPosition / barWidth) * player.getDuration();
-    
+
     player.seekTo(seekTo, true);
     updateTime();
 });
@@ -181,29 +206,5 @@ function updateLoopButtonState() {
     elements.loopPlaylistButton.classList.toggle("active-mode", loopPlaylist);
 }
 
-player = new YT.Player('youtube-player', {
-    height: '390',
-    width: '640',
-    videoId: songQueue[currentSongIndex].id,
-    playerVars: {
-        autoplay: 0,
-        controls: 1,
-        modestbranding: 1,
-        showinfo: 0,
-        rel: 0,
-        fs: 0
-    },
-    events: {
-        onReady: function() {
-            console.log('Player is ready');
-        },
-        onStateChange: onPlayerStateChange
-    }
-});
-
-// 🔹 Load YouTube API Script
-(function loadYouTubeAPI() {
-    const script = document.createElement("script");
-    script.src = "https://www.youtube.com/iframe_api";
-    document.head.appendChild(script);
-})();
+// 🔹 Start the Initialization Process
+initialize(); // Call the initialize function to start the process
