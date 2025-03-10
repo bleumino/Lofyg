@@ -1,6 +1,7 @@
 // 🎵 Playlist Data
 let playlist = [
     { id: "jfKfPfyJRdk", title: "24 hour lofi radio" },
+]
     // Add more songs here
 
 // 🎧 DOM Elements
