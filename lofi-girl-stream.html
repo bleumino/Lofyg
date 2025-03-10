@@ -10,40 +10,40 @@
 <body>
     <!-- Display Song Title -->
     <main id="music-player">
-     <section id="song-info">
-        <h2 id="song-title">Currently Playing: No Song</h2>
-    </section>
-    
-    <!-- Vinyl Record Animation -->
-    <section id="vinyl-container">
-        <img id="vinyl" src="Pink Vinyl Record Icon.png" alt="Vinyl Record">
-    </section>
+        <section id="song-info">
+            <h2 id="song-title">Currently Playing: No Song</h2>
+        </section>
 
-    <!-- Progress Bar for Song -->
-    <section id="progress-container">
-        <div id="progress-bar"></div>
-    </section>
+        <!-- Vinyl Record Animation -->
+        <section id="vinyl-container">
+            <img id="vinyl" src="Pink Vinyl Record Icon.png" alt="Vinyl Record">
+        </section>
+
+        <!-- Progress Bar for Song -->
+        <section id="progress-container">
+            <div id="progress-bar"></div>
+        </section>
+
+        <section class="button-container">
+            <button id="play">Play / Pause</button>
+        </section>
+
+        <!-- Time Remaining Display -->
+        <p id="time-remaining">0:00</p>
+
+        <!-- Song Queue -->
+        <ul id="queue"></ul>
+
+        <!-- YouTube Player Container -->
+        <section id="player-container">
+            <div id="youtube-player"></div>
+        </section>
+    </main>
 
     <section class="button-container">
-        <button id="play">Play / Pause</button>
-    </section> <!-- Corrected closing tag here -->
-
-    <!-- Time Remaining Display -->
-    <p id="time-remaining">0:00</p>
-
-    <!-- Song Queue -->
-    <ul id="queue"></ul>
-
-    <!-- YouTube Player Container -->
-    <section id="player-container">
-        <div id="youtube-player"></div>
+        <button onclick="document.location='index.html'">Back to Playlist</button>
     </section>
-</main>
 
-<section class="button-container">
-    <button onclick="document.location='index.html'">Back to Playlist</button>
-</section>
-
-<script src="lofi-girl-stream.js?v=1.03"></script>
+    <script src="lofi-girl-stream.js?v=1.03"></script>
 </body>
 </html>
