@@ -14,40 +14,23 @@
     </header>
 
     <main id="music-player">
-        <!-- Display Song Title -->
         <section id="song-info">
             <h2 id="song-title">Currently Playing: No Song</h2>
         </section>
-        
-        <!-- Vinyl Record Animation -->
+
         <section id="vinyl-container">
             <img id="vinyl" src="Pink Vinyl Record Icon.png" alt="Vinyl Record">
         </section>
 
-        <!-- Progress Bar for Song -->
-        <section id="progress-container">
-            <div id="progress-bar"></div>
-        </section>
-
-        <!-- Time Remaining Display -->
-        <p id="time-remaining">0:00</p>
-
-        <!-- Play/Pause & Next Song Buttons -->
         <section class="button-container">
             <button id="play">Play / Pause</button>
         </section>
 
-        <!-- Song Queue -->
-        <ul id="queue"></ul>
-
-        <!-- YouTube Player Container -->
         <section id="player-container">
             <div id="youtube-player"></div>
-            <button onclick="document.location='index.html'">back to Playlist </button>
+            <button onclick="window.location.href='index.html'">back to Playlist</button>
         </section>
     </main>
-    
-
     <script src="lofi-girl-stream.js?v=1.01"></script>
 </body>
 </html>
