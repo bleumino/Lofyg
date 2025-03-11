@@ -5,7 +5,6 @@ let playlist = [
     { id: "6eWIffP2M3Y", title: "Jazz Type Beat - 'Bread' | Royalty Free Music | Prod. by Lukrembo" },
     { id: "KGQNrzqrGqw", title: "Lofi Type Beat - 'Onion' | Prod. by Lukrembo" },
     { id: "tEzzsT4qsbU", title: "massobeats - lucid (royalty free lofi music)" },
-    { id: "jfKfPfyJRdk", title: "24 Hour Lofi Radio" } // Live stream
 ];
 
 // 🎧 DOM Elements
