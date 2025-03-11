@@ -1,6 +1,6 @@
 // 🎵 Playlist Data
 let playlist = [
-    { id: "jfKfPfyJRdk", title: "24 hour lofi radio" } // Only the live stream
+    { id: "jfKfPfyJRdk", title: "24 Hour Lofi Radio" } // Live stream
 ];
 
 // 🎧 DOM Elements
@@ -10,7 +10,8 @@ const elements = {
     playButton: document.getElementById("play"),
     nextButton: document.getElementById("next"),
     vinylRecord: document.getElementById("vinyl"),
-    songTitle: document.getElementById("song-title")
+    songTitle: document.getElementById("song-title"),
+    youtubePlayer: document.getElementById("youtube-player")
 };
 
 let player;
@@ -20,6 +21,11 @@ let currentSongIndex = 0;
 // 🔹 Load YouTube IFrame API (Ensure Asynchronous Loading)
 function loadYouTubeAPI() {
     return new Promise((resolve, reject) => {
+        if (window.YT && window.YT.Player) {
+            resolve(); // API already loaded
+            return;
+        }
+
         const script = document.createElement("script");
         script.src = "https://www.youtube.com/iframe_api";
         script.onload = () => resolve();
@@ -28,32 +34,45 @@ function loadYouTubeAPI() {
     });
 }
 
-// 🔹 Initialize Player and Load Queue (After API is Ready)
+// 🔹 Initialize Player after API is Ready
 async function initialize() {
     try {
         await loadYouTubeAPI();
-        onYouTubeIframeAPIReady();
+        console.log("YouTube IFrame API loaded.");
+        if (typeof YT !== "undefined" && YT.Player) {
+            onYouTubeIframeAPIReady();
+        } else {
+            console.error("YouTube API failed to load.");
+        }
     } catch (error) {
         console.error(error);
     }
 }
 
-// 🔹 Load YouTube IFrame API
+// 🔹 YouTube API Callback
 function onYouTubeIframeAPIReady() {
+    console.log("YouTube IFrame API is ready.");
+    if (!elements.youtubePlayer) {
+        console.error("YouTube player container not found.");
+        return;
+    }
+
     player = new YT.Player('youtube-player', {
         height: '390',
         width: '640',
         videoId: playlist[currentSongIndex].id,
         playerVars: {
-            autoplay: 0,
+            autoplay: 0,  // Set to 0, user interaction required
             controls: 1,
             modestbranding: 1,
             showinfo: 0,
             rel: 0,
-            fs: 0
+            fs: 0,
+            playsinline: 1 // Allow inline playback on mobile
         },
         events: {
-            onReady: () => {
+            onReady: (event) => {
+                console.log("YouTube Player Ready");
                 loadQueue();
                 updateSongInfo();
             },
@@ -64,6 +83,8 @@ function onYouTubeIframeAPIReady() {
 
 // 🔹 Load Queue
 function loadQueue() {
+    if (!elements.queueList) return;
+    
     elements.queueList.innerHTML = "";
     playlist.forEach((song, index) => {
         let listItem = document.createElement("li");
@@ -74,29 +95,42 @@ function loadQueue() {
     });
 }
 
-// 🔹 Update Song Information
+// 🔹 Update Song Info
 function updateSongInfo() {
-    elements.songTitle.textContent = `Now Playing: ${playlist[currentSongIndex].title}`;
+    if (elements.songTitle) {
+        elements.songTitle.textContent = `Now Playing: ${playlist[currentSongIndex].title}`;
+    }
 }
 
 // 🔹 Play Song
 function playSong(index) {
+    if (!player || !player.loadVideoById) {
+        console.error("Player not initialized yet.");
+        return;
+    }
+    
     if (index >= playlist.length) index = 0;
     currentSongIndex = index;
+    
     player.loadVideoById(playlist[currentSongIndex].id);
     player.playVideo();
     updateSongInfo();
     startVinylAnimation();
 }
 
-// 🔹 Toggle Play/Pause
+// 🔹 Toggle Play/Pause with Button Click
 elements.playButton.addEventListener("click", () => {
-    isPlaying ? player.pauseVideo() : player.playVideo();
-});
-
-// 🔹 Skip to Next Song
-elements.nextButton.addEventListener("click", () => {
-    playSong(currentSongIndex + 1);
+    if (!player || typeof player.playVideo !== "function") {
+        console.log("Player not ready, initializing...");
+        onYouTubeIframeAPIReady();
+        return;
+    }
+    
+    if (isPlaying) {
+        player.pauseVideo();
+    } else {
+        player.playVideo();
+    }
 });
 
 // 🔹 Handle Player State Change
@@ -104,9 +138,14 @@ function handlePlayerStateChange(event) {
     switch (event.data) {
         case YT.PlayerState.PLAYING:
             isPlaying = true;
+            updateSongInfo();
             break;
         case YT.PlayerState.PAUSED:
             isPlaying = false;
+            break;
+        case YT.PlayerState.ENDED:
+            console.log("Live stream ended? Restarting...");
+            playSong(currentSongIndex); // Restart live stream if it stops
             break;
     }
     startVinylAnimation();
@@ -114,8 +153,10 @@ function handlePlayerStateChange(event) {
 
 // 🔹 Update Vinyl Record Animation
 function startVinylAnimation() {
-    elements.vinylRecord.classList.toggle("spinning", isPlaying);
+    if (elements.vinylRecord) {
+        elements.vinylRecord.classList.toggle("spinning", isPlaying);
+    }
 }
 
-// 🔹 Start the Initialization Process
+// 🔹 Start Initialization
 initialize();

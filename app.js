@@ -1,10 +1,11 @@
-// 🎵 Playlist Data
+// 🎵 Playlist Data (Updated)
 let playlist = [
     { id: "xakBzg5atsM", title: "massobeats - rose water (royalty free lofi music)" },
     { id: "HGMQbVfYVmI", title: "massobeats - honey jam (royalty free lofi music)" },
-    { id: "6eWIffP2M3Y", title: "(no copyright music) jazz type beat “bread” | royalty free youtube music | prod. by lukrembo" },
-    { id: "KGQNrzqrGqw", title: "(no copyright music) lofi type beat “onion” | prod. by lukrembo" },
-    { id: "tEzzsT4qsbU", title: "massobeats - lucid (royalty free lofi music)" }
+    { id: "6eWIffP2M3Y", title: "Jazz Type Beat - 'Bread' | Royalty Free Music | Prod. by Lukrembo" },
+    { id: "KGQNrzqrGqw", title: "Lofi Type Beat - 'Onion' | Prod. by Lukrembo" },
+    { id: "tEzzsT4qsbU", title: "massobeats - lucid (royalty free lofi music)" },
+    { id: "jfKfPfyJRdk", title: "24 Hour Lofi Radio" } // Live stream
 ];
 
 // 🎧 DOM Elements
@@ -16,7 +17,7 @@ const elements = {
     vinylRecord: document.getElementById("vinyl"),
     songTitle: document.getElementById("song-title"),
     progressBar: document.getElementById("progress-bar"),
-    progressContainer: document.getElementById("progress-bar").parentElement,
+    progressContainer: document.getElementById("progress-bar")?.parentElement,
     timeRemaining: document.getElementById("time-remaining"),
 };
 
@@ -30,7 +31,7 @@ function loadYouTubeAPI() {
     return new Promise((resolve, reject) => {
         const script = document.createElement("script");
         script.src = "https://www.youtube.com/iframe_api";
-        script.onload = () => resolve();
+        script.onload = resolve;
         script.onerror = () => reject("Error loading YouTube API");
         document.head.appendChild(script);
     });
@@ -78,7 +79,13 @@ function loadQueue() {
         let listItem = document.createElement("li");
         listItem.textContent = song.title;
         listItem.dataset.index = index;
-        listItem.addEventListener("click", () => playSong(index));
+
+        listItem.addEventListener("click", (event) => {
+            let clickedIndex = parseInt(event.currentTarget.dataset.index, 10);
+            console.log(`Queue clicked: ${clickedIndex}`);
+            playSong(clickedIndex);
+        });
+
         elements.queueList.appendChild(listItem);
     });
 }
@@ -89,16 +96,21 @@ function updateSongInfo() {
 }
 
 // 🔹 Play Song with Error Handling
-function playSong(index) {
+function playSong(index, skippedCount = 0) {
     if (index >= playlist.length) index = 0; // Loop back if end of list
-    currentSongIndex = index;
+    if (index < 0) index = playlist.length - 1; // Wrap around to last song
 
+    if (skippedCount >= playlist.length) {
+        console.error("No valid videos found in the playlist.");
+        return;
+    }
+
+    currentSongIndex = index;
     let videoId = playlist[currentSongIndex].id;
 
-    // ✅ Check if the video ID exists before loading
     if (!videoId || videoId.length < 10) {
         console.warn(`Skipping invalid video: ${playlist[currentSongIndex].title}`);
-        playSong(index + 1); // Skip to the next song
+        playSong(index + 1, skippedCount + 1); // Prevent infinite recursion
         return;
     }
 
@@ -115,14 +127,23 @@ function resetProgressBar() {
 }
 
 // 🔹 Toggle Play/Pause
-elements.playButton.addEventListener("click", () => {
-    isPlaying ? player.pauseVideo() : player.playVideo();
-});
+if (elements.playButton) {
+    elements.playButton.addEventListener("click", () => {
+        if (isPlaying) {
+            player.pauseVideo();
+        } else {
+            player.playVideo();
+        }
+        isPlaying = !isPlaying; // Fix toggling state
+    });
+}
 
 // 🔹 Skip to Next Song
-elements.nextButton.addEventListener("click", () => {
-    playSong(currentSongIndex + 1);
-});
+if (elements.nextButton) {
+    elements.nextButton.addEventListener("click", () => {
+        playSong(currentSongIndex + 1);
+    });
+}
 
 // 🔹 Handle Player State Change
 function handlePlayerStateChange(event) {
@@ -145,12 +166,14 @@ function handlePlayerStateChange(event) {
 function handlePlayerError(event) {
     console.error(`YouTube Player Error: ${event.data}`);
     console.warn(`Skipping broken video: ${playlist[currentSongIndex].title}`);
-    playSong(currentSongIndex + 1); // Skip broken videos
+    playSong(currentSongIndex + 1);
 }
 
 // 🔹 Update Vinyl Record Animation
 function startVinylAnimation() {
-    elements.vinylRecord.classList.toggle("spinning", isPlaying);
+    if (elements.vinylRecord) {
+        elements.vinylRecord.classList.toggle("spinning", isPlaying);
+    }
 }
 
 // 🔹 Update Time and Progress Bar
@@ -175,16 +198,18 @@ function startUpdatingTime() {
 }
 
 // 🔹 Seek Through Song
-elements.progressContainer.addEventListener("click", (event) => {
-    if (!player || !player.getDuration()) return;
+if (elements.progressContainer) {
+    elements.progressContainer.addEventListener("click", (event) => {
+        if (!player || !player.getDuration()) return;
 
-    let barWidth = elements.progressContainer.clientWidth;
-    let clickPosition = event.offsetX;
-    let seekTo = (clickPosition / barWidth) * player.getDuration();
+        let barWidth = elements.progressContainer.clientWidth;
+        let clickPosition = event.offsetX;
+        let seekTo = (clickPosition / barWidth) * player.getDuration();
 
-    player.seekTo(seekTo, true);
-    updateTime();
-});
+        player.seekTo(seekTo, true);
+        updateTime();
+    });
+}
 
 // 🔹 Start Initialization
 initialize();
