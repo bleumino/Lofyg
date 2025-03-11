@@ -4,6 +4,7 @@ let playlist = [
     { id: "HGMQbVfYVmI", title: "massobeats - honey jam (royalty free lofi music)" },
     { id: "6eWIffP2M3Y", title: "(no copyright music) jazz type beat “bread” | royalty free youtube music | prod. by lukrembo" },
     { id: "KGQNrzqrGqw", title: "(no copyright music) lofi type beat “onion” | prod. by lukrembo" },
+    { id: "tEzzsT4qsbU.", title: "massobeats - lucid (royalty free lofi music)"}
 ];
 
 // 🎧 DOM Elements
