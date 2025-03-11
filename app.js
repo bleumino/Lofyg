@@ -2,10 +2,8 @@
 let playlist = [
     { id: "xakBzg5atsM", title: "massobeats - rose water (royalty free lofi music)" },
     { id: "HGMQbVfYVmI", title: "massobeats - honey jam (royalty free lofi music)" },
-    { id: "6eWIffP2M3Y", title: "(no copyright music) jazz type beat “bread” | royalty free youtube music | prod. by lukrembo)" },
-    { id: "KGQNrzqrGqw", title: "(no copyright music) lofi type beat “onion” | prod. by lukrembo)" },
-    { id: "YsEs4yrx", title: "lukrembo - marshmallow (royalty free vlog music)" },
-    { id: "Fs664CBV", title: "jeuxee - kimichi 🍜| copyright free music | [ chill lofi hip-hop jazz beat]" }
+    { id: "6eWIffP2M3Y", title: "(no copyright music) jazz type beat “bread” | royalty free youtube music | prod. by lukrembo" },
+    { id: "KGQNrzqrGqw", title: "(no copyright music) lofi type beat “onion” | prod. by lukrembo" },
 ];
 
 // 🎧 DOM Elements
@@ -19,18 +17,14 @@ const elements = {
     progressBar: document.getElementById("progress-bar"),
     progressContainer: document.getElementById("progress-bar").parentElement,
     timeRemaining: document.getElementById("time-remaining"),
-    loopSingleButton: document.getElementById("loop-single"),
-    loopPlaylistButton: document.getElementById("loop-playlist")
 };
 
 let player;
 let isPlaying = false;
 let currentSongIndex = 0;
 let updateInterval;
-let loopSingle = false;
-let loopPlaylist = false;
 
-// 🔹 Load YouTube IFrame API (Ensure Asynchronous Loading)
+// 🔹 Load YouTube IFrame API
 function loadYouTubeAPI() {
     return new Promise((resolve, reject) => {
         const script = document.createElement("script");
@@ -41,17 +35,17 @@ function loadYouTubeAPI() {
     });
 }
 
-// 🔹 Initialize Player and Load Queue (After API is Ready)
+// 🔹 Initialize YouTube Player
 async function initialize() {
     try {
-        await loadYouTubeAPI(); // Wait for YouTube API to load
-        onYouTubeIframeAPIReady(); // Initialize the player
+        await loadYouTubeAPI();
+        onYouTubeIframeAPIReady();
     } catch (error) {
         console.error(error);
     }
 }
 
-// 🔹 Load YouTube IFrame API
+// 🔹 YouTube API Callback
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('youtube-player', {
         height: '390',
@@ -70,12 +64,13 @@ function onYouTubeIframeAPIReady() {
                 loadQueue();
                 updateSongInfo();
             },
-            onStateChange: handlePlayerStateChange
+            onStateChange: handlePlayerStateChange,
+            onError: handlePlayerError
         }
     });
 }
 
-// 🔹 Load Queue
+// 🔹 Load Queue List
 function loadQueue() {
     elements.queueList.innerHTML = "";
     playlist.forEach((song, index) => {
@@ -87,16 +82,26 @@ function loadQueue() {
     });
 }
 
-// 🔹 Update Song Information
+// 🔹 Update Song Info
 function updateSongInfo() {
     elements.songTitle.textContent = `Now Playing: ${playlist[currentSongIndex].title}`;
 }
 
-// 🔹 Play Song
+// 🔹 Play Song with Error Handling
 function playSong(index) {
-    if (index >= playlist.length) index = 0;
+    if (index >= playlist.length) index = 0; // Loop back if end of list
     currentSongIndex = index;
-    player.loadVideoById(playlist[currentSongIndex].id);
+
+    let videoId = playlist[currentSongIndex].id;
+
+    // ✅ Check if the video ID exists before loading
+    if (!videoId || videoId.length < 10) {
+        console.warn(`Skipping invalid video: ${playlist[currentSongIndex].title}`);
+        playSong(index + 1); // Skip to the next song
+        return;
+    }
+
+    player.loadVideoById(videoId);
     player.playVideo();
     updateSongInfo();
     resetProgressBar();
@@ -122,7 +127,7 @@ elements.nextButton.addEventListener("click", () => {
 function handlePlayerStateChange(event) {
     switch (event.data) {
         case YT.PlayerState.ENDED:
-            handleEndOfSong();
+            playSong(currentSongIndex + 1);
             break;
         case YT.PlayerState.PLAYING:
             isPlaying = true;
@@ -135,15 +140,11 @@ function handlePlayerStateChange(event) {
     startVinylAnimation();
 }
 
-// 🔹 Handle End of Song
-function handleEndOfSong() {
-    if (loopSingle) {
-        playSong(currentSongIndex);
-    } else if (loopPlaylist) {
-        playSong(0);
-    } else {
-        playSong(currentSongIndex + 1);
-    }
+// 🔹 Handle YouTube API Errors
+function handlePlayerError(event) {
+    console.error(`YouTube Player Error: ${event.data}`);
+    console.warn(`Skipping broken video: ${playlist[currentSongIndex].title}`);
+    playSong(currentSongIndex + 1); // Skip broken videos
 }
 
 // 🔹 Update Vinyl Record Animation
@@ -184,28 +185,5 @@ elements.progressContainer.addEventListener("click", (event) => {
     updateTime();
 });
 
-// 🔹 Looping Buttons: Single Song / Playlist
-elements.loopSingleButton.addEventListener("click", () => toggleLoopMode('single'));
-elements.loopPlaylistButton.addEventListener("click", () => toggleLoopMode('playlist'));
-
-// 🔹 Toggle Loop Mode
-function toggleLoopMode(mode) {
-    if (mode === 'single') {
-        loopSingle = !loopSingle;
-        loopPlaylist = false;
-    } else if (mode === 'playlist') {
-        loopPlaylist = !loopPlaylist;
-        loopSingle = false;
-    }
-
-    updateLoopButtonState();
-}
-
-// 🔹 Update Active Loop Button State
-function updateLoopButtonState() {
-    elements.loopSingleButton.classList.toggle("active-mode", loopSingle);
-    elements.loopPlaylistButton.classList.toggle("active-mode", loopPlaylist);
-}
-
-// 🔹 Start the Initialization Process
-initialize(); // Call the initialize function to start the process
+// 🔹 Start Initialization
+initialize();
