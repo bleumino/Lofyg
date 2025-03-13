@@ -5,7 +5,8 @@ let playlist = [
     { id: "6eWIffP2M3Y", title: "Jazz Type Beat - 'Bread' | Royalty Free Music | Prod. by Lukrembo" },
     { id: "KGQNrzqrGqw", title: "Lofi Type Beat - 'Onion' | Prod. by Lukrembo" },
     { id: "tEzzsT4qsbU", title: "massobeats - lucid (royalty free lofi music)" },
-    { id: "y7KYdqVND4o", title: "lukrembo - marshmallow (royalty free vlog music)" }
+    { id: "y7KYdqVND4o", title: "lukrembo - marshmallow (royalty free vlog music)" },
+    
 ];
 
 // 🎧 DOM Elements
@@ -19,37 +20,12 @@ const elements = {
     progressBar: document.getElementById("progress-bar"),
     progressContainer: document.getElementById("progress-bar")?.parentElement,
     timeRemaining: document.getElementById("time-remaining"),
-    loopSingleButton: document.getElementById("loop-single"),
-    loopPlaylistButton: document.getElementById("loop-playlist")
 };
 
-let currentSongIndex = 0;
-let isPlaying = false;
 let player;
+let isPlaying = false;
+let currentSongIndex = 0;
 let updateInterval;
-
-// 🔹 Looping Flags
-let loopSingleSong = false;
-let loopPlaylist = false;
-
-// 🔹 Loop Button Event Listeners (Only if Buttons Exist)
-if (elements.loopSingleButton) {
-    elements.loopSingleButton.addEventListener("click", () => {
-        loopSingleSong = !loopSingleSong;
-        loopPlaylist = false;
-        toggleActiveMode("loop-single", loopSingleSong);
-        toggleActiveMode("loop-playlist", false);
-    });
-}
-
-if (elements.loopPlaylistButton) {
-    elements.loopPlaylistButton.addEventListener("click", () => {
-        loopPlaylist = !loopPlaylist;
-        loopSingleSong = false;
-        toggleActiveMode("loop-playlist", loopPlaylist);
-        toggleActiveMode("loop-single", false);
-    });
-}
 
 // 🔹 Load YouTube IFrame API
 function loadYouTubeAPI() {
@@ -74,9 +50,9 @@ async function initialize() {
 
 // 🔹 YouTube API Callback
 function onYouTubeIframeAPIReady() {
-    player = new YT.Player("youtube-player", {
-        height: "390",
-        width: "640",
+    player = new YT.Player('youtube-player', {
+        height: '390',
+        width: '640',
         videoId: playlist[currentSongIndex].id,
         playerVars: {
             autoplay: 0,
@@ -99,8 +75,6 @@ function onYouTubeIframeAPIReady() {
 
 // 🔹 Load Queue List
 function loadQueue() {
-    if (!elements.queueList) return;
-    
     elements.queueList.innerHTML = "";
     playlist.forEach((song, index) => {
         let listItem = document.createElement("li");
@@ -109,6 +83,7 @@ function loadQueue() {
 
         listItem.addEventListener("click", (event) => {
             let clickedIndex = parseInt(event.currentTarget.dataset.index, 10);
+            console.log(`Queue clicked: ${clickedIndex}`);
             playSong(clickedIndex);
         });
 
@@ -123,8 +98,8 @@ function updateSongInfo() {
 
 // 🔹 Play Song with Error Handling
 function playSong(index, skippedCount = 0) {
-    if (index >= playlist.length) index = 0; 
-    if (index < 0) index = playlist.length - 1;
+    if (index >= playlist.length) index = 0; // Loop back if end of list
+    if (index < 0) index = playlist.length - 1; // Wrap around to last song
 
     if (skippedCount >= playlist.length) {
         console.error("No valid videos found in the playlist.");
@@ -136,7 +111,7 @@ function playSong(index, skippedCount = 0) {
 
     if (!videoId || videoId.length < 10) {
         console.warn(`Skipping invalid video: ${playlist[currentSongIndex].title}`);
-        playSong(index + 1, skippedCount + 1);
+        playSong(index + 1, skippedCount + 1); // Prevent infinite recursion
         return;
     }
 
@@ -160,8 +135,7 @@ if (elements.playButton) {
         } else {
             player.playVideo();
         }
-        isPlaying = !isPlaying;
-        startVinylAnimation();
+        isPlaying = !isPlaying; // Fix toggling state
     });
 }
 
@@ -199,11 +173,7 @@ function handlePlayerError(event) {
 // 🔹 Update Vinyl Record Animation
 function startVinylAnimation() {
     if (elements.vinylRecord) {
-        if (isPlaying) {
-            elements.vinylRecord.classList.add("spinning");
-        } else {
-            elements.vinylRecord.classList.remove("spinning");
-        }
+        elements.vinylRecord.classList.toggle("spinning", isPlaying);
     }
 }
 
@@ -226,6 +196,20 @@ function updateTime() {
 function startUpdatingTime() {
     clearInterval(updateInterval);
     updateInterval = setInterval(updateTime, 1000);
+}
+
+// 🔹 Seek Through Song
+if (elements.progressContainer) {
+    elements.progressContainer.addEventListener("click", (event) => {
+        if (!player || !player.getDuration()) return;
+
+        let barWidth = elements.progressContainer.clientWidth;
+        let clickPosition = event.offsetX;
+        let seekTo = (clickPosition / barWidth) * player.getDuration();
+
+        player.seekTo(seekTo, true);
+        updateTime();
+    });
 }
 
 // 🔹 Start Initialization
