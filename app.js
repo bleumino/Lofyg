@@ -6,7 +6,6 @@ let playlist = [
     { id: "KGQNrzqrGqw", title: "Lofi Type Beat - 'Onion' | Prod. by Lukrembo" },
     { id: "tEzzsT4qsbU", title: "massobeats - lucid (royalty free lofi music)" },
     { id: "y7KYdqVND4o", title: "lukrembo - marshmallow (royalty free vlog music)" },
-    
 ];
 
 // 🎧 DOM Elements
@@ -18,7 +17,7 @@ const elements = {
     vinylRecord: document.getElementById("vinyl"),
     songTitle: document.getElementById("song-title"),
     progressBar: document.getElementById("progress-bar"),
-    progressContainer: document.getElementById("progress-bar")?.parentElement,
+    progressContainer: document.getElementById("progress-container"),
     timeRemaining: document.getElementById("time-remaining"),
 };
 
@@ -111,7 +110,7 @@ function playSong(index, skippedCount = 0) {
 
     if (!videoId || videoId.length < 10) {
         console.warn(`Skipping invalid video: ${playlist[currentSongIndex].title}`);
-        playSong(index + 1, skippedCount + 1); // Prevent infinite recursion
+        playSong(index + 1, skippedCount + 1);
         return;
     }
 
@@ -198,18 +197,21 @@ function startUpdatingTime() {
     updateInterval = setInterval(updateTime, 1000);
 }
 
-// 🔹 Seek Through Song
+// 🔹 Seek Through Song (Click to Jump)
+function seekToPosition(event) {
+    if (!player || !player.getDuration()) return;
+
+    let barWidth = elements.progressContainer.clientWidth;
+    let clickPosition = event.offsetX;
+    let seekTime = (clickPosition / barWidth) * player.getDuration();
+
+    player.seekTo(seekTime, true);
+    updateTime();
+}
+
+// 🔹 Event Listener for Seeking in Song
 if (elements.progressContainer) {
-    elements.progressContainer.addEventListener("click", (event) => {
-        if (!player || !player.getDuration()) return;
-
-        let barWidth = elements.progressContainer.clientWidth;
-        let clickPosition = event.offsetX;
-        let seekTo = (clickPosition / barWidth) * player.getDuration();
-
-        player.seekTo(seekTo, true);
-        updateTime();
-    });
+    elements.progressContainer.addEventListener("click", seekToPosition);
 }
 
 // 🔹 Start Initialization
