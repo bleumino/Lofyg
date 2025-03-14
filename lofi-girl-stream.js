@@ -6,7 +6,8 @@ let playlist = [
 ];
 
 let currentSongIndex = 0;
-let isPlaying = false; // Keeps track of playback state
+let isPlaying = false;
+let playerReady = false; // ✅ Track player readiness
 
 // 🎛️ UI Elements
 const elements = {
@@ -21,7 +22,7 @@ const elements = {
 // 🎵 Create & Style "Next" Button
 elements.nextButton.textContent = "Next";
 elements.nextButton.id = "next";
-elements.nextButton.style.marginLeft = "10px"; // Add spacing
+elements.nextButton.style.marginLeft = "10px"; 
 
 // Insert "Next" button **right after** the "Play" button
 elements.playButton.parentNode.insertBefore(elements.nextButton, elements.playButton.nextSibling);
@@ -29,7 +30,7 @@ elements.playButton.parentNode.insertBefore(elements.nextButton, elements.playBu
 // 🎵 YouTube Player API Initialization
 let player;
 function onYouTubeIframeAPIReady() {
-    console.log(`🎵 Loading: ${playlist[currentSongIndex].title}`);
+    console.log(`🎵 Loading YouTube API...`);
 
     player = new YT.Player("youtube-player", {
         height: "390",
@@ -48,13 +49,14 @@ function onYouTubeIframeAPIReady() {
 // ✅ Ensure Player is Ready Before Playing
 function onPlayerReady(event) {
     console.log("✅ Player is ready!");
+    playerReady = true; // ✅ Mark player as ready
     updateSongInfo();
 }
 
-// ✅ Function to Play Live Streams Properly
+// ✅ Function to Play Songs
 function playSong(index) {
-    if (!player || typeof player.loadVideoById !== "function") {
-        console.error("❌ Player not initialized yet.");
+    if (!playerReady || !player || typeof player.loadVideoById !== "function") {
+        console.error("❌ Player is not ready yet.");
         return;
     }
 
@@ -62,9 +64,7 @@ function playSong(index) {
     console.log(`🎶 Playing: ${playlist[currentSongIndex].title}`);
 
     player.loadVideoById(playlist[currentSongIndex].id);
-
-    // 🔥 Explicitly play the video to fix live stream playback
-    player.playVideo();
+    player.playVideo(); // 🔥 Explicitly play the video
 
     updateSongInfo();
     startVinylAnimation();
@@ -72,8 +72,8 @@ function playSong(index) {
 
 // 🎵 Play or Pause
 function togglePlayPause() {
-    if (!player || typeof player.getPlayerState !== "function") {
-        console.error("❌ Player not ready yet.");
+    if (!playerReady || !player || typeof player.getPlayerState !== "function") {
+        console.error("❌ Player is not ready yet.");
         return;
     }
 
@@ -126,7 +126,7 @@ function handlePlayerStateChange(event) {
 
 // 🎶 Update Queue Display
 function updateQueue() {
-    elements.queueList.innerHTML = ""; // Clear previous list
+    elements.queueList.innerHTML = ""; 
     playlist.forEach((song, index) => {
         let listItem = document.createElement("li");
         listItem.textContent = song.title;
@@ -144,7 +144,7 @@ function startVinylAnimation() {
     }
 }
 
-// 🚀 Initialize Function (Fixes the missing `initialize()` call)
+// 🚀 Initialize Function
 function initialize() {
     updateQueue();
     updateSongInfo();
