@@ -1,8 +1,8 @@
 // 🎵 Playlist Data (Multiple Streams)
 let playlist = [
-    { id: "jfKfPfyJRdk", title: "24 Hour Lofi Radio" },
-    { id: "5qap5aO4i9A", title: "Lofi Hip Hop Beats" },
-    { id: "DWcJFNfSxW8", title: "Chill Lofi Study Beats" }
+    { id: "jfKfPfyJRdk", title: "lofi hip hop radio 📚 beats to relax/study to" },
+    { id: "5yx6BWlEVcY", title: "Chillhop Radio - jazzy & lofi hip hop beats 🐾" },
+    { id: "pHoADRY_WSM", title: "Espresso Coffee 🍵 Coffee Shop Lofi 🌴 Beats for work / relax [ lofi hip hop ~ lofi cafe ]" }
 ];
 
 let currentSongIndex = 0;
