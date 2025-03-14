@@ -154,3 +154,4 @@ function initialize() {
 initialize();
 elements.playButton.addEventListener("click", togglePlayPause);
 elements.nextButton.addEventListener("click", playNext);
+console.log("YouTube Iframe API Ready Function Loaded!");
