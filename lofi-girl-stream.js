@@ -45,20 +45,26 @@ function onYouTubeIframeAPIReady() {
     updateQueue();
 }
 
+// ✅ Ensure Player is Ready Before Playing
+function onPlayerReady(event) {
+    console.log("✅ Player is ready!");
+    updateSongInfo();
+}
+
 // ✅ Function to Play Live Streams Properly
 function playSong(index) {
-    if (!player || !player.loadVideoById) {
+    if (!player || typeof player.loadVideoById !== "function") {
         console.error("❌ Player not initialized yet.");
         return;
     }
-    
+
     currentSongIndex = index;
+    console.log(`🎶 Playing: ${playlist[currentSongIndex].title}`);
+
     player.loadVideoById(playlist[currentSongIndex].id);
-    
+
     // 🔥 Explicitly play the video to fix live stream playback
-    setTimeout(() => {
-        player.playVideo();
-    }, 500);
+    player.playVideo();
 
     updateSongInfo();
     startVinylAnimation();
@@ -66,7 +72,10 @@ function playSong(index) {
 
 // 🎵 Play or Pause
 function togglePlayPause() {
-    if (!player) return;
+    if (!player || typeof player.getPlayerState !== "function") {
+        console.error("❌ Player not ready yet.");
+        return;
+    }
 
     const playerState = player.getPlayerState();
 
@@ -77,6 +86,8 @@ function togglePlayPause() {
         player.playVideo();
         isPlaying = true;
     }
+
+    startVinylAnimation();
 }
 
 // ⏭ Play Next Song
