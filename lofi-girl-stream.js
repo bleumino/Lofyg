@@ -45,32 +45,31 @@ function onYouTubeIframeAPIReady() {
     updateQueue();
 }
 
-// 🎶 Update Queue Display
-function updateQueue() {
-    elements.queueList.innerHTML = ""; // Clear previous list
-    playlist.forEach((song, index) => {
-        let listItem = document.createElement("li");
-        listItem.textContent = song.title;
-        listItem.dataset.index = index;
-        listItem.style.cursor = "pointer";
-        listItem.addEventListener("click", () => playSong(index));
-        elements.queueList.appendChild(listItem);
-    });
-}
-
-// 🎧 Update Now Playing Title
-function updateSongInfo() {
-    if (elements.songTitle) {
-        elements.songTitle.textContent = `Now Playing: ${playlist[currentSongIndex].title}`;
+// ✅ Function to Play Live Streams Properly
+function playSong(index) {
+    if (!player || !player.loadVideoById) {
+        console.error("❌ Player not initialized yet.");
+        return;
     }
+    
+    currentSongIndex = index;
+    player.loadVideoById(playlist[currentSongIndex].id);
+    
+    // 🔥 Explicitly play the video to fix live stream playback
+    setTimeout(() => {
+        player.playVideo();
+    }, 500);
+
+    updateSongInfo();
+    startVinylAnimation();
 }
 
 // 🎵 Play or Pause
 function togglePlayPause() {
     if (!player) return;
-    
+
     const playerState = player.getPlayerState();
-    
+
     if (playerState === YT.PlayerState.PLAYING) {
         player.pauseVideo();
         isPlaying = false;
@@ -80,25 +79,13 @@ function togglePlayPause() {
     }
 }
 
-// ▶️ Play a specific song from the playlist
-function playSong(index) {
-    if (!player || !player.loadVideoById) {
-        console.error("❌ Player not initialized yet.");
-        return;
-    }
-    currentSongIndex = index;
-    player.loadVideoById(playlist[currentSongIndex].id);
-    updateSongInfo();
-    startVinylAnimation();
-}
-
 // ⏭ Play Next Song
 function playNext() {
     currentSongIndex = (currentSongIndex + 1) % playlist.length;
     playSong(currentSongIndex);
 }
 
-// 🔄 Update Song Title
+// 🎧 Update Now Playing Title
 function updateSongInfo() {
     if (elements.songTitle) {
         elements.songTitle.textContent = `Now Playing: ${playlist[currentSongIndex].title}`;
@@ -124,6 +111,19 @@ function handlePlayerStateChange(event) {
             isPlaying = false;
             break;
     }
+}
+
+// 🎶 Update Queue Display
+function updateQueue() {
+    elements.queueList.innerHTML = ""; // Clear previous list
+    playlist.forEach((song, index) => {
+        let listItem = document.createElement("li");
+        listItem.textContent = song.title;
+        listItem.dataset.index = index;
+        listItem.style.cursor = "pointer";
+        listItem.addEventListener("click", () => playSong(index));
+        elements.queueList.appendChild(listItem);
+    });
 }
 
 // 🎵 Start Vinyl Record Animation
