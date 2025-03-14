@@ -6,6 +6,7 @@ let playlist = [
 ];
 
 let currentSongIndex = 0;
+let isPlaying = false; // Keeps track of playback state
 
 // 🎛️ UI Elements
 const elements = {
@@ -14,21 +15,25 @@ const elements = {
     playButton: document.getElementById("play"),
     nextButton: document.createElement("button"),
     vinylRecord: document.getElementById("vinyl"),
-    songTitle: document.getElementById("song-title")
+    songTitle: document.getElementById("song-title"),
 };
 
+// 🎵 Create & Style "Next" Button
 elements.nextButton.textContent = "Next";
 elements.nextButton.id = "next";
-document.body.appendChild(elements.nextButton);
+elements.nextButton.style.marginLeft = "10px"; // Add spacing
+
+// Insert "Next" button **right after** the "Play" button
+elements.playButton.parentNode.insertBefore(elements.nextButton, elements.playButton.nextSibling);
 
 // 🎵 YouTube Player API Initialization
 let player;
 function onYouTubeIframeAPIReady() {
     console.log(`🎵 Loading: ${playlist[currentSongIndex].title}`);
-    
-    player = new YT.Player('youtube-player', {
-        height: '390',
-        width: '640',
+
+    player = new YT.Player("youtube-player", {
+        height: "390",
+        width: "640",
         videoId: playlist[currentSongIndex].id,
         playerVars: { autoplay: 0, controls: 1, modestbranding: 1, showinfo: 1 },
         events: {
@@ -63,10 +68,15 @@ function updateSongInfo() {
 // 🎵 Play or Pause
 function togglePlayPause() {
     if (!player) return;
-    if (isPlaying) {
+    
+    const playerState = player.getPlayerState();
+    
+    if (playerState === YT.PlayerState.PLAYING) {
         player.pauseVideo();
+        isPlaying = false;
     } else {
         player.playVideo();
+        isPlaying = true;
     }
 }
 
@@ -78,7 +88,7 @@ function playSong(index) {
     }
     currentSongIndex = index;
     player.loadVideoById(playlist[currentSongIndex].id);
-    updateSongTitle();
+    updateSongInfo();
     startVinylAnimation();
 }
 
@@ -89,7 +99,7 @@ function playNext() {
 }
 
 // 🔄 Update Song Title
-function updateSongTitle() {
+function updateSongInfo() {
     if (elements.songTitle) {
         elements.songTitle.textContent = `Now Playing: ${playlist[currentSongIndex].title}`;
     }
@@ -98,11 +108,11 @@ function updateSongTitle() {
 // 🎚️ Handle YouTube Player State Changes
 function handlePlayerStateChange(event) {
     if (!player) return;
-    
+
     switch (event.data) {
         case YT.PlayerState.PLAYING:
             isPlaying = true;
-            updateSongTitle();
+            updateSongInfo();
             startVinylAnimation();
             break;
         case YT.PlayerState.ENDED:
@@ -121,6 +131,12 @@ function startVinylAnimation() {
     if (elements.vinylRecord) {
         elements.vinylRecord.classList.toggle("spinning", isPlaying);
     }
+}
+
+// 🚀 Initialize Function (Fixes the missing `initialize()` call)
+function initialize() {
+    updateQueue();
+    updateSongInfo();
 }
 
 // 🚀 Initialize
