@@ -56,7 +56,8 @@ function onPlayerReady(event) {
 // ✅ Function to Play Songs
 function playSong(index) {
     if (!playerReady || !player || typeof player.loadVideoById !== "function") {
-        console.error("❌ Player is not ready yet.");
+        console.error("❌ Player is not ready yet. Retrying in 500ms...");
+        setTimeout(() => playSong(index), 500); // 🔄 Retry after 500ms
         return;
     }
 
@@ -146,8 +147,15 @@ function startVinylAnimation() {
 
 // 🚀 Initialize Function
 function initialize() {
+    console.log("🚀 Initializing App...");
     updateQueue();
     updateSongInfo();
+
+    // Wait for YouTube API to be ready
+    if (typeof YT === "undefined" || !YT.Player) {
+        console.warn("⏳ Waiting for YouTube API to load...");
+        setTimeout(initialize, 500);
+    }
 }
 
 // 🚀 Initialize
@@ -155,3 +163,4 @@ initialize();
 elements.playButton.addEventListener("click", togglePlayPause);
 elements.nextButton.addEventListener("click", playNext);
 console.log("YouTube Iframe API Ready Function Loaded!");
+
