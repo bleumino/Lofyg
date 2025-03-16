@@ -1,5 +1,5 @@
-// 🎵 Playlist Data (Multiple Streams)
-let playlist = [
+// 🎵 channels Data (Multiple Streams)
+let channels = [
     { id: "jfKfPfyJRdk", title: "lofi hip hop radio 📚 beats to relax/study to" },
     { id: "5yx6BWlEVcY", title: "Chillhop Radio - jazzy & lofi hip hop beats 🐾" },
     { id: "pHoADRY_WSM", title: "Espresso Coffee 🍵 Coffee Shop Lofi 🌴 Beats for work / relax [ lofi hip hop ~ lofi cafe ]" },
