@@ -62,25 +62,34 @@ function onPlayerReady(event) {
     updateSongInfo();
 }
 
-// ✅ Function to Play Songs
+// ✅ Function to Play Songs (Fixed)
 function playSong(index) {
     if (!playerReady || !player || typeof player.loadVideoById !== "function") {
+        console.warn(`⏳ Player not ready. Retrying in 500ms... (${retryCount + 1}/${maxRetries})`);
         if (retryCount < maxRetries) {
-            console.error(`❌ Player is not ready yet. Retrying in 500ms... (${retryCount + 1}/${maxRetries})`);
             retryCount++;
-            setTimeout(() => playSong(index), 500); // 🔄 Retry after 500ms
+            setTimeout(() => playSong(index), 500);
         } else {
-            console.error("❌ Max retries reached. Player still not ready.");
+            console.error("❌ Max retries reached. Player is still not ready.");
         }
         return;
     }
 
     retryCount = 0; // Reset retry count on success
     currentSongIndex = index;
-    console.log(`🎶 Playing: ${playlist[currentSongIndex].title}`);
 
-    player.loadVideoById(playlist[currentSongIndex].id);
-    player.playVideo(); // 🔥 Explicitly play the video
+    console.log(`🎶 Switching to: ${playlist[currentSongIndex].title}`);
+
+    // Load new video (No need to stop the previous one)
+    player.cueVideoById(playlist[currentSongIndex].id);
+
+    // Wait a bit, then try playing
+    setTimeout(() => {
+        if (playerReady && player.getPlayerState() !== YT.PlayerState.PLAYING) {
+            player.playVideo();
+            isPlaying = true;
+        }
+    }, 800); // ⏳ Increased delay to ensure smooth playback
 
     updateSongInfo();
     startVinylAnimation();
@@ -166,23 +175,30 @@ function initialize() {
     updateQueue();
     updateSongInfo();
 
-    // Wait for YouTube API to be ready
     if (typeof YT === "undefined" || !YT.Player) {
-        console.warn("⏳ Waiting for YouTube API to load...");
-        setTimeout(() => {
-            if (typeof YT !== "undefined" && YT.Player) {
-                onYouTubeIframeAPIReady();
-            } else {
-                initialize();
-            }
-        }, 500);
+        console.warn("⏳ Waiting for YouTube API...");
+        setTimeout(initialize, 500);
     } else {
+        console.log("✅ YouTube API detected! Initializing player...");
         onYouTubeIframeAPIReady();
     }
 }
 
 // 🚀 Initialize
 initialize();
+setTimeout(() => {
+    if (!player || !player.getIframe()) {
+        console.warn("🔄 Player is not loading correctly. Reloading...");
+        location.reload();
+    }
+}, 2000); // Wait 2 seconds before checking
 elements.playButton.addEventListener("click", togglePlayPause);
 elements.nextButton.addEventListener("click", playNext);
+window.addEventListener("resize", () => {
+    console.log("🔄 Resized: Checking if player is broken...");
+    if (!player || !player.getIframe()) {
+        console.warn("🚀 Fixing broken player...");
+        onYouTubeIframeAPIReady();
+    }
+});
 console.log("YouTube Iframe API Ready Function Loaded!");
