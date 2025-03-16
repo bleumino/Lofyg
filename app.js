@@ -85,6 +85,7 @@ function loadQueue() {
             let clickedIndex = parseInt(event.currentTarget.dataset.index, 10);
             console.log(`Queue clicked: ${clickedIndex}`);
             playSong(clickedIndex);
+            listItem.style.cursor = "pointer";
         });
 
         elements.queueList.appendChild(listItem);
