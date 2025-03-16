@@ -9,6 +9,8 @@ let playlist = [
 let currentSongIndex = 0;
 let isPlaying = false;
 let playerReady = false; // ✅ Track player readiness
+let retryCount = 0;
+const maxRetries = 10;
 
 // 🎛️ UI Elements
 const elements = {
@@ -31,6 +33,11 @@ elements.playButton.parentNode.insertBefore(elements.nextButton, elements.playBu
 // 🎵 YouTube Player API Initialization
 let player;
 function onYouTubeIframeAPIReady() {
+    if (player) {
+        console.warn("🎵 Player already initialized. Skipping reinitialization.");
+        return;
+    }
+
     console.log(`🎵 Loading YouTube API...`);
 
     player = new YT.Player("youtube-player", {
@@ -51,17 +58,24 @@ function onYouTubeIframeAPIReady() {
 function onPlayerReady(event) {
     console.log("✅ Player is ready!");
     playerReady = true; // ✅ Mark player as ready
+    retryCount = 0; // Reset retry count when player becomes ready
     updateSongInfo();
 }
 
 // ✅ Function to Play Songs
 function playSong(index) {
     if (!playerReady || !player || typeof player.loadVideoById !== "function") {
-        console.error("❌ Player is not ready yet. Retrying in 500ms...");
-        setTimeout(() => playSong(index), 500); // 🔄 Retry after 500ms
+        if (retryCount < maxRetries) {
+            console.error(`❌ Player is not ready yet. Retrying in 500ms... (${retryCount + 1}/${maxRetries})`);
+            retryCount++;
+            setTimeout(() => playSong(index), 500); // 🔄 Retry after 500ms
+        } else {
+            console.error("❌ Max retries reached. Player still not ready.");
+        }
         return;
     }
 
+    retryCount = 0; // Reset retry count on success
     currentSongIndex = index;
     console.log(`🎶 Playing: ${playlist[currentSongIndex].title}`);
 
@@ -155,7 +169,15 @@ function initialize() {
     // Wait for YouTube API to be ready
     if (typeof YT === "undefined" || !YT.Player) {
         console.warn("⏳ Waiting for YouTube API to load...");
-        setTimeout(initialize, 500);
+        setTimeout(() => {
+            if (typeof YT !== "undefined" && YT.Player) {
+                onYouTubeIframeAPIReady();
+            } else {
+                initialize();
+            }
+        }, 500);
+    } else {
+        onYouTubeIframeAPIReady();
     }
 }
 
@@ -164,4 +186,3 @@ initialize();
 elements.playButton.addEventListener("click", togglePlayPause);
 elements.nextButton.addEventListener("click", playNext);
 console.log("YouTube Iframe API Ready Function Loaded!");
-
