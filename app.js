@@ -81,6 +81,12 @@ function loadQueue() {
         listItem.dataset.index = index;
 
         listItem.style.cursor = "pointer"; // Ensure cursor is a pointer
+        listItem.addEventListener("mouseover", () => {
+            listItem.style.cursor = "pointer";
+        });
+        listItem.addEventListener("mouseout", () => {
+            listItem.style.cursor = "default";
+        });
 
         listItem.addEventListener("click", (event) => {
             let clickedIndex = parseInt(event.currentTarget.dataset.index, 10);
