@@ -134,3 +134,11 @@ button:hover {
     padding: 10px;
     list-style: none;
 }
+
+.logo
+{
+    width: 60;
+    height: 60;
+    margin: auto;
+    display: flex;
+}
