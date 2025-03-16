@@ -1,4 +1,3 @@
-// 🎵 Playlist Data (Updated)
 let playlist = [
     { id: "xakBzg5atsM", title: "massobeats - rose water (royalty free lofi music)" },
     { id: "HGMQbVfYVmI", title: "massobeats - honey jam (royalty free lofi music)" },
@@ -81,11 +80,12 @@ function loadQueue() {
         listItem.textContent = song.title;
         listItem.dataset.index = index;
 
+        listItem.style.cursor = "pointer"; // Ensure cursor is a pointer
+
         listItem.addEventListener("click", (event) => {
             let clickedIndex = parseInt(event.currentTarget.dataset.index, 10);
             console.log(`Queue clicked: ${clickedIndex}`);
             playSong(clickedIndex);
-            listItem.style.cursor = "pointer";
         });
 
         elements.queueList.appendChild(listItem);
