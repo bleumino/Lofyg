@@ -142,3 +142,10 @@ button:hover {
     margin: auto;
     display: flex;
 }
+
+footer {
+    margin-top: 50px; /* Adjust space as needed */
+    padding-top: 20px;
+    border-top: 1px solid #ccc; /* Optional: Adds a separator */
+    text-align: center;
+}
