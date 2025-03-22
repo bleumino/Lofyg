@@ -149,3 +149,7 @@ footer {
     border-top: 1px solid #ccc; /* Optional: Adds a separator */
     text-align: center;
 }
+
+* {
+    font-family: 'Cherry Bomb One';
+}
