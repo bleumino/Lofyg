@@ -227,5 +227,47 @@ function startVinylAnimation() {
         }
     }
 }
+
+
+function updateSongInfo() {
+    elements.songTitle.textContent = `Now Playing: ${playlist[currentSongIndex].title}`;
+    
+    // 🎶 Show Now Playing Popup
+    const popup = document.getElementById("now-playing-popup");
+    const popupText = document.getElementById("now-playing-text");
+    
+    popupText.textContent = `Now Playing: ${playlist[currentSongIndex].title}`;
+    popup.style.opacity = "1"; // Show the popup
+    
+    // Hide after 3 seconds
+    setTimeout(() => {
+        popup.style.opacity = "0";
+    }, 3000);
+}
+
+document.addEventListener("visibilitychange", () => {
+    if (document.hidden && isPlaying) {
+        console.log("🔇 Page hidden, keeping music playing...");
+        player.playVideo(); // Ensures music keeps playing
+    } else {
+        console.log("🎵 Page visible, continuing playback...");
+    }
+});
 // 🔹 Start Initialization
+function waitForYouTubeAPI(callback) {
+    if (window.YT && window.YT.Player) {
+        callback();
+    } else {
+        console.warn("⏳ Waiting for YouTube API...");
+        setTimeout(() => waitForYouTubeAPI(callback), 500);
+    }
+}
+
+function initialize() {
+    waitForYouTubeAPI(() => {
+        onYouTubeIframeAPIReady();
+    });
+}
+
+// Start the initialization
 initialize();

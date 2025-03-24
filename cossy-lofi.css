@@ -165,3 +165,19 @@ footer {
     animation: pulse 1.5s infinite ease-in-out;
     filter: drop-shadow(0 0 10px rgba(0, 162, 255, 0.8)); /* Extra Glow */
 }
+
+/* 🎶 Now Playing Popup */
+#now-playing-popup {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8); /* Subtle dark background */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 16px;
+    opacity: 0; /* Start hidden */
+    transition: opacity 0.5s ease-in-out;
+    pointer-events: none; /* Prevents blocking interactions */
+}
