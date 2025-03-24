@@ -1,0 +1,23 @@
+Licenses & Copyright
+
+All rights are reserved to the original content owners on YouTube, from which the videos have been embedded. These videos are used under fair use, public domain, or copyright-free licensing as per YouTube’s policies.
+
+For more details on YouTube API usage and related policies, please refer to the YouTube API Terms of Service.
+
+The site’s logo, name, and branding are trademarked and must not be copied, reproduced, or modified in any form without permission. Unauthorized use may result in legal action.
+
+
+1. Content Usage Disclaimer
+This website is not affiliated with, endorsed by, or officially connected to YouTube or any of the original content creators. All embedded videos remain the property of their respective owners.
+
+2. Attribution for Copyright-Free Music
+Some of the music featured on this website is licensed under Creative Commons, copyright-free, or explicitly released for public use by the original artists. Where applicable, proper attribution has been provided.
+
+3. API & Third-Party Services Disclaimer
+This site uses the YouTube API to stream videos. Due to API restrictions, some features may behave differently across browsers or devices. We are not responsible for third-party service outages or changes in API functionality.
+
+4. User Responsibility & Compliance
+users are responsible for ensuring their use of this site complies with YouTube’s Terms of Service and all relevant copyright laws. If you believe your content has been misused, please contact us.
+
+5. Contact for Copyright Issues
+If you are the copyright owner of a video embedded on this site and would like it removed, please contact us with proof of ownership. We will address your request promptly.
