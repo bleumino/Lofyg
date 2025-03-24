@@ -28,12 +28,12 @@ let isPlaying = false;
 let currentSongIndex = 0;
 let updateInterval;
 
-// 🔹 Load YouTube IFrame API
+// 🔹 Load YouTube IFrame API with a Delay (Fixes Safari Issues)
 function loadYouTubeAPI() {
     return new Promise((resolve, reject) => {
         const script = document.createElement("script");
         script.src = "https://www.youtube.com/iframe_api";
-        script.onload = resolve;
+        script.onload = () => setTimeout(resolve, 500); // Delay to ensure full load
         script.onerror = () => reject("Error loading YouTube API");
         document.head.appendChild(script);
     });
@@ -43,9 +43,19 @@ function loadYouTubeAPI() {
 async function initialize() {
     try {
         await loadYouTubeAPI();
-        onYouTubeIframeAPIReady();
+        ensureYouTubeAPIReady();
     } catch (error) {
         console.error(error);
+    }
+}
+
+// 🔹 Ensure YouTube API is Ready (Fix for Safari)
+function ensureYouTubeAPIReady() {
+    if (typeof YT !== "undefined" && YT.Player) {
+        onYouTubeIframeAPIReady();
+    } else {
+        console.warn("⏳ Waiting for YouTube API to load...");
+        setTimeout(ensureYouTubeAPIReady, 500);
     }
 }
 
@@ -56,7 +66,7 @@ function onYouTubeIframeAPIReady() {
         width: '640',
         videoId: playlist[currentSongIndex].id,
         playerVars: {
-            autoplay: 0,
+            autoplay: 0, // Prevent Safari autoplay block
             controls: 1,
             modestbranding: 1,
             showinfo: 0,
@@ -97,7 +107,7 @@ function updateSongInfo() {
     elements.songTitle.textContent = `Now Playing: ${playlist[currentSongIndex].title}`;
 }
 
-// 🔹 Play Song with Error Handling
+// 🔹 Play Song with Autoplay Handling
 function playSong(index, skippedCount = 0) {
     if (index >= playlist.length) index = 0;
     if (index < 0) index = playlist.length - 1;
@@ -117,7 +127,14 @@ function playSong(index, skippedCount = 0) {
     }
 
     player.loadVideoById(videoId);
-    player.playVideo();
+
+    // 🛠 Fix Safari Autoplay Issue
+    setTimeout(() => {
+        if (isPlaying) {
+            player.playVideo();
+        }
+    }, 500);
+
     updateSongInfo();
     resetProgressBar();
     startVinylAnimation();
@@ -183,58 +200,7 @@ function startVinylAnimation() {
     }
 }
 
-// 🔹 Update Time and Progress Bar
-function updateTime() {
-    if (!player || !player.getDuration()) return;
-
-    let duration = player.getDuration();
-    let currentTime = player.getCurrentTime();
-    let remainingTime = duration - currentTime;
-
-    elements.progressBar.style.width = (currentTime / duration) * 100 + "%";
-
-    let minutes = Math.floor(remainingTime / 60);
-    let seconds = Math.floor(remainingTime % 60);
-    elements.timeRemaining.textContent = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-}
-
-// 🔹 Start Updating Time Every Second
-function startUpdatingTime() {
-    clearInterval(updateInterval);
-    updateInterval = setInterval(updateTime, 1000);
-}
-
-// 🔹 Seek Through Song
-if (elements.progressContainer) {
-    elements.progressContainer.addEventListener("click", (event) => {
-        if (!player || !player.getDuration()) return;
-
-        let barWidth = elements.progressContainer.clientWidth;
-        let clickPosition = event.offsetX;
-        let seekTo = (clickPosition / barWidth) * player.getDuration();
-
-        player.seekTo(seekTo, true);
-        updateTime();
-    });
-}
-
-
-function updateSongInfo() {
-    elements.songTitle.textContent = `Now Playing: ${playlist[currentSongIndex].title}`;
-    
-    // 🎶 Show Now Playing Popup
-    const popup = document.getElementById("now-playing-popup");
-    const popupText = document.getElementById("now-playing-text");
-    
-    popupText.textContent = `Now Playing: ${playlist[currentSongIndex].title}`;
-    popup.style.opacity = "1"; // Show the popup
-    
-    // Hide after 3 seconds
-    setTimeout(() => {
-        popup.style.opacity = "0";
-    }, 3000);
-}
-
+// 🔹 Fix for Safari Background Playback
 document.addEventListener("visibilitychange", () => {
     if (document.hidden && isPlaying) {
         console.log("🔇 Page hidden, keeping music playing...");
