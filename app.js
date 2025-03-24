@@ -209,6 +209,40 @@ document.addEventListener("visibilitychange", () => {
         console.log("🎵 Page visible, continuing playback...");
     }
 });
+// 🔹 Update Time and Progress Bar
+function updateTime() {
+    if (!player || !player.getDuration()) return;
+
+    let duration = player.getDuration();
+    let currentTime = player.getCurrentTime();
+    let remainingTime = duration - currentTime;
+
+    elements.progressBar.style.width = (currentTime / duration) * 100 + "%";
+
+    let minutes = Math.floor(remainingTime / 60);
+    let seconds = Math.floor(remainingTime % 60);
+    elements.timeRemaining.textContent = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+}
+
+// 🔹 Start Updating Time Every Second
+function startUpdatingTime() {
+    clearInterval(updateInterval);
+    updateInterval = setInterval(updateTime, 1000);
+}
+
+// 🔹 Seek Through Song
+if (elements.progressContainer) {
+    elements.progressContainer.addEventListener("click", (event) => {
+        if (!player || !player.getDuration()) return;
+
+        let barWidth = elements.progressContainer.clientWidth;
+        let clickPosition = event.offsetX;
+        let seekTo = (clickPosition / barWidth) * player.getDuration();
+
+        player.seekTo(seekTo, true);
+        updateTime();
+    });
+}
 
 // 🔹 Start Initialization
 initialize();

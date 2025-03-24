@@ -1,6 +1,6 @@
 let playlist = [
     { id: "ITxr30JqOGk", title: "Elin John Svensson - Blue Rainbow (official audio)" },
-    { id: "3s7_IVSAn0Y", title: "Elin John Svensson - Blue Silence Night (official audio)" },
+    { id: "3s7_IVSAn0Y", title: "Elin John Svensson - Blue silence night (official audio)" },
     { id: "CkMDYBZj9Tc", title: "Elin John Svensson - Blue Ocean Skies (official audio)" },
 ];
 
@@ -27,7 +27,7 @@ function loadYouTubeAPI() {
     return new Promise((resolve, reject) => {
         const script = document.createElement("script");
         script.src = "https://www.youtube.com/iframe_api";
-        script.onload = () => setTimeout(resolve, 500); // 🔹 Delay to ensure Safari loads properly
+        script.onload = resolve;
         script.onerror = () => reject("Error loading YouTube API");
         document.head.appendChild(script);
     });
@@ -37,37 +37,34 @@ function loadYouTubeAPI() {
 async function initialize() {
     try {
         await loadYouTubeAPI();
-        waitForYouTubeAPI(() => onYouTubeIframeAPIReady());
+        onYouTubeIframeAPIReady();
     } catch (error) {
         console.error(error);
     }
 }
 
-// 🔹 Ensure YouTube API is Ready Before Using It
-function waitForYouTubeAPI(callback) {
-    if (window.YT && window.YT.Player) {
-        callback();
-    } else {
-        console.warn("⏳ Waiting for YouTube API...");
-        setTimeout(() => waitForYouTubeAPI(callback), 500);
-    }
-}
-
 // 🔹 YouTube API Callback
 function onYouTubeIframeAPIReady() {
-    player = new YT.Player("youtube-player", {
-        height: "390",
-        width: "640",
+    player = new YT.Player('youtube-player', {
+        height: '390',
+        width: '640',
         videoId: playlist[currentSongIndex].id,
-        playerVars: { autoplay: 0, controls: 1, modestbranding: 1, showinfo: 0, rel: 0, fs: 0 },
+        playerVars: {
+            autoplay: 0,
+            controls: 1,
+            modestbranding: 1,
+            showinfo: 0,
+            rel: 0,
+            fs: 0
+        },
         events: {
             onReady: () => {
                 loadQueue();
                 updateSongInfo();
             },
             onStateChange: handlePlayerStateChange,
-            onError: handlePlayerError,
-        },
+            onError: handlePlayerError
+        }
     });
 }
 
@@ -78,10 +75,18 @@ function loadQueue() {
         let listItem = document.createElement("li");
         listItem.textContent = song.title;
         listItem.dataset.index = index;
-        listItem.style.cursor = "pointer";
+
+        listItem.style.cursor = "pointer"; // Ensure cursor is a pointer
+        listItem.addEventListener("mouseover", () => {
+            listItem.style.cursor = "pointer";
+        });
+        listItem.addEventListener("mouseout", () => {
+            listItem.style.cursor = "default";
+        });
 
         listItem.addEventListener("click", (event) => {
             let clickedIndex = parseInt(event.currentTarget.dataset.index, 10);
+            console.log(`Queue clicked: ${clickedIndex}`);
             playSong(clickedIndex);
         });
 
@@ -96,8 +101,8 @@ function updateSongInfo() {
 
 // 🔹 Play Song with Error Handling
 function playSong(index, skippedCount = 0) {
-    if (index >= playlist.length) index = 0;
-    if (index < 0) index = playlist.length - 1;
+    if (index >= playlist.length) index = 0; // Loop back if end of list
+    if (index < 0) index = playlist.length - 1; // Wrap around to last song
 
     if (skippedCount >= playlist.length) {
         console.error("No valid videos found in the playlist.");
@@ -109,12 +114,12 @@ function playSong(index, skippedCount = 0) {
 
     if (!videoId || videoId.length < 10) {
         console.warn(`Skipping invalid video: ${playlist[currentSongIndex].title}`);
-        playSong(index + 1, skippedCount + 1);
+        playSong(index + 1, skippedCount + 1); // Prevent infinite recursion
         return;
     }
 
     player.loadVideoById(videoId);
-    setTimeout(() => player.playVideo(), 500); // 🔹 Delay to fix Safari autoplay issue
+    player.playVideo();
     updateSongInfo();
     resetProgressBar();
     startVinylAnimation();
@@ -133,8 +138,7 @@ if (elements.playButton) {
         } else {
             player.playVideo();
         }
-        isPlaying = !isPlaying;
-        startVinylAnimation();
+        isPlaying = !isPlaying; // Fix toggling state
     });
 }
 
@@ -169,14 +173,10 @@ function handlePlayerError(event) {
     playSong(currentSongIndex + 1);
 }
 
-// 🔹 Vinyl Record Animation
+// 🔹 Update Vinyl Record Animation
 function startVinylAnimation() {
     if (elements.vinylRecord) {
-        setTimeout(() => {
-            elements.vinylRecord.classList.toggle("spinning", isPlaying);
-            elements.vinylRecord.classList.toggle("pulsing", isPlaying);
-        }, 100);
-        console.log("🎵 Vinyl animation updated:", elements.vinylRecord.classList);
+        elements.vinylRecord.classList.toggle("spinning", isPlaying);
     }
 }
 
@@ -214,16 +214,60 @@ if (elements.progressContainer) {
         updateTime();
     });
 }
+function startVinylAnimation() {
+    if (elements.vinylRecord) {
+        elements.vinylRecord.classList.toggle("spinning", isPlaying);
 
-// 🔹 Keep Music Playing in Background
+        if (isPlaying) {
+            elements.vinylRecord.classList.add("pulsing");
+            console.log("✨ Glow added!"); // Debug message
+        } else {
+            elements.vinylRecord.classList.remove("pulsing");
+            console.log("🚫 Glow removed!");
+        }
+    }
+}
+
+
+function updateSongInfo() {
+    elements.songTitle.textContent = `Now Playing: ${playlist[currentSongIndex].title}`;
+    
+    // 🎶 Show Now Playing Popup
+    const popup = document.getElementById("now-playing-popup");
+    const popupText = document.getElementById("now-playing-text");
+    
+    popupText.textContent = `Now Playing: ${playlist[currentSongIndex].title}`;
+    popup.style.opacity = "1"; // Show the popup
+    
+    // Hide after 3 seconds
+    setTimeout(() => {
+        popup.style.opacity = "0";
+    }, 3000);
+}
+
 document.addEventListener("visibilitychange", () => {
     if (document.hidden && isPlaying) {
         console.log("🔇 Page hidden, keeping music playing...");
-        player.playVideo();
+        player.playVideo(); // Ensures music keeps playing
     } else {
         console.log("🎵 Page visible, continuing playback...");
     }
 });
-
 // 🔹 Start Initialization
+function waitForYouTubeAPI(callback) {
+    if (window.YT && window.YT.Player) {
+        callback();
+    } else {
+        console.warn("⏳ Waiting for YouTube API...");
+        setTimeout(() => waitForYouTubeAPI(callback), 500);
+    }
+}
+
+function initialize() {
+    waitForYouTubeAPI(() => {
+        onYouTubeIframeAPIReady();
+    });
+}
+
+// Start the initialization
 initialize();
