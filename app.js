@@ -5,10 +5,9 @@ let playlist = [
     { id: "KGQNrzqrGqw", title: "Lofi Type Beat - 'Onion' | Prod. by Lukrembo" },
     { id: "tEzzsT4qsbU", title: "massobeats - lucid (royalty free lofi music)" },
     { id: "y7KYdqVND4o", title: "lukrembo - marshmallow (royalty free vlog music)" },
-    {id: "O8MYZY6sFpI",title: "animal crossing ~ new horizons lofi"},
-    {id: "1P5BSm_oFJg",title: "Lofi Girl - Snowman (Music Video)"},
-    {id: "gv7hcXCnjOw",title: "(no copyright music) jazz type beat “sunset” | royalty free vlog music | prod. by lukrembo"},
-    
+    { id: "O8MYZY6sFpI", title: "animal crossing ~ new horizons lofi" },
+    { id: "1P5BSm_oFJg", title: "Lofi Girl - Snowman (Music Video)" },
+    { id: "gv7hcXCnjOw", title: "(no copyright music) jazz type beat “sunset” | royalty free vlog music | prod. by lukrembo" },
 ];
 
 // 🎧 DOM Elements
@@ -82,18 +81,10 @@ function loadQueue() {
         let listItem = document.createElement("li");
         listItem.textContent = song.title;
         listItem.dataset.index = index;
-
-        listItem.style.cursor = "pointer"; // Ensure cursor is a pointer
-        listItem.addEventListener("mouseover", () => {
-            listItem.style.cursor = "pointer";
-        });
-        listItem.addEventListener("mouseout", () => {
-            listItem.style.cursor = "default";
-        });
+        listItem.style.cursor = "pointer";
 
         listItem.addEventListener("click", (event) => {
             let clickedIndex = parseInt(event.currentTarget.dataset.index, 10);
-            console.log(`Queue clicked: ${clickedIndex}`);
             playSong(clickedIndex);
         });
 
@@ -108,8 +99,8 @@ function updateSongInfo() {
 
 // 🔹 Play Song with Error Handling
 function playSong(index, skippedCount = 0) {
-    if (index >= playlist.length) index = 0; // Loop back if end of list
-    if (index < 0) index = playlist.length - 1; // Wrap around to last song
+    if (index >= playlist.length) index = 0;
+    if (index < 0) index = playlist.length - 1;
 
     if (skippedCount >= playlist.length) {
         console.error("No valid videos found in the playlist.");
@@ -121,7 +112,7 @@ function playSong(index, skippedCount = 0) {
 
     if (!videoId || videoId.length < 10) {
         console.warn(`Skipping invalid video: ${playlist[currentSongIndex].title}`);
-        playSong(index + 1, skippedCount + 1); // Prevent infinite recursion
+        playSong(index + 1, skippedCount + 1);
         return;
     }
 
@@ -145,7 +136,8 @@ if (elements.playButton) {
         } else {
             player.playVideo();
         }
-        isPlaying = !isPlaying; // Fix toggling state
+        isPlaying = !isPlaying;
+        startVinylAnimation();
     });
 }
 
@@ -180,10 +172,14 @@ function handlePlayerError(event) {
     playSong(currentSongIndex + 1);
 }
 
-// 🔹 Update Vinyl Record Animation
+// 🔹 Vinyl Record Animation
 function startVinylAnimation() {
     if (elements.vinylRecord) {
-        elements.vinylRecord.classList.toggle("spinning", isPlaying);
+        setTimeout(() => {
+            elements.vinylRecord.classList.toggle("spinning", isPlaying);
+            elements.vinylRecord.classList.toggle("pulsing", isPlaying);
+        }, 100);
+        console.log("🎵 Vinyl animation updated:", elements.vinylRecord.classList);
     }
 }
 
@@ -221,19 +217,6 @@ if (elements.progressContainer) {
         updateTime();
     });
 }
-function startVinylAnimation() {
-    if (elements.vinylRecord) {
-        elements.vinylRecord.classList.toggle("spinning", isPlaying);
 
-        if (isPlaying) {
-            elements.vinylRecord.classList.add("pulsing");
-            console.log("✨ Glow added!"); // Debug message
-        } else {
-            elements.vinylRecord.classList.remove("pulsing");
-            console.log("🚫 Glow removed!");
-        }
-    }
-}
 // 🔹 Start Initialization
 initialize();
-
