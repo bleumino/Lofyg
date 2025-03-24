@@ -202,3 +202,17 @@ window.addEventListener("resize", () => {
     }
 });
 console.log("YouTube Iframe API Ready Function Loaded!");
+
+function startVinylAnimation() {
+    if (elements.vinylRecord) {
+        elements.vinylRecord.classList.toggle("spinning", isPlaying);
+
+        if (isPlaying) {
+            elements.vinylRecord.classList.add("pulsing");
+            console.log("✨ Glow added!"); // Debug message
+        } else {
+            elements.vinylRecord.classList.remove("pulsing");
+            console.log("🚫 Glow removed!");
+        }
+    }
+}

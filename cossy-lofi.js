@@ -1,14 +1,7 @@
 let playlist = [
-    { id: "xakBzg5atsM", title: "massobeats - rose water (royalty free lofi music)" },
-    { id: "HGMQbVfYVmI", title: "massobeats - honey jam (royalty free lofi music)" },
-    { id: "6eWIffP2M3Y", title: "Jazz Type Beat - 'Bread' | Royalty Free Music | Prod. by Lukrembo" },
-    { id: "KGQNrzqrGqw", title: "Lofi Type Beat - 'Onion' | Prod. by Lukrembo" },
-    { id: "tEzzsT4qsbU", title: "massobeats - lucid (royalty free lofi music)" },
-    { id: "y7KYdqVND4o", title: "lukrembo - marshmallow (royalty free vlog music)" },
-    {id: "O8MYZY6sFpI",title: "animal crossing ~ new horizons lofi"},
-    {id: "1P5BSm_oFJg",title: "Lofi Girl - Snowman (Music Video)"},
-    {id: "gv7hcXCnjOw",title: "(no copyright music) jazz type beat “sunset” | royalty free vlog music | prod. by lukrembo"},
-    
+    { id: "ITxr30JqOGk", title: "Elin John Svensson - Blue Rainbow (official audio)" },
+    { id: "3s7_IVSAn0Y", title: "Elin John Svensson - Blue silence night (official audio)" },
+    { id: "CkMDYBZj9Tc", title: "Elin John Svensson - Blue Ocean Skies (official audio)" },
 ];
 
 // 🎧 DOM Elements
@@ -236,4 +229,3 @@ function startVinylAnimation() {
 }
 // 🔹 Start Initialization
 initialize();
-

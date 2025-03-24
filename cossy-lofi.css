@@ -1,8 +1,8 @@
-/* 🎀 Sakura Pink Vinyl Aesthetic */
+/* 🎀 Soft Powder Blue Vinyl Aesthetic */
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #ffe6f2; /* Soft pale rose Pink */
-    color: #d63384; /* Deep Pink for contrast */
+    background-color: #B0C4DE; /* Soft Powder Blue */
+    color: #2E4A66; /* Deep Muted Blue for contrast */
     text-align: center;
     margin: 0;
     padding: 0;
@@ -34,7 +34,7 @@ body {
 #vinyl {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ensures it fills the container properly */
+    object-fit: cover;
     border-radius: 50%;
     animation: spin 5s linear infinite;
 }
@@ -53,7 +53,7 @@ body {
 
 /* 🎵 Cute Buttons */
 button {
-    background: #ff99cc;
+    background: #9BB8D3; /* Muted Sky Blue */
     color: white;
     border: none;
     padding: 10px 20px;
@@ -64,54 +64,51 @@ button {
 }
 
 button:hover {
-    background: #ff66a3;
+    background: #7A9BBE; /* Slightly darker muted blue */
 }
 
 /* 📊 Progress Bar */
 #progress-container {
     width: 80%;
     height: 8px;
-    background: #ff99cc;
+    background: #9BB8D3;
     margin: 10px auto;
     border-radius: 10px;
 }
 
 #progress-bar {
     height: 100%;
-    background: #ff007f;
+    background: #2E4A66; /* Deep Blue */
     border-radius: 10px;
 }
 
 /* 🌀 Highlight Loop Modes */
 button.active-mode {
-    background: #ff007f; /* Bright pink for active state */
+    background: #2E4A66; /* Muted deep blue for active state */
     color: white;
 }
 
-#loop-single.active-mode {
-    background: #ff007f; /* Highlight active loop-single button */
-}
-
+#loop-single.active-mode, 
 #loop-playlist.active-mode {
-    background: #ff007f; /* Highlight active loop-playlist button */
+    background: #2E4A66;
 }
 
 /* 📀 Center Buttons Container */
 .button-container {
     display: flex;
-    justify-content: center; /* Centers buttons horizontally */
-    align-items: center;     /* Centers buttons vertically */
-    gap: 10px;               /* Optional: space between buttons */
-    width: 100%;             /* Ensure it takes full width */
-    height: 100px;           /* You can adjust the height as needed */
-    margin: 20px 0;          /* Optional: add margin to separate from other content */
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    height: 100px;
+    margin: 20px 0;
 }
 
-/* Optional: Add button styling */
+/* 🎶 Ensure Buttons Look Nice */
 button {
     padding: 12px 24px;
     font-size: 18px;
-    background-color: #ff99cc;
+    background-color: #9BB8D3;
     color: white;
     border: none;
     border-radius: 25px;
@@ -120,47 +117,51 @@ button {
 }
 
 button:hover {
-    background-color: #ff66a3;
+    background-color: #7A9BBE;
 }
 
+/* 🎼 Hide YouTube Player Initially */
 #youtube-player {
-    display: none;  /* Hide the YouTube iframe */
+    display: none;
 }
 
+/* 🎵 Playlist Styling */
 #queue {
-    max-height: 300px; /* Adjust height as needed */
-    overflow-y: auto; /* Enables scrolling */
-    border: 1px solid #ccc; /* Optional: Adds a border for visibility */
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
     padding: 10px;
     list-style: none;
 }
 
-.logo
-{
-    width: 60;
-    height: 60;
+/* 🎀 Logo */
+.logo {
+    width: 60px;
+    height: 60px;
     margin: auto;
     display: flex;
 }
 
+/* 🎼 Footer Styling */
 footer {
-    margin-top: 50px; /* Adjust space as needed */
+    margin-top: 50px;
     padding-top: 20px;
-    border-top: 1px solid #ccc; /* Optional: Adds a separator */
+    border-top: 1px solid #ccc;
     text-align: center;
 }
 
+/* 🌸 Apply Muted Blue Theme to All Text */
 * {
-    font-family: 'Cherry Bomb One';
+    font-family: 'Cherry Bomb One', sans-serif;
 }
 
-@keyframes pinkPulse {
-    0% { box-shadow: 0 0 15px rgba(255, 105, 180, 0.5); } /* Soft pink */
-    50% { box-shadow: 0 0 30px rgba(255, 105, 180, 1); }  /* Strong pink */
-    100% { box-shadow: 0 0 15px rgba(255, 105, 180, 0.5); }
+@keyframes pulse {
+    0% { box-shadow: 0 0 20px rgba(0, 162, 255, 0.6); }
+    50% { box-shadow: 0 0 40px rgba(0, 162, 255, 1); }
+    100% { box-shadow: 0 0 20px rgba(0, 162, 255, 0.6); }
 }
 
 .pulsing {
-    animation: pinkPulse 1.5s infinite ease-in-out;
-    filter: drop-shadow(0 0 15px rgba(255, 105, 180, 0.8)); /* Extra pink glow */
+    animation: pulse 1.5s infinite ease-in-out;
+    filter: drop-shadow(0 0 10px rgba(0, 162, 255, 0.8)); /* Extra Glow */
 }
