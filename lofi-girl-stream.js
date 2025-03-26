@@ -3,7 +3,7 @@ let playlist= [
     { id: "jfKfPfyJRdk", title: "lofi hip hop radio 📚 beats to relax/study to" },
     { id: "5yx6BWlEVcY", title: "Chillhop Radio - jazzy & lofi hip hop beats 🐾" },
     { id: "pHoADRY_WSM", title: "Espresso Coffee 🍵 Coffee Shop Lofi 🌴 Beats for work / relax [ lofi hip hop ~ lofi cafe ]" },
-    { id: "-SyqT7_K164", title: "lofi hip hop mix 🚃 chill beats for studying and relaxing"},
+    { id: "dw_Bx0e0lis", title: "Honey Coffee ☕ Sweet Day with Lofi Cafe in Forest 🍯 Lofi Hip Hop for relax, work, study 24/7" },
 ];
 
 let currentSongIndex = 0;
