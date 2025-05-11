@@ -8,6 +8,10 @@ let playlist = [
     { id: "O8MYZY6sFpI", title: "animal crossing ~ new horizons lofi" },
     { id: "1P5BSm_oFJg", title: "Lofi Girl - Snowman (Music Video)" },
     { id: "gv7hcXCnjOw", title: "(no copyright music) jazz type beat “sunset” | royalty free vlog music | prod. by lukrembo" },
+    { id: "YTUF1o9Sf3E", title:"lukrembo - affogato (royalty free vlog music)"}
+    { id: "EtZ2m2Zm3vY", title:"(no copyright music) lofi type beat “biscuit” | free vlog music | prod. by lukrembo"}
+    
+
 ];
 
 // 🎧 DOM Elements

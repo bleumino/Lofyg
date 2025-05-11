@@ -2,6 +2,7 @@ let playlist = [
     { id: "ITxr30JqOGk", title: "Elin John Svensson - Blue Rainbow (official audio)" },
     { id: "3s7_IVSAn0Y", title: "Elin John Svensson - Blue silence night (official audio)" },
     { id: "CkMDYBZj9Tc", title: "Elin John Svensson - Blue Ocean Skies (official audio)" },
+    { id: "WdbPKuC2T3Y", title: "Elin John Svensson - Blue juice orange (official audio)" },
 ];
 
 // 🎧 DOM Elements
