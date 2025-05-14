@@ -1,20 +1,41 @@
 /* 🎀 Sakura Pink Vinyl Aesthetic */
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #ffe6f2; /* Soft pale rose Pink */
-    color: #d63384; /* Deep Pink for contrast */
     text-align: center;
     margin: 0;
     padding: 0;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* 🌸 Light Theme */
+body.light-theme {
+    background-color: #ffe6f2;  /* Soft pale rose pink */
+    color: #d63384;            /* Deep pink text */
+}
+
+/* 🌙 Dark Theme */
+body.dark-theme {
+    background-color: #1c1c1c;  /* Midnight background */
+    color: #ffccf9;             /* Light pink text */
 }
 
 /* 💿 Music Player Styling */
 #music-player {
-    background: white;
     border-radius: 20px;
     padding: 20px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     display: inline-block;
+    transition: background-color 0.5s ease;
+}
+
+/* Music Player - theme support */
+#music-player.light-theme {
+    background: white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+#music-player.dark-theme {
+    background: #2a2a2a;
+    box-shadow: 0px 4px 15px rgba(255, 255, 255, 0.05);
 }
 
 /* 💿 Vinyl Record */
@@ -34,7 +55,7 @@ body {
 #vinyl {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ensures it fills the container properly */
+    object-fit: cover;
     border-radius: 50%;
     animation: spin 5s linear infinite;
 }
@@ -51,20 +72,33 @@ body {
     to { transform: rotate(360deg); }
 }
 
-/* 🎵 Cute Buttons */
+/* 🎵 Cute Buttons (themed via JS) */
 button {
-    background: #ff99cc;
-    color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 20px;
-    font-size: 16px;
+    padding: 12px 24px;
+    font-size: 18px;
+    border-radius: 25px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: background-color 0.3s ease;
 }
 
-button:hover {
-    background: #ff66a3;
+/* Theme-specific button colors */
+button.light-theme {
+    background: #ff99cc;
+    color: white;
+}
+
+button.dark-theme {
+    background: #661f46;
+    color: #ffccf9;
+}
+
+button.light-theme:hover {
+    background-color: #ff66a3;
+}
+
+button.dark-theme:hover {
+    background-color: #992f6c;
 }
 
 /* 📊 Progress Bar */
@@ -82,55 +116,41 @@ button:hover {
     border-radius: 10px;
 }
 
-/* 🌀 Highlight Loop Modes */
+/* 🌀 Loop Mode Buttons */
 button.active-mode {
-    background: #ff007f; /* Bright pink for active state */
+    background: #ff007f;
     color: white;
 }
 
 #loop-single.active-mode {
-    background: #ff007f; /* Highlight active loop-single button */
+    background: #ff007f;
 }
 
 #loop-playlist.active-mode {
-    background: #ac095a; /* Highlight active loop-playlist button */
+    background: #ac095a;
 }
 
 /* 📀 Center Buttons Container */
 .button-container {
     display: flex;
-    justify-content: center; /* Centers buttons horizontally */
-    align-items: center;     /* Centers buttons vertically */
-    gap: 10px;               /* Optional: space between buttons */
-    width: 100%;             /* Ensure it takes full width */
-    height: 100px;           /* You can adjust the height as needed */
-    margin: 20px 0;          /* Optional: add margin to separate from other content */
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    height: 100px;
+    margin: 20px 0;
 }
 
-/* Optional: Add button styling */
-button {
-    padding: 12px 24px;
-    font-size: 18px;
-    background-color: #ff99cc;
-    color: white;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #ff66a3;
-}
-
+/* 🎼 Hide YouTube Player */
 #youtube-player {
-    display: none;  /* Hide the YouTube iframe */
+    display: none;
 }
 
+/* 🎵 Queue Styling */
 #queue {
-    max-height: 300px; /* Adjust height as needed */
-    overflow-y: auto; /* Enables scrolling */
-    border: 1px solid #ccc; /* Optional: Adds a border for visibility */
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
     padding: 10px;
     list-style: none;
 }
@@ -143,76 +163,50 @@ button:hover {
     display: flex;
 }
 
+/* 🎼 Footer Styling */
 footer {
-    margin-top: 50px; /* Adjust space as needed */
+    margin-top: 50px;
     padding-top: 20px;
-    border-top: 1px solid #ccc; /* Optional: Adds a separator */
+    border-top: 1px solid #ccc;
     text-align: center;
 }
 
-* {
-    font-family: 'Cherry Bomb One';
+/* ✨ Theme Toggle Button */
+#theme-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    background-color: #fff0f5;
+    color: #d63384;
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
+#theme-toggle:hover {
+    background-color: #ff99cc;
+    transform: scale(1.1);
+}
+
+/* 💖 Vinyl Glow Animation */
 @keyframes pinkPulse {
-    0% { box-shadow: 0 0 15px rgba(255, 105, 180, 0.5); } /* Soft pink */
-    50% { box-shadow: 0 0 30px rgba(255, 105, 180, 1); }  /* Strong pink */
+    0% { box-shadow: 0 0 15px rgba(255, 105, 180, 0.5); }
+    50% { box-shadow: 0 0 30px rgba(255, 105, 180, 1); }
     100% { box-shadow: 0 0 15px rgba(255, 105, 180, 0.5); }
 }
 
 .pulsing {
     animation: pinkPulse 1.5s infinite ease-in-out;
-    filter: drop-shadow(0 0 15px rgba(255, 105, 180, 0.8)); /* Extra pink glow */
+    filter: drop-shadow(0 0 15px rgba(255, 105, 180, 0.8));
 }
 
-/* Light Theme (default) */
-body.light-theme {
-    background-color: #ffe6f2;  /* Soft pale rose pink */
-    color: #d63384;  /* Deep pink for contrast */
-}
-
-/* Dark Theme */
-body.dark-theme {
-    background-color: #1c1c1c;  /* Dark background */
-    color: #ffccf9;  /* Light pink text for contrast */
-}
-
-/* Button Styling */
-#theme-toggle {
-    position: fixed;  /* Make it float on the screen */
-    top: 20px;
-    left: 20px;
-    z-index: 1000;  /* Ensure it's on top of other elements */
-    width: 50px;
-    height: 50px;
-    font-size: 24px;
-    background-color: #fff0f5;  /* Light pink for the button */
-    color: #d63384;  /* Deep pink for text color */
-    border: none;
-    border-radius: 50%;  /* Circular button */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);  /* Subtle shadow */
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;  /* Smooth transition */
-}
-
-#theme-toggle:hover {
-    background-color: #ff99cc;  /* Lighter pink when hovered */
-    transform: scale(1.1);  /* Slight grow effect */
-}
-
-/* 🌸 LIGHT THEME – Sakura Pink */
-body.light-theme {
-    background-color: #ffe6f2;  /* Soft pale rose pink */
-    color: #d63384;  /* Deep pink text */
-}
-
-/* 🌙 DARK THEME */
-body.dark-theme {
-    background-color: #1c1c1c;  /* Dark background */
-    color: #ffccf9;  /* Soft light pink text */
-}
-
-/* Smooth theme switching */
-body {
-    transition: background-color 0.5s ease, color 0.5s ease;
+/* Global Font */
+* {
+    font-family: 'Cherry Bomb One', cursive;
 }
