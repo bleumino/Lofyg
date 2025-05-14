@@ -164,3 +164,38 @@ footer {
     animation: pinkPulse 1.5s infinite ease-in-out;
     filter: drop-shadow(0 0 15px rgba(255, 105, 180, 0.8)); /* Extra pink glow */
 }
+
+/* Light Theme (default) */
+body.light-theme {
+    background-color: #ffe6f2;  /* Soft pale rose pink */
+    color: #d63384;  /* Deep pink for contrast */
+}
+
+/* Dark Theme */
+body.dark-theme {
+    background-color: #1c1c1c;  /* Dark background */
+    color: #ffccf9;  /* Light pink text for contrast */
+}
+
+/* Button Styling */
+#theme-toggle {
+    position: fixed;  /* Make it float on the screen */
+    top: 20px;
+    left: 20px;
+    z-index: 1000;  /* Ensure it's on top of other elements */
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    background-color: #fff0f5;  /* Light pink for the button */
+    color: #d63384;  /* Deep pink for text color */
+    border: none;
+    border-radius: 50%;  /* Circular button */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);  /* Subtle shadow */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;  /* Smooth transition */
+}
+
+#theme-toggle:hover {
+    background-color: #ff99cc;  /* Lighter pink when hovered */
+    transform: scale(1.1);  /* Slight grow effect */
+}

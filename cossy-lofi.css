@@ -165,3 +165,53 @@ footer {
     animation: pulse 1.5s infinite ease-in-out;
     filter: drop-shadow(0 0 10px rgba(0, 162, 255, 0.8)); /* Extra Glow */
 }
+
+/* 🌸 Light Theme (default, soft powder blue) */
+body.light-theme {
+    background-color: #B0C4DE; /* Soft Powder Blue */
+    color: #2E4A66; /* Deep Muted Blue for contrast */
+}
+
+/* 🌙 Dark Theme */
+body.dark-theme {
+    background-color: #2A2A2A;  /* Dark background for dark mode */
+    color: #9BB8D3;  /* Light blue text */
+}
+
+/* 🎵 Button Styling for Light and Dark Modes */
+#theme-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    background-color: #fff0f5; /* Light pink background */
+    color: #2E4A66;  /* Muted deep blue */
+    border: none;
+    border-radius: 50%; /* Circular button */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#theme-toggle:hover {
+    background-color: #ff99cc;  /* Light pink hover effect */
+    transform: scale(1.1); /* Slight grow effect on hover */
+}
+
+/* Smooth transition for theme change */
+body {
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Active Button (for loop modes) */
+button.active-mode {
+    background: #2E4A66; /* Deep Muted Blue for active state */
+    color: white;
+}
+
+#loop-single.active-mode, #loop-playlist.active-mode {
+    background: #2E4A66;  /* Deep Blue for Loop buttons */
+}
