@@ -199,3 +199,20 @@ body.dark-theme {
     background-color: #ff99cc;  /* Lighter pink when hovered */
     transform: scale(1.1);  /* Slight grow effect */
 }
+
+/* 🌸 LIGHT THEME – Sakura Pink */
+body.light-theme {
+    background-color: #ffe6f2;  /* Soft pale rose pink */
+    color: #d63384;  /* Deep pink text */
+}
+
+/* 🌙 DARK THEME */
+body.dark-theme {
+    background-color: #1c1c1c;  /* Dark background */
+    color: #ffccf9;  /* Soft light pink text */
+}
+
+/* Smooth theme switching */
+body {
+    transition: background-color 0.5s ease, color 0.5s ease;
+}

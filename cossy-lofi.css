@@ -215,3 +215,20 @@ button.active-mode {
 #loop-single.active-mode, #loop-playlist.active-mode {
     background: #2E4A66;  /* Deep Blue for Loop buttons */
 }
+
+/* LIGHT THEME (Default) */
+body.light-theme {
+    background-color: #B0C4DE; /* Soft Powder Blue */
+    color: #2E4A66; /* Deep Muted Blue */
+}
+
+/* DARK THEME */
+body.dark-theme {
+    background-color: #1c1c1c; /* Dark background */
+    color: #9BB8D3; /* Light blue text */
+}
+
+/* Smooth theme switching */
+body {
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
