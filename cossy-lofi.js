@@ -274,16 +274,17 @@ let isLooping = false; // Variable to track loop state
 
 // 🔹 Toggle Loop for Current Song (loop-single button)
 if (document.getElementById('loop-single')) {
-    document.getElementById('loop-single').addEventListener('click', () => {
-        isLooping = !isLooping; // Toggle loop state
-        console.log(isLooping ? "Looping enabled" : "Looping disabled");
+    const loopButton = document.getElementById('loop-single');
+    
+    loopButton.addEventListener('click', () => {
+        isLooping = !isLooping;
+        console.log(isLooping ? "🔁 Looping enabled" : "➡️ Looping disabled");
 
-        if (isLooping) {
-            // Handle the loop behavior: play the current song again when it ends
-            player.setLoop(true);
-        } else {
-            player.setLoop(false);
-        }
+        // Toggle active-mode class for visual feedback
+        loopButton.classList.toggle('active-mode', isLooping);
+
+        // Manually handle looping
+        // YouTube API doesn't support setLoop(), we handle it ourselves on state change
     });
 }
 
