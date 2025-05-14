@@ -270,5 +270,44 @@ function initialize() {
     });
 }
 
+let isLooping = false; // Variable to track loop state
+
+// 🔹 Toggle Loop for Current Song (loop-single button)
+if (document.getElementById('loop-single')) {
+    document.getElementById('loop-single').addEventListener('click', () => {
+        isLooping = !isLooping; // Toggle loop state
+        console.log(isLooping ? "Looping enabled" : "Looping disabled");
+
+        if (isLooping) {
+            // Handle the loop behavior: play the current song again when it ends
+            player.setLoop(true);
+        } else {
+            player.setLoop(false);
+        }
+    });
+}
+
+// 🔹 Handle Player State Change for Looping
+function handlePlayerStateChange(event) {
+    switch (event.data) {
+        case YT.PlayerState.ENDED:
+            if (isLooping) {
+                player.loadVideoById(playlist[currentSongIndex].id); // Reload the same song if looping is enabled
+                player.playVideo(); // Play again
+            } else {
+                playSong(currentSongIndex + 1); // Go to the next song if looping is disabled
+            }
+            break;
+        case YT.PlayerState.PLAYING:
+            isPlaying = true;
+            startUpdatingTime();
+            break;
+        case YT.PlayerState.PAUSED:
+            isPlaying = false;
+            break;
+    }
+    startVinylAnimation();
+}
+
 // Start the initialization
 initialize();
