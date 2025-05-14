@@ -245,6 +245,12 @@ if (elements.progressContainer) {
         updateTime();
     });
 }
-
+if ("Notification" in window) {
+    if (Notification.permission === "default") {
+        Notification.requestPermission().then(permission => {
+            console.log("Notification permission:", permission);
+        });
+    }
+}
 // 🔹 Start Initialization
 initialize();
