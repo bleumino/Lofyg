@@ -135,10 +135,10 @@ button:hover {
     list-style: none;
 }
 
-.logo
-{
-    width: 60;
-    height: 60;
+/* 🎀 Logo */
+.logo {
+    width: 60px;
+    height: 60px;
     margin: auto;
     display: flex;
 }
