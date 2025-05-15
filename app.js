@@ -1,20 +1,25 @@
 let playlist = [
-    { id: "xakBzg5atsM", title: "massobeats - rose water (royalty free lofi music)", moods: ["chill", "relax", "all"] },
-    { id: "HGMQbVfYVmI", title: "massobeats - honey jam (royalty free lofi music)", moods: ["study", "focus", "chill", "all"] },
-    { id: "6eWIffP2M3Y", title: "Jazz Type Beat - 'Bread' | Royalty Free Music | Prod. by Lukrembo", moods: ["study", "calm", "all"] },
-    { id: "KGQNrzqrGqw", title: "Lofi Type Beat - 'Onion' | Prod. by Lukrembo", moods: ["chill", "relax","all"] },
-    { id: "tEzzsT4qsbU", title: "massobeats - lucid (royalty free lofi music)", moods: ["calm", "focus","all"] },
-    { id: "y7KYdqVND4o", title: "lukrembo - marshmallow (royalty free vlog music)", moods: ["chill","all"] },
-    { id: "O8MYZY6sFpI", title: "animal crossing ~ new horizons lofi", moods: ["chill", "relax","all"] },
-    { id: "1P5BSm_oFJg", title: "Lofi Girl - Snowman (Music Video)", moods: ["relax", "calm","all"] },
-    { id: "gv7hcXCnjOw", title: "(no copyright music) jazz type beat “sunset” | royalty free vlog music | prod. by lukrembo", moods: ["chill", "study","all"] },
-    { id: "YTUF1o9Sf3E", title:"lukrembo - affogato (royalty free vlog music)", moods: ["chill"] },
-    { id: "EtZ2m2Zm3vY", title:"(no copyright music) lofi type beat “biscuit” | free vlog music | prod. by lukrembo", moods: ["relax", "calm", "all"] }
+    { id: "xakBzg5atsM", title: "massobeats - rose water", moods: ["chill", "relax"] },
+    { id: "HGMQbVfYVmI", title: "massobeats - honey jam", moods: ["study", "focus", "chill"] },
+    { id: "6eWIffP2M3Y", title: "Jazz Type Beat - Bread", moods: ["study", "calm"] },
+    { id: "KGQNrzqrGqw", title: "Lofi Type Beat - Onion", moods: ["chill", "relax"] },
+    { id: "tEzzsT4qsbU", title: "massobeats - lucid", moods: ["calm", "focus"] },
+    { id: "y7KYdqVND4o", title: "lukrembo - marshmallow", moods: ["chill"] },
+    { id: "O8MYZY6sFpI", title: "animal crossing lofi", moods: ["chill", "relax"] },
+    { id: "1P5BSm_oFJg", title: "Lofi Girl - Snowman", moods: ["relax", "calm"] },
+    { id: "gv7hcXCnjOw", title: "Jazz Type Beat – Sunset", moods: ["chill", "study"] },
+    { id: "YTUF1o9Sf3E", title: "lukrembo - affogato", moods: ["chill"] },
+    { id: "EtZ2m2Zm3vY", title: "lofi type beat – biscuit", moods: ["relax", "calm"] }
 ];
 
-// 🎧 DOM Elements
+let currentPlaylist = [...playlist];
+let currentSongIndex = 0;
+let isPlaying = false;
+let isLooping = false;
+let updateInterval;
+let player;
+
 const elements = {
-    playerContainer: document.getElementById("player-container"),
     queueList: document.getElementById("queue"),
     playButton: document.getElementById("play"),
     nextButton: document.getElementById("next"),
@@ -23,64 +28,32 @@ const elements = {
     progressBar: document.getElementById("progress-bar"),
     progressContainer: document.getElementById("progress-bar")?.parentElement,
     timeRemaining: document.getElementById("time-remaining"),
+    loopButton: document.getElementById("loop-single"),
+    moodButtons: document.querySelectorAll("#mood-selector button")
 };
 
-let player;
-let isPlaying = false;
-let currentSongIndex = 0;
-let updateInterval;
-let filteredPlaylist = [...playlist]; // current playlist based on mood filter
-
-// 🔹 Load YouTube IFrame API with a Delay (Fixes Safari Issues)
+// 🔁 Load YouTube API
 function loadYouTubeAPI() {
     return new Promise((resolve, reject) => {
         const script = document.createElement("script");
         script.src = "https://www.youtube.com/iframe_api";
         script.onload = () => setTimeout(resolve, 500);
-        script.onerror = () => reject("Error loading YouTube API");
+        script.onerror = () => reject("YouTube API failed");
         document.head.appendChild(script);
     });
 }
 
-// 🔹 Initialize YouTube Player
-async function initialize() {
-    try {
-        await loadYouTubeAPI();
-        ensureYouTubeAPIReady();
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-// 🔹 Ensure YouTube API is Ready (Fix for Safari)
-function ensureYouTubeAPIReady() {
-    if (typeof YT !== "undefined" && YT.Player) {
-        onYouTubeIframeAPIReady();
-    } else {
-        console.warn("⏳ Waiting for YouTube API to load...");
-        setTimeout(ensureYouTubeAPIReady, 500);
-    }
-}
-
-// 🔹 YouTube API Callback
+// 🔁 When API Ready
 function onYouTubeIframeAPIReady() {
-    player = new YT.Player('youtube-player', {
-        height: '390',
-        width: '640',
-        videoId: filteredPlaylist[currentSongIndex].id,
-        playerVars: {
-            autoplay: 0,
-            controls: 1,
-            modestbranding: 1,
-            showinfo: 0,
-            rel: 0,
-            fs: 0
-        },
+    player = new YT.Player("youtube-player", {
+        height: "390",
+        width: "640",
+        videoId: currentPlaylist[currentSongIndex].id,
+        playerVars: { autoplay: 0, controls: 1, modestbranding: 1, showinfo: 0, rel: 0 },
         events: {
             onReady: () => {
-                loadQueue(filteredPlaylist);
+                loadQueue(currentPlaylist);
                 updateSongInfo();
-                setupMoodButtons();
             },
             onStateChange: handlePlayerStateChange,
             onError: handlePlayerError
@@ -88,98 +61,99 @@ function onYouTubeIframeAPIReady() {
     });
 }
 
-// 🔹 Load Queue List with playlist argument
-function loadQueue(currentList = filteredPlaylist) {
+// 🎵 Load Songs Into Queue
+function loadQueue(list = playlist) {
     elements.queueList.innerHTML = "";
-    currentList.forEach((song, index) => {
-        let listItem = document.createElement("li");
-        listItem.textContent = song.title;
-        listItem.dataset.index = index;
-        listItem.style.cursor = "pointer";
-
-        listItem.addEventListener("click", (event) => {
-            let clickedIndex = parseInt(event.currentTarget.dataset.index, 10);
-            playSong(clickedIndex, currentList);
-        });
-
-        elements.queueList.appendChild(listItem);
+    list.forEach((song, index) => {
+        let li = document.createElement("li");
+        li.textContent = song.title;
+        li.dataset.index = index;
+        li.style.cursor = "pointer";
+        li.onclick = () => playSong(index, list);
+        elements.queueList.appendChild(li);
     });
 }
 
-// 🔹 Update Song Info
-function updateSongInfo() {
-    elements.songTitle.textContent = `Now Playing: ${filteredPlaylist[currentSongIndex].title}`;
-}
+// ▶️ Play Selected Song
+function playSong(index, list = playlist, skipped = 0) {
+    if (index >= list.length) index = 0;
+    if (index < 0) index = list.length - 1;
 
-// 🔹 Play Song with playlist argument
-function playSong(index, currentList = filteredPlaylist, skippedCount = 0) {
-    if (index >= currentList.length) index = 0;
-    if (index < 0) index = currentList.length - 1;
-
-    if (skippedCount >= currentList.length) {
-        console.error("No valid videos found in the playlist.");
+    if (skipped >= list.length) {
+        alert("No valid tracks available.");
         return;
     }
 
+    currentPlaylist = list;
     currentSongIndex = index;
-    let videoId = currentList[currentSongIndex].id;
+    let videoId = list[index].id;
 
     if (!videoId || videoId.length < 10) {
-        console.warn(`Skipping invalid video: ${currentList[currentSongIndex].title}`);
-        playSong(index + 1, currentList, skippedCount + 1);
+        console.warn("Skipping invalid:", list[index].title);
+        playSong(index + 1, list, skipped + 1);
         return;
     }
 
     player.loadVideoById(videoId);
-
-    setTimeout(() => {
-        if (isPlaying) {
-            player.playVideo();
-        }
-    }, 500);
-
-    elements.songTitle.textContent = `Now Playing: ${currentList[currentSongIndex].title}`;
+    setTimeout(() => isPlaying && player.playVideo(), 500);
+    updateSongInfo();
     resetProgressBar();
     startVinylAnimation();
 }
 
-// 🔹 Reset Progress Bar
+// 🎶 Update Song Info
+function updateSongInfo() {
+    elements.songTitle.textContent = `Now Playing: ${currentPlaylist[currentSongIndex].title}`;
+}
+
+// 💿 Vinyl + Progress
+function startVinylAnimation() {
+    elements.vinylRecord.classList.toggle("spinning", isPlaying);
+    elements.vinylRecord.classList.toggle("pulsing", isPlaying);
+}
+
 function resetProgressBar() {
     elements.progressBar.style.width = "0%";
 }
 
-// 🔹 Toggle Play/Pause
-if (elements.playButton) {
-    elements.playButton.addEventListener("click", () => {
-        if (isPlaying) {
-            player.pauseVideo();
-        } else {
-            player.playVideo();
-        }
-        isPlaying = !isPlaying;
-        startVinylAnimation();
-    });
+// 🕓 Update Time
+function updateTime() {
+    if (!player?.getDuration()) return;
+    let duration = player.getDuration();
+    let time = player.getCurrentTime();
+    let remaining = duration - time;
+
+    elements.progressBar.style.width = `${(time / duration) * 100}%`;
+    elements.timeRemaining.textContent = `${Math.floor(remaining / 60)}:${String(Math.floor(remaining % 60)).padStart(2, "0")}`;
 }
 
-// 🔹 Skip to Next Song
-if (elements.nextButton) {
-    elements.nextButton.addEventListener("click", () => {
-        playSong(currentSongIndex + 1, filteredPlaylist);
-    });
+function startUpdatingTime() {
+    clearInterval(updateInterval);
+    updateInterval = setInterval(updateTime, 1000);
 }
 
-// 🔹 Handle Player State Change with loop support
-let isLooping = false;
+// 📦 Loop / Mood / Theme Toggle
+elements.loopButton?.addEventListener("click", () => {
+    isLooping = !isLooping;
+    elements.loopButton.classList.toggle("active-mode", isLooping);
+});
+
+elements.playButton?.addEventListener("click", () => {
+    if (isPlaying) player.pauseVideo();
+    else player.playVideo();
+    isPlaying = !isPlaying;
+    startVinylAnimation();
+});
+
+elements.nextButton?.addEventListener("click", () => {
+    playSong(currentSongIndex + 1, currentPlaylist);
+});
 
 function handlePlayerStateChange(event) {
     switch (event.data) {
         case YT.PlayerState.ENDED:
-            if (isLooping) {
-                player.loadVideoById(filteredPlaylist[currentSongIndex].id);
-                player.playVideo();
-            } else {
-                playSong(currentSongIndex + 1, filteredPlaylist);
-            }
+            if (isLooping) playSong(currentSongIndex, currentPlaylist);
+            else playSong(currentSongIndex + 1, currentPlaylist);
             break;
         case YT.PlayerState.PLAYING:
             isPlaying = true;
@@ -192,84 +166,48 @@ function handlePlayerStateChange(event) {
     startVinylAnimation();
 }
 
-// 🔹 Handle YouTube API Errors
-function handlePlayerError(event) {
-    console.error(`YouTube Player Error: ${event.data}`);
-    console.warn(`Skipping broken video: ${filteredPlaylist[currentSongIndex].title}`);
-    playSong(currentSongIndex + 1, filteredPlaylist);
+function handlePlayerError() {
+    console.warn("Skipping error track...");
+    playSong(currentSongIndex + 1, currentPlaylist);
 }
 
-// 🔹 Vinyl Record Animation
-function startVinylAnimation() {
-    if (elements.vinylRecord) {
-        setTimeout(() => {
-            elements.vinylRecord.classList.toggle("spinning", isPlaying);
-            elements.vinylRecord.classList.toggle("pulsing", isPlaying);
-        }, 100);
-        console.log("🎵 Vinyl animation updated:", elements.vinylRecord.classList);
-    }
-}
+// 🎧 Mood Filter
+elements.moodButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+        elements.moodButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
 
-// 🔹 Fix for Safari Background Playback
-document.addEventListener("visibilitychange", () => {
-    if (document.hidden && isPlaying) {
-        console.log("🔇 Page hidden, keeping music playing...");
-        player.playVideo();
-    } else {
-        console.log("🎵 Page visible, continuing playback...");
-    }
+        const mood = btn.dataset.mood;
+        if (mood === "all") {
+            currentPlaylist = [...playlist];
+        } else {
+            currentPlaylist = playlist.filter(track => track.moods.includes(mood));
+        }
+
+        if (currentPlaylist.length === 0) {
+            alert("No tracks found for this mood.");
+            return;
+        }
+
+        loadQueue(currentPlaylist);
+        playSong(0, currentPlaylist);
+    });
 });
 
-// 🔹 Update Time and Progress Bar
-function updateTime() {
-    if (!player || !player.getDuration()) return;
+// 🎬 Seek Through Song
+elements.progressContainer?.addEventListener("click", event => {
+    let barWidth = elements.progressContainer.clientWidth;
+    let clickX = event.offsetX;
+    let seekTo = (clickX / barWidth) * player.getDuration();
+    player.seekTo(seekTo, true);
+    updateTime();
+});
 
-    let duration = player.getDuration();
-    let currentTime = player.getCurrentTime();
-    let remainingTime = duration - currentTime;
+// 🧠 Init
+document.addEventListener("visibilitychange", () => {
+    if (document.hidden && isPlaying) player.playVideo();
+});
 
-    elements.progressBar.style.width = (currentTime / duration) * 100 + "%";
-
-    let minutes = Math.floor(remainingTime / 60);
-    let seconds = Math.floor(remainingTime % 60);
-    elements.timeRemaining.textContent = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-}
-
-// 🔹 Start Updating Time Every Second
-function startUpdatingTime() {
-    clearInterval(updateInterval);
-    updateInterval = setInterval(updateTime, 1000);
-}
-
-// 🔹 Seek Through Song
-if (elements.progressContainer) {
-    elements.progressContainer.addEventListener("click", (event) => {
-        if (!player || !player.getDuration()) return;
-
-        let barWidth = elements.progressContainer.clientWidth;
-        let clickPosition = event.offsetX;
-        let seekTo = (clickPosition / barWidth) * player.getDuration();
-
-        player.seekTo(seekTo, true);
-        updateTime();
-    });
-}
-
-// 🔹 Toggle Loop Button
-if (document.getElementById('loop-single')) {
-    const loopButton = document.getElementById('loop-single');
-    loopButton.addEventListener('click', () => {
-        isLooping = !isLooping;
-        loopButton.classList.toggle('active-mode', isLooping);
-        console.log(isLooping ? "🔁 Loop enabled" : "➡️ Loop disabled");
-    });
-}
-
-// 🔹 Setup Mood Buttons
-function setupMoodButtons() {
-    const moodButtons = document.querySelectorAll("#mood-selector button");
-
-    moodButtons.forEach(button => {
-        button.addEventListener("click", () => {
-            // Remove active class from all buttons
-            moodButtons.forEach(btn => btn
+loadYouTubeAPI().then(() => {
+    if (typeof YT !== "undefined") onYouTubeIframeAPIReady();
+});
