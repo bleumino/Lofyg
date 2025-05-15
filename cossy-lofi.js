@@ -105,8 +105,9 @@ function loadQueue() {
 }
 
 function updateSongInfo() {
-    elements.songTitle.textContent = `Now Playing: ${currentPlaylist[currentSongIndex].title}`;
-   showNowPlayingNotification(playlist[currentSongIndex].title);
+    const title = playlist[currentSongIndex].title;
+    elements.songTitle.textContent = `Now Playing: ${title}`;
+    showNowPlayingNotification(title);
 }
 
 function showNowPlayingNotification(title) {
