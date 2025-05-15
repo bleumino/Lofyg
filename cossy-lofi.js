@@ -23,6 +23,15 @@ let isPlaying = false;
 let currentSongIndex = 0;
 let updateInterval;
 
+
+if ("Notification" in window) {
+    if (Notification.permission === "default") {
+        Notification.requestPermission().then(permission => {
+            console.log("Notification permission:", permission);
+        });
+    }
+}
+
 // 🔹 Load YouTube IFrame API
 function loadYouTubeAPI() {
     return new Promise((resolve, reject) => {
@@ -95,9 +104,18 @@ function loadQueue() {
     });
 }
 
-// 🔹 Update Song Info
 function updateSongInfo() {
-    elements.songTitle.textContent = `Now Playing: ${playlist[currentSongIndex].title}`;
+    elements.songTitle.textContent = `Now Playing: ${currentPlaylist[currentSongIndex].title}`;
+    showNowPlayingNotification(currentPlaylist[currentSongIndex].title);
+}
+
+function showNowPlayingNotification(title) {
+    if (Notification.permission === "granted") {
+        new Notification("🎶 Now Playing", {
+            body: title,
+            icon: "logo.png" // or any image you like!
+        });
+    }
 }
 
 // 🔹 Play Song with Error Handling
@@ -308,6 +326,20 @@ function handlePlayerStateChange(event) {
             break;
     }
     startVinylAnimation();
+}
+
+let notificationTimeout;
+
+function showNowPlayingNotification(title) {
+    if (Notification.permission !== "granted") return;
+
+    clearTimeout(notificationTimeout);
+    notificationTimeout = setTimeout(() => {
+        new Notification("🎶 Now Playing", {
+            body: title,
+            icon: "logo.png"
+        });
+    }, 300); // waits 300ms before showing
 }
 
 // Start the initialization
