@@ -19,6 +19,14 @@ let isLooping = false;
 let updateInterval;
 let player;
 
+if ("Notification" in window) {
+    if (Notification.permission === "default") {
+        Notification.requestPermission().then(permission => {
+            console.log("Notification permission:", permission);
+        });
+    }
+}
+
 const elements = {
     queueList: document.getElementById("queue"),
     playButton: document.getElementById("play"),
@@ -104,6 +112,16 @@ function playSong(index, list = playlist, skipped = 0) {
 // 🎶 Update Song Info
 function updateSongInfo() {
     elements.songTitle.textContent = `Now Playing: ${currentPlaylist[currentSongIndex].title}`;
+    showNowPlayingNotification(currentPlaylist[currentSongIndex].title);
+}
+
+function showNowPlayingNotification(title) {
+    if (Notification.permission === "granted") {
+        new Notification("🎶 Now Playing", {
+            body: title,
+            icon: "logo.png" // or any image you like!
+        });
+    }
 }
 
 // 💿 Vinyl + Progress
@@ -211,3 +229,17 @@ document.addEventListener("visibilitychange", () => {
 loadYouTubeAPI().then(() => {
     if (typeof YT !== "undefined") onYouTubeIframeAPIReady();
 });
+
+let notificationTimeout;
+
+function showNowPlayingNotification(title) {
+    if (Notification.permission !== "granted") return;
+
+    clearTimeout(notificationTimeout);
+    notificationTimeout = setTimeout(() => {
+        new Notification("🎶 Now Playing", {
+            body: title,
+            icon: "logo.png"
+        });
+    }, 300); // waits 300ms before showing
+}
