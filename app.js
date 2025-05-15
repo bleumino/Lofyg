@@ -1,15 +1,15 @@
 let playlist = [
-    { id: "xakBzg5atsM", title: "massobeats - rose water (royalty free lofi music)" },
-    { id: "HGMQbVfYVmI", title: "massobeats - honey jam (royalty free lofi music)" },
-    { id: "6eWIffP2M3Y", title: "Jazz Type Beat - 'Bread' | Royalty Free Music | Prod. by Lukrembo" },
-    { id: "KGQNrzqrGqw", title: "Lofi Type Beat - 'Onion' | Prod. by Lukrembo" },
-    { id: "tEzzsT4qsbU", title: "massobeats - lucid (royalty free lofi music)" },
-    { id: "y7KYdqVND4o", title: "lukrembo - marshmallow (royalty free vlog music)" },
-    { id: "O8MYZY6sFpI", title: "animal crossing ~ new horizons lofi" },
-    { id: "1P5BSm_oFJg", title: "Lofi Girl - Snowman (Music Video)" },
-    { id: "gv7hcXCnjOw", title: "(no copyright music) jazz type beat “sunset” | royalty free vlog music | prod. by lukrembo" },
-    { id: "YTUF1o9Sf3E", title:"lukrembo - affogato (royalty free vlog music)"},
-    { id: "EtZ2m2Zm3vY", title:"(no copyright music) lofi type beat “biscuit” | free vlog music | prod. by lukrembo"}
+    { id: "xakBzg5atsM", title: "massobeats - rose water (royalty free lofi music)", moods: ["chill", "relax"] },
+    { id: "HGMQbVfYVmI", title: "massobeats - honey jam (royalty free lofi music)", moods: ["study", "focus", "chill"] },
+    { id: "6eWIffP2M3Y", title: "Jazz Type Beat - 'Bread' | Royalty Free Music | Prod. by Lukrembo", moods: ["study", "calm"] },
+    { id: "KGQNrzqrGqw", title: "Lofi Type Beat - 'Onion' | Prod. by Lukrembo", moods: ["chill", "relax"] },
+    { id: "tEzzsT4qsbU", title: "massobeats - lucid (royalty free lofi music)", moods: ["calm", "focus"] },
+    { id: "y7KYdqVND4o", title: "lukrembo - marshmallow (royalty free vlog music)", moods: ["chill"] },
+    { id: "O8MYZY6sFpI", title: "animal crossing ~ new horizons lofi", moods: ["chill", "relax"] },
+    { id: "1P5BSm_oFJg", title: "Lofi Girl - Snowman (Music Video)", moods: ["relax", "calm"] },
+    { id: "gv7hcXCnjOw", title: "(no copyright music) jazz type beat “sunset” | royalty free vlog music | prod. by lukrembo", moods: ["chill", "study"] },
+    { id: "YTUF1o9Sf3E", title:"lukrembo - affogato (royalty free vlog music)", moods: ["chill"] },
+    { id: "EtZ2m2Zm3vY", title:"(no copyright music) lofi type beat “biscuit” | free vlog music | prod. by lukrembo", moods: ["relax", "calm"] }
 ];
 
 // 🎧 DOM Elements

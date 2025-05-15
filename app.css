@@ -210,3 +210,19 @@ footer {
 * {
     font-family: 'Cherry Bomb One', cursive;
 }
+
+#mood-selector button {
+  background: #ff99cc;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  margin: 0 8px;
+  border-radius: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#mood-selector button:hover {
+  background: #ff66a3;
+}
