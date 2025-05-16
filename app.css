@@ -286,3 +286,16 @@ footer {
   border-radius: 50%;
   cursor: pointer;
 }
+
+footer a img {
+  vertical-align: middle; /* aligns it nicely with text */
+  height: 24px; /* smaller */
+  padding: 2px 6px; /* less padding */
+  border-radius: 12px; /* soften edges */
+  filter: brightness(0.9); /* slightly dim it */
+  transition: filter 0.3s ease;
+}
+
+footer a img:hover {
+  filter: brightness(1);
+}
