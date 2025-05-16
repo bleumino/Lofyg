@@ -235,7 +235,7 @@ body {
 
 .particle {
   position: fixed;
-  background: #ff66a3;
+  background: #B0C4DE;
   border-radius: 50%;
   pointer-events: none;
   animation: flyAway 600ms ease-out forwards;
@@ -250,4 +250,12 @@ body {
     transform: translate(var(--x), var(--y)) scale(0);
     opacity: 0;
   }
+
+}
+/* Glow effect for the active song */
+.active-song {
+  box-shadow: 0 0 12px 3px #B0C4DE; /* blueish glow, you can change color */
+  background-color: rgba(255, 102, 163, 0.15);
+  border-radius: 8px;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
 }

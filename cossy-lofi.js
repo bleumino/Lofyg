@@ -74,6 +74,7 @@ function loadQueue() {
         li.textContent = song.title;
         li.dataset.index = index;
         li.style.cursor = "pointer";
+        li.classList.toggle("active-song", index === currentSongIndex);
         li.addEventListener("click", () => playSong(index));
         elements.queueList.appendChild(li);
     });
@@ -82,6 +83,9 @@ function loadQueue() {
 function updateSongInfo() {
     const title = playlist[currentSongIndex].title;
     elements.songTitle.textContent = `Now Playing: ${title}`;
+
+    // Refresh queue highlighting
+    loadQueue();
 
     if (Notification.permission === "granted") {
         clearTimeout(notificationTimeout);
@@ -105,7 +109,6 @@ function updateSongInfo() {
 function playSong(index, skipped = 0) {
     if (index >= playlist.length) index = 0;
     if (index < 0) index = playlist.length - 1;
-
     if (skipped >= playlist.length) return;
 
     currentSongIndex = index;
@@ -118,6 +121,7 @@ function playSong(index, skipped = 0) {
 
     player.loadVideoById(videoId);
     player.playVideo();
+
     updateSongInfo();
     resetProgressBar();
     startVinylAnimation();
@@ -170,6 +174,7 @@ function handlePlayerError(event) {
     playSong(currentSongIndex + 1);
 }
 
+// Buttons
 elements.playButton?.addEventListener("click", () => {
     isPlaying ? player.pauseVideo() : player.playVideo();
     isPlaying = !isPlaying;
@@ -197,45 +202,33 @@ document.getElementById("loop-single")?.addEventListener("click", () => {
 document.addEventListener("visibilitychange", () => {
     if (document.hidden && isPlaying) player.playVideo();
 });
-// 🔥 Spacebar Play/Pause Toggle 🔥
-document.addEventListener("keydown", (event) => {
-    // Check if spacebar is pressed and no input is focused (so you don't mess up typing)
-    if (event.code === "Space" && 
-        !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) {
-        event.preventDefault(); // Prevent page scrolling on spacebar
 
-        if (isPlaying) {
-            player.pauseVideo();
-        } else {
-            player.playVideo();
-        }
+// 🔥 Spacebar toggle
+document.addEventListener("keydown", (event) => {
+    if (event.code === "Space" && !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) {
+        event.preventDefault();
+        isPlaying ? player.pauseVideo() : player.playVideo();
         isPlaying = !isPlaying;
         startVinylAnimation();
     }
 });
 
-document.addEventListener('click', e => {
-  for (let i = 0; i < 8; i++) {  // Number of flecks per click
-    const fleck = document.createElement('div');
-    fleck.classList.add('particle');
-    document.body.appendChild(fleck);
-    particle.style.backgroundColor = "#4A90E2";
+// ✨ Fleck click animation
+document.addEventListener("click", e => {
+    for (let i = 0; i < 8; i++) {
+        const fleck = document.createElement('div');
+        fleck.classList.add('particle');
+        fleck.style.left = e.clientX + 'px';
+        fleck.style.top = e.clientY + 'px';
 
-    // Set fleck start position (cursor)
-    fleck.style.left = e.clientX + 'px';
-    fleck.style.top = e.clientY + 'px';
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = 40 + Math.random() * 20;
+        fleck.style.setProperty('--x', `${Math.cos(angle) * distance}px`);
+        fleck.style.setProperty('--y', `${Math.sin(angle) * distance}px`);
 
-    // Random direction and distance
-    const angle = Math.random() * 2 * Math.PI;
-    const distance = 40 + Math.random() * 20;
-    fleck.style.setProperty('--x', `${Math.cos(angle) * distance}px`);
-    fleck.style.setProperty('--y', `${Math.sin(angle) * distance}px`);
-
-    // Remove fleck after animation finishes
-    fleck.addEventListener('animationend', () => {
-      fleck.remove();
-    });
-  }
+        fleck.addEventListener('animationend', () => fleck.remove());
+        document.body.appendChild(fleck);
+    }
 });
 
 // Start
