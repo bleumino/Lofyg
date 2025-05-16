@@ -233,9 +233,21 @@ body {
     transition: background-color 0.5s ease, color 0.5s ease;
 }
 
-#visualizer {
-    margin-top: 10px;
-    background-color: #111; /* dark background */
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+.particle {
+  position: fixed;
+  background: #ff66a3;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: flyAway 600ms ease-out forwards;
+  width: 6px;
+  height: 6px;
+  opacity: 1;
+  mix-blend-mode: screen;
+}
+
+@keyframes flyAway {
+  to {
+    transform: translate(var(--x), var(--y)) scale(0);
+    opacity: 0;
+  }
 }

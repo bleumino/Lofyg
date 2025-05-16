@@ -197,33 +197,45 @@ document.getElementById("loop-single")?.addEventListener("click", () => {
 document.addEventListener("visibilitychange", () => {
     if (document.hidden && isPlaying) player.playVideo();
 });
+// 🔥 Spacebar Play/Pause Toggle 🔥
+document.addEventListener("keydown", (event) => {
+    // Check if spacebar is pressed and no input is focused (so you don't mess up typing)
+    if (event.code === "Space" && 
+        !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) {
+        event.preventDefault(); // Prevent page scrolling on spacebar
+
+        if (isPlaying) {
+            player.pauseVideo();
+        } else {
+            player.playVideo();
+        }
+        isPlaying = !isPlaying;
+        startVinylAnimation();
+    }
+});
+
+document.addEventListener('click', e => {
+  for (let i = 0; i < 8; i++) {  // Number of flecks per click
+    const fleck = document.createElement('div');
+    fleck.classList.add('particle');
+    document.body.appendChild(fleck);
+
+    // Set fleck start position (cursor)
+    fleck.style.left = e.clientX + 'px';
+    fleck.style.top = e.clientY + 'px';
+
+    // Random direction and distance
+    const angle = Math.random() * 2 * Math.PI;
+    const distance = 40 + Math.random() * 20;
+    fleck.style.setProperty('--x', `${Math.cos(angle) * distance}px`);
+    fleck.style.setProperty('--y', `${Math.sin(angle) * distance}px`);
+
+    // Remove fleck after animation finishes
+    fleck.addEventListener('animationend', () => {
+      fleck.remove();
+    });
+  }
+});
 
 // Start
 loadYouTubeAPI().then(initialize);
-
-const canvas = document.getElementById("visualizer");
-const ctx = canvas?.getContext("2d");
-
-function drawVisualizerFake() {
-    if (!isPlaying || !player || !player.getCurrentTime) {
-        requestAnimationFrame(drawVisualizerFake);
-        return;
-    }
-
-    const time = player.getCurrentTime();
-    const bars = 40;
-    const barWidth = canvas.width / bars;
-    const heightFactor = Math.sin(time * 2) + 1;
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    for (let i = 0; i < bars; i++) {
-        const height = Math.sin(i + time * 4) * 20 * heightFactor + 30;
-        ctx.fillStyle = `hsl(${(i * 10 + time * 50) % 360}, 70%, 60%)`;
-        ctx.fillRect(i * barWidth, canvas.height - height, barWidth - 2, height);
-    }
-
-    requestAnimationFrame(drawVisualizerFake);
-}
-
-drawVisualizerFake();
