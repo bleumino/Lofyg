@@ -247,3 +247,12 @@ document.addEventListener("click", e => {
 loadYouTubeAPI().then(() => {
     if (typeof YT !== "undefined") onYouTubeIframeAPIReady();
 });
+
+const volumeSlider = document.getElementById("volume-slider");
+
+volumeSlider.addEventListener("input", () => {
+    const volume = parseInt(volumeSlider.value, 10);
+    if (player && typeof player.setVolume === "function") {
+        player.setVolume(volume);
+    }
+});

@@ -257,3 +257,32 @@ footer {
   border-radius: 8px;
   transition: box-shadow 0.3s ease, background-color 0.3s ease;
 }
+
+#volume-control {
+  margin-top: 15px;
+  text-align: center;
+  font-family: 'Cherry Bomb One', sans-serif;
+  color: var(--accent-color, #FF69B4); /* Pretty pink */
+}
+
+#volume-slider {
+  width: 60%;
+  margin-top: 5px;
+  appearance: none;
+  height: 5px;
+  background: #FF69B4;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+#volume-slider::-webkit-slider-thumb {
+  appearance: none;
+  height: 16px;
+  width: 16px;
+  background: white;
+  border: 2px solid #FF69B4;
+  border-radius: 50%;
+  cursor: pointer;
+}

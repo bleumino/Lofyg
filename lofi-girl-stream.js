@@ -256,3 +256,12 @@ document.addEventListener('click', e => {
     });
   }
 });
+
+const volumeSlider = document.getElementById("volume-slider");
+
+volumeSlider.addEventListener("input", () => {
+    const volume = parseInt(volumeSlider.value, 10);
+    if (player && typeof player.setVolume === "function") {
+        player.setVolume(volume);
+    }
+});
