@@ -216,3 +216,30 @@ function startVinylAnimation() {
         }
     }
 }
+
+const canvas = document.getElementById("visualizer");
+const ctx = canvas?.getContext("2d");
+
+function drawVisualizerFake() {
+    if (!isPlaying || !player || !player.getCurrentTime) {
+        requestAnimationFrame(drawVisualizerFake);
+        return;
+    }
+
+    const time = player.getCurrentTime();
+    const bars = 40;
+    const barWidth = canvas.width / bars;
+    const heightFactor = Math.sin(time * 2) + 1;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (let i = 0; i < bars; i++) {
+        const height = Math.sin(i + time * 4) * 20 * heightFactor + 30;
+        ctx.fillStyle = `hsl(${(i * 10 + time * 50) % 360}, 70%, 60%)`;
+        ctx.fillRect(i * barWidth, canvas.height - height, barWidth - 2, height);
+    }
+
+    requestAnimationFrame(drawVisualizerFake);
+}
+
+drawVisualizerFake();

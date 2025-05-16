@@ -230,3 +230,10 @@ footer {
     transform: scale(1.05);
     transition: 0.3s ease;
 }
+
+#visualizer {
+    margin-top: 10px;
+    background-color: #111; /* dark background */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
