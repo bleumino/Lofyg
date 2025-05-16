@@ -219,6 +219,7 @@ document.addEventListener('click', e => {
     const fleck = document.createElement('div');
     fleck.classList.add('particle');
     document.body.appendChild(fleck);
+    particle.style.backgroundColor = "#4A90E2";
 
     // Set fleck start position (cursor)
     fleck.style.left = e.clientX + 'px';
