@@ -102,8 +102,23 @@ function playSong(index, list = playlist, skipped = 0) {
         return;
     }
 
-    player.loadVideoById(videoId);
-    setTimeout(() => isPlaying && player.playVideo(), 500);
+    if (player && typeof player.loadVideoById === "function") {
+        player.loadVideoById(videoId);
+
+        setTimeout(() => {
+            if (isPlaying && typeof player.playVideo === "function") {
+                player.playVideo();
+            } else {
+                console.warn("player.playVideo() not ready yet.");
+            }
+        }, 500);
+    } else {
+        console.warn("player.loadVideoById() not ready yet.");
+        // Optional: retry after a short delay to give the player time to initialize
+        setTimeout(() => playSong(index, list, skipped), 500);
+        return;
+    }
+
     updateSongInfo();
     resetProgressBar();
     startVinylAnimation();
