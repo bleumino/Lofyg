@@ -40,6 +40,11 @@ const elements = {
 
 function loadYouTubeAPI() {
     return new Promise((resolve, reject) => {
+        if (window.YT && window.YT.Player) {
+            // API already loaded
+            resolve();
+            return;
+        }
         const script = document.createElement("script");
         script.src = "https://www.youtube.com/iframe_api";
         script.onload = () => setTimeout(resolve, 500);
@@ -58,9 +63,8 @@ function onYouTubeIframeAPIReady() {
             onReady: () => {
                 loadQueue(currentPlaylist);
                 updateSongInfo();
-                // Set initial volume to slider value or 50 if no slider
                 if (elements.volumeSlider && typeof player.setVolume === "function") {
-                    player.setVolume(parseInt(elements.volumeSlider.value || "50"));
+                    player.setVolume(parseInt(elements.volumeSlider.value || "50", 10));
                 }
             },
             onStateChange: handlePlayerStateChange,
@@ -70,6 +74,7 @@ function onYouTubeIframeAPIReady() {
 }
 
 function loadQueue(list = playlist) {
+    if (!elements.queueList) return;
     elements.queueList.innerHTML = "";
     list.forEach((song, index) => {
         const li = document.createElement("li");
@@ -89,9 +94,13 @@ function loadQueue(list = playlist) {
 }
 
 function playSong(index, list = playlist, skipped = 0) {
+    if (!player) {
+        console.warn("YouTube player not initialized yet.");
+        return;
+    }
     if (index >= list.length) index = 0;
     if (index < 0) index = list.length - 1;
-    if (skipped >= list.length) return;
+    if (skipped >= list.length) return; // prevent infinite loops
 
     currentPlaylist = list;
     currentSongIndex = index;
@@ -102,19 +111,19 @@ function playSong(index, list = playlist, skipped = 0) {
         return;
     }
 
-    if (player && typeof player.loadVideoById === "function") {
-        player.loadVideoById(videoId);
-
-        setTimeout(() => {
-            if (isPlaying && typeof player.playVideo === "function") {
-                player.playVideo();
-            } else {
-                console.warn("player.playVideo() not ready yet.");
-            }
-        }, 500);
+    if (typeof player.loadVideoById === "function") {
+        try {
+            player.loadVideoById(videoId);
+            setTimeout(() => {
+                if (isPlaying && typeof player.playVideo === "function") {
+                    player.playVideo();
+                }
+            }, 500);
+        } catch (e) {
+            console.error("Error loading video:", e);
+        }
     } else {
         console.warn("player.loadVideoById() not ready yet.");
-        // Optional: retry after a short delay to give the player time to initialize
         setTimeout(() => playSong(index, list, skipped), 500);
         return;
     }
@@ -126,50 +135,52 @@ function playSong(index, list = playlist, skipped = 0) {
 
 function updateSongInfo() {
     const song = currentPlaylist[currentSongIndex];
-    elements.songTitle.textContent = `Now Playing: ${song.title}`;
+    if (elements.songTitle) elements.songTitle.textContent = `Now Playing: ${song.title}`;
 
-    loadQueue(currentPlaylist); // Refresh highlighted song
+    loadQueue(currentPlaylist);
 
     if (Notification.permission === "granted") {
         clearTimeout(notificationTimeout);
         notificationTimeout = setTimeout(() => {
-            new Notification("🎶 Now Playing", {
-                body: song.title,
-                icon: "logo.png"
-            });
+            try {
+                new Notification("🎶 Now Playing", {
+                    body: song.title,
+                    icon: "logo.png"
+                });
+            } catch (e) {
+                console.warn("Notification error:", e);
+            }
         }, 300);
     }
 }
 
-function showNowPlayingNotification(title) {
-    if (Notification.permission !== "granted") return;
-
-    clearTimeout(notificationTimeout);
-    notificationTimeout = setTimeout(() => {
-        new Notification("🎶 Now Playing", {
-            body: title,
-            icon: "logo.png"
-        });
-    }, 300);
-}
-
 function startVinylAnimation() {
+    if (!elements.vinylRecord) return;
     elements.vinylRecord.classList.toggle("spinning", isPlaying);
     elements.vinylRecord.classList.toggle("pulsing", isPlaying);
 }
 
 function resetProgressBar() {
+    if (!elements.progressBar) return;
     elements.progressBar.style.width = "0%";
 }
 
 function updateTime() {
-    if (!player?.getDuration()) return;
+    if (!player || typeof player.getDuration !== "function" || typeof player.getCurrentTime !== "function") return;
+
     const duration = player.getDuration();
     const time = player.getCurrentTime();
+
+    if (!duration || duration === 0) return;
+
     const remaining = duration - time;
 
-    elements.progressBar.style.width = `${(time / duration) * 100}%`;
-    elements.timeRemaining.textContent = `${Math.floor(remaining / 60)}:${String(Math.floor(remaining % 60)).padStart(2, "0")}`;
+    if (elements.progressBar) {
+        elements.progressBar.style.width = `${(time / duration) * 100}%`;
+    }
+    if (elements.timeRemaining) {
+        elements.timeRemaining.textContent = `${Math.floor(remaining / 60)}:${String(Math.floor(remaining % 60)).padStart(2, "0")}`;
+    }
 }
 
 function startUpdatingTime() {
@@ -180,7 +191,11 @@ function startUpdatingTime() {
 function handlePlayerStateChange(event) {
     switch (event.data) {
         case YT.PlayerState.ENDED:
-            isLooping ? playSong(currentSongIndex, currentPlaylist) : playSong(currentSongIndex + 1, currentPlaylist);
+            if (isLooping) {
+                playSong(currentSongIndex, currentPlaylist);
+            } else {
+                playSong(currentSongIndex + 1, currentPlaylist);
+            }
             break;
         case YT.PlayerState.PLAYING:
             isPlaying = true;
@@ -188,6 +203,7 @@ function handlePlayerStateChange(event) {
             break;
         case YT.PlayerState.PAUSED:
             isPlaying = false;
+            clearInterval(updateInterval);
             break;
     }
     startVinylAnimation();
@@ -198,7 +214,12 @@ function handlePlayerError() {
 }
 
 elements.playButton?.addEventListener("click", () => {
-    isPlaying ? player.pauseVideo() : player.playVideo();
+    if (!player) return;
+    if (isPlaying && typeof player.pauseVideo === "function") {
+        player.pauseVideo();
+    } else if (typeof player.playVideo === "function") {
+        player.playVideo();
+    }
     isPlaying = !isPlaying;
     startVinylAnimation();
 });
@@ -229,52 +250,3 @@ elements.moodButtons.forEach(btn => {
         playSong(0, currentPlaylist);
     });
 });
-
-elements.progressContainer?.addEventListener("click", event => {
-    const barWidth = elements.progressContainer.clientWidth;
-    const clickX = event.offsetX;
-    const seekTo = (clickX / barWidth) * player.getDuration();
-    player.seekTo(seekTo, true);
-    updateTime();
-});
-
-document.addEventListener("keydown", (event) => {
-    if (event.code === "Space" && !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) {
-        event.preventDefault();
-        isPlaying ? player.pauseVideo() : player.playVideo();
-        isPlaying = !isPlaying;
-        startVinylAnimation();
-    }
-});
-
-document.addEventListener("visibilitychange", () => {
-    if (document.hidden && isPlaying) player.playVideo();
-});
-
-document.addEventListener("click", e => {
-    for (let i = 0; i < 8; i++) {
-        const fleck = document.createElement('div');
-        fleck.classList.add('particle');
-        document.body.appendChild(fleck);
-        fleck.style.left = e.clientX + 'px';
-        fleck.style.top = e.clientY + 'px';
-        const angle = Math.random() * 2 * Math.PI;
-        const distance = 40 + Math.random() * 20;
-        fleck.style.setProperty('--x', `${Math.cos(angle) * distance}px`);
-        fleck.style.setProperty('--y', `${Math.sin(angle) * distance}px`);
-        fleck.addEventListener('animationend', () => fleck.remove());
-    }
-});
-
-loadYouTubeAPI().then(() => {
-    if (typeof YT !== "undefined") onYouTubeIframeAPIReady();
-});
-
-if(elements.volumeSlider) {
-    elements.volumeSlider.addEventListener("input", () => {
-        const volume = parseInt(elements.volumeSlider.value, 10);
-        if (player && typeof player.setVolume === "function") {
-            player.setVolume(volume);
-        }
-    });
-}
