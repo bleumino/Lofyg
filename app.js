@@ -43,6 +43,7 @@ function loadYouTubeAPI() {
     return new Promise((resolve, reject) => {
         const script = document.createElement("script");
         script.src = "https://www.youtube.com/iframe_api";
+        script.setAttribute("cache-control", "no-cache");
         script.onload = () => setTimeout(resolve, 500);
         script.onerror = () => reject("YouTube API failed");
         document.head.appendChild(script);
@@ -97,6 +98,7 @@ function playSong(index, list = playlist, skipped = 0) {
     }
 
     if (typeof player.loadVideoById === "function") {
+        player.cueVideoById(videoId);
         player.loadVideoById(videoId);
         setTimeout(() => isPlaying && player.playVideo(), 500);
         updateSongInfo();
