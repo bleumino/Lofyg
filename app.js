@@ -1,3 +1,4 @@
+// --- Playlist and Initial Variables ---
 let playlist = [
     { id: "xakBzg5atsM", title: "massobeats - rose water", moods: ["chill", "relax"] },
     { id: "HGMQbVfYVmI", title: "massobeats - honey jam", moods: ["study", "focus", "chill"] },
@@ -95,11 +96,13 @@ function playSong(index, list = playlist, skipped = 0) {
         return;
     }
 
-    player.loadVideoById(videoId);
-    setTimeout(() => isPlaying && player.playVideo(), 500);
-    updateSongInfo();
-    resetProgressBar();
-    startVinylAnimation();
+    if (typeof player.loadVideoById === "function") {
+        player.loadVideoById(videoId);
+        setTimeout(() => isPlaying && player.playVideo(), 500);
+        updateSongInfo();
+        resetProgressBar();
+        startVinylAnimation();
+    }
 }
 
 function updateSongInfo() {
@@ -128,7 +131,7 @@ function resetProgressBar() {
 }
 
 function updateTime() {
-    if (!player?.getDuration()) return;
+    if (!player?.getDuration) return;
     const duration = player.getDuration();
     const time = player.getCurrentTime();
     const remaining = duration - time;
@@ -162,7 +165,9 @@ function handlePlayerError() {
     playSong(currentSongIndex + 1, currentPlaylist);
 }
 
+// --- UI Interaction Events ---
 elements.playButton?.addEventListener("click", () => {
+    if (!player) return;
     isPlaying ? player.pauseVideo() : player.playVideo();
     isPlaying = !isPlaying;
     startVinylAnimation();
@@ -199,34 +204,13 @@ elements.progressContainer?.addEventListener("click", event => {
     const barWidth = elements.progressContainer.clientWidth;
     const clickX = event.offsetX;
     const seekTo = (clickX / barWidth) * player.getDuration();
-    player.seekTo(seekTo, true);
-    updateTime();
+    player.seekTo(seekTo);
 });
 
-document.addEventListener("keydown", (event) => {
-    if (event.code === "Space" && !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) {
-        event.preventDefault();
-        isPlaying ? player.pauseVideo() : player.playVideo();
-        isPlaying = !isPlaying;
-        startVinylAnimation();
-    }
+elements.volumeSlider?.addEventListener("input", () => {
+    const volume = parseInt(elements.volumeSlider.value);
+    if (player?.setVolume) player.setVolume(volume);
 });
 
-document.addEventListener("visibilitychange", () => {
-    if (document.hidden && isPlaying) player.playVideo();
-});
-
-document.addEventListener("click", e => {
-    for (let i = 0; i < 8; i++) {
-        const fleck = document.createElement('div');
-        fleck.classList.add('particle');
-        document.body.appendChild(fleck);
-        fleck.style.left = e.clientX + 'px';
-        fleck.style.top = e.clientY + 'px';
-        const angle = Math.random() * 2 * Math.PI;
-        const distance = 40 + Math.random() * 20;
-        fleck.style.setProperty('--x', `${Math.cos(angle) * distance}px`);
-        fleck.style.setProperty('--y', `${Math.sin(angle) * distance}px`);
-        setTimeout(() => fleck.remove(), 1000);
-    }
-});
+window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
+loadYouTubeAPI().then(() => console.log("YouTube API loaded"));
