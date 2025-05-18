@@ -1,3 +1,4 @@
+// Your playlist data
 let playlist = [
     { id: "xakBzg5atsM", title: "massobeats - rose water", moods: ["chill", "relax"] },
     { id: "HGMQbVfYVmI", title: "massobeats - honey jam", moods: ["study", "focus", "chill"] },
@@ -41,18 +42,18 @@ const elements = {
 function loadYouTubeAPI() {
     return new Promise((resolve, reject) => {
         if (window.YT && window.YT.Player) {
-            // API already loaded
             resolve();
             return;
         }
         const script = document.createElement("script");
         script.src = "https://www.youtube.com/iframe_api";
         script.onload = () => setTimeout(resolve, 500);
-        script.onerror = () => reject("YouTube API failed");
+        script.onerror = () => reject("YouTube API failed to load");
         document.head.appendChild(script);
     });
 }
 
+// Global for YouTube API
 function onYouTubeIframeAPIReady() {
     player = new YT.Player("youtube-player", {
         height: "390",
@@ -100,7 +101,7 @@ function playSong(index, list = playlist, skipped = 0) {
     }
     if (index >= list.length) index = 0;
     if (index < 0) index = list.length - 1;
-    if (skipped >= list.length) return; // prevent infinite loops
+    if (skipped >= list.length) return;
 
     currentPlaylist = list;
     currentSongIndex = index;
@@ -123,7 +124,6 @@ function playSong(index, list = playlist, skipped = 0) {
             console.error("Error loading video:", e);
         }
     } else {
-        console.warn("player.loadVideoById() not ready yet.");
         setTimeout(() => playSong(index, list, skipped), 500);
         return;
     }
@@ -145,7 +145,7 @@ function updateSongInfo() {
             try {
                 new Notification("🎶 Now Playing", {
                     body: song.title,
-                    icon: "logo.png"
+                    icon: "logo.png" // replace with your icon URL if you want
                 });
             } catch (e) {
                 console.warn("Notification error:", e);
@@ -163,6 +163,7 @@ function startVinylAnimation() {
 function resetProgressBar() {
     if (!elements.progressBar) return;
     elements.progressBar.style.width = "0%";
+    if (elements.timeRemaining) elements.timeRemaining.textContent = "0:00";
 }
 
 function updateTime() {
@@ -176,77 +177,72 @@ function updateTime() {
     const remaining = duration - time;
 
     if (elements.progressBar) {
-        elements.progressBar.style.width = `${(time / duration) * 100}%`;
+        const progressPercent = (time / duration) * 100;
+        elements.progressBar.style.width = `${progressPercent}%`;
     }
-    if (elements.timeRemaining) {
-        elements.timeRemaining.textContent = `${Math.floor(remaining / 60)}:${String(Math.floor(remaining % 60)).padStart(2, "0")}`;
-    }
-}
 
-function startUpdatingTime() {
-    clearInterval(updateInterval);
-    updateInterval = setInterval(updateTime, 1000);
+    if (elements.timeRemaining) {
+        const minutes = Math.floor(remaining / 60);
+        const seconds = Math.floor(remaining % 60).toString().padStart(2, "0");
+        elements.timeRemaining.textContent = `-${minutes}:${seconds}`;
+    }
 }
 
 function handlePlayerStateChange(event) {
+    // Player states: -1 (unstarted), 0 (ended), 1 (playing), 2 (paused), 3 (buffering), 5 (video cued)
     switch (event.data) {
-        case YT.PlayerState.ENDED:
-            if (isLooping) {
-                playSong(currentSongIndex, currentPlaylist);
-            } else {
-                playSong(currentSongIndex + 1, currentPlaylist);
-            }
-            break;
         case YT.PlayerState.PLAYING:
             isPlaying = true;
-            startUpdatingTime();
+            startVinylAnimation();
+            if (!updateInterval) {
+                updateInterval = setInterval(updateTime, 500);
+            }
             break;
         case YT.PlayerState.PAUSED:
             isPlaying = false;
+            startVinylAnimation();
             clearInterval(updateInterval);
+            updateInterval = null;
+            break;
+        case YT.PlayerState.ENDED:
+            if (isLooping) {
+                playSong(currentSongIndex);
+            } else {
+                playSong(currentSongIndex + 1);
+            }
+            break;
+        default:
             break;
     }
-    startVinylAnimation();
 }
 
-function handlePlayerError() {
-    playSong(currentSongIndex + 1, currentPlaylist);
+function handlePlayerError(event) {
+    console.warn("Error playing video, skipping to next", event.data);
+    playSong(currentSongIndex + 1);
 }
 
-elements.playButton?.addEventListener("click", () => {
+function togglePlayPause() {
     if (!player) return;
-    if (isPlaying && typeof player.pauseVideo === "function") {
+    if (isPlaying) {
         player.pauseVideo();
-    } else if (typeof player.playVideo === "function") {
+    } else {
         player.playVideo();
     }
-    isPlaying = !isPlaying;
-    startVinylAnimation();
-});
+}
 
-elements.nextButton?.addEventListener("click", () => {
-    playSong(currentSongIndex + 1, currentPlaylist);
-});
+function nextSong() {
+    playSong(currentSongIndex + 1);
+}
 
-elements.loopButton?.addEventListener("click", () => {
+function toggleLoop() {
     isLooping = !isLooping;
     elements.loopButton.classList.toggle("active-mode", isLooping);
-});
+}
 
-elements.moodButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-        elements.moodButtons.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-
-        const mood = btn.dataset.mood;
-        currentPlaylist = mood === "all" ? [...playlist] : playlist.filter(track => track.moods.includes(mood));
-
-        if (currentPlaylist.length === 0) {
-            alert("No tracks found for this mood.");
-            return;
-        }
-
-        loadQueue(currentPlaylist);
-        playSong(0, currentPlaylist);
-    });
-});
+function filterByMood(mood) {
+    if (mood === "all") {
+        currentPlaylist = [...playlist];
+    } else {
+        currentPlaylist = playlist.filter(song => song.moods.includes(mood));
+    }
+    currentSongIndex = 0;
