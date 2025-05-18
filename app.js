@@ -1,16 +1,16 @@
 // Your playlist data
 let playlist = [
     { id: "xakBzg5atsM", title: "massobeats - rose water", moods: ["chill", "relax"] },
-    { id: "HGMQbVfYVmI", title: "massobeats - honey jam", moods: ["study", "focus", "chill"] },
-    { id: "6eWIffP2M3Y", title: "Jazz Type Beat - Bread", moods: ["study", "calm"] },
+    { id: "HGMQbVfYVmI", title: "massobeats - honey jam", moods: ["study", "focus",] },
+    { id: "6eWIffP2M3Y", title: "Jazz Type Beat - Bread", moods: ["study",] },
     { id: "KGQNrzqrGqw", title: "Lofi Type Beat - Onion", moods: ["chill", "relax"] },
     { id: "tEzzsT4qsbU", title: "massobeats - lucid", moods: ["calm", "focus"] },
     { id: "y7KYdqVND4o", title: "lukrembo - marshmallow", moods: ["chill"] },
     { id: "O8MYZY6sFpI", title: "animal crossing lofi", moods: ["chill", "relax"] },
-    { id: "1P5BSm_oFJg", title: "Lofi Girl - Snowman", moods: ["relax", "calm"] },
+    { id: "1P5BSm_oFJg", title: "Lofi Girl - Snowman", moods: ["relax"] },
     { id: "gv7hcXCnjOw", title: "Jazz Type Beat – Sunset", moods: ["chill", "study"] },
     { id: "YTUF1o9Sf3E", title: "lukrembo - affogato", moods: ["chill"] },
-    { id: "EtZ2m2Zm3vY", title: "lofi type beat – biscuit", moods: ["relax", "calm"] }
+    { id: "EtZ2m2Zm3vY", title: "lofi type beat – biscuit", moods: ["relax"] }
 ];
 
 let currentPlaylist = [...playlist];
@@ -246,3 +246,4 @@ function filterByMood(mood) {
         currentPlaylist = playlist.filter(song => song.moods.includes(mood));
     }
     currentSongIndex = 0;
+}
