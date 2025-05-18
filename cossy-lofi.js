@@ -70,8 +70,9 @@ function initialize() {
 function loadQueue() {
     elements.queueList.innerHTML = "";
     playlist.forEach((song, index) => {
+        if (!isValidYouTubeId(song.id)) return;
         const li = document.createElement("li");
-        li.textContent = song.title;
+        li.textContent = sanitizeTitle(song.title);
         li.dataset.index = index;
         li.style.cursor = "pointer";
         li.classList.toggle("active-song", index === currentSongIndex);
@@ -80,11 +81,20 @@ function loadQueue() {
     });
 }
 
+function sanitizeTitle(title) {
+    const div = document.createElement("div");
+    div.innerText = title;
+    return div.innerHTML;
+}
+
+function isValidYouTubeId(id) {
+    return typeof id === "string" && id.length === 11;
+}
+
 function updateSongInfo() {
-    const title = playlist[currentSongIndex].title;
+    const title = sanitizeTitle(playlist[currentSongIndex].title);
     elements.songTitle.textContent = `Now Playing: ${title}`;
 
-    // Refresh queue highlighting
     loadQueue();
 
     if (Notification.permission === "granted") {
@@ -111,15 +121,14 @@ function playSong(index, skipped = 0) {
     if (index < 0) index = playlist.length - 1;
     if (skipped >= playlist.length) return;
 
-    currentSongIndex = index;
-    const videoId = playlist[index].id;
-
-    if (!videoId || videoId.length < 10) {
+    const song = playlist[index];
+    if (!isValidYouTubeId(song.id)) {
         playSong(index + 1, skipped + 1);
         return;
     }
 
-    player.loadVideoById(videoId);
+    currentSongIndex = index;
+    player.loadVideoById(song.id);
     player.playVideo();
 
     updateSongInfo();
@@ -203,7 +212,6 @@ document.addEventListener("visibilitychange", () => {
     if (document.hidden && isPlaying) player.playVideo();
 });
 
-// 🔥 Spacebar toggle
 document.addEventListener("keydown", (event) => {
     if (event.code === "Space" && !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) {
         event.preventDefault();
@@ -213,7 +221,6 @@ document.addEventListener("keydown", (event) => {
     }
 });
 
-// ✨ Fleck click animation
 document.addEventListener("click", e => {
     for (let i = 0; i < 8; i++) {
         const fleck = document.createElement('div');
