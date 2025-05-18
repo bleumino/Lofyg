@@ -42,8 +42,8 @@ const elements = {
 function loadYouTubeAPI() {
     return new Promise((resolve, reject) => {
         const script = document.createElement("script");
-        script.src = "https://www.youtube.com/iframe_api";
-        script.setAttribute("cache-control", "no-cache");
+        // Add cache-busting query param
+        script.src = "https://www.youtube.com/iframe_api?v=" + Date.now();
         script.onload = () => setTimeout(resolve, 500);
         script.onerror = () => reject("YouTube API failed");
         document.head.appendChild(script);
@@ -61,7 +61,7 @@ function onYouTubeIframeAPIReady() {
                 loadQueue(currentPlaylist);
                 updateSongInfo();
                 if (elements.volumeSlider && typeof player.setVolume === "function") {
-                    player.setVolume(parseInt(elements.volumeSlider.value || "50"));
+                    player.setVolume(parseInt(elements.volumeSlider.value || "50", 10));
                 }
             },
             onStateChange: handlePlayerStateChange,
@@ -71,6 +71,7 @@ function onYouTubeIframeAPIReady() {
 }
 
 function loadQueue(list = playlist) {
+    if (!elements.queueList) return;
     elements.queueList.innerHTML = "";
     list.forEach((song, index) => {
         const li = document.createElement("li");
@@ -84,6 +85,12 @@ function loadQueue(list = playlist) {
 }
 
 function playSong(index, list = playlist, skipped = 0) {
+    if (!player || typeof player.loadVideoById !== "function" || typeof player.playVideo !== "function") {
+        // Retry if player API not ready
+        console.warn("Player API not ready, retrying...");
+        setTimeout(() => playSong(index, list, skipped), 500);
+        return;
+    }
     if (index >= list.length) index = 0;
     if (index < 0) index = list.length - 1;
     if (skipped >= list.length) return;
@@ -97,49 +104,62 @@ function playSong(index, list = playlist, skipped = 0) {
         return;
     }
 
-    if (typeof player.loadVideoById === "function") {
-        player.cueVideoById(videoId);
-        player.loadVideoById(videoId);
-        setTimeout(() => isPlaying && player.playVideo(), 500);
-        updateSongInfo();
-        resetProgressBar();
-        startVinylAnimation();
-    }
+    player.cueVideoById(videoId);
+    player.loadVideoById(videoId);
+    setTimeout(() => {
+        if (isPlaying) player.playVideo();
+    }, 600);
+
+    updateSongInfo();
+    resetProgressBar();
+    startVinylAnimation();
 }
 
 function updateSongInfo() {
     const song = currentPlaylist[currentSongIndex];
-    elements.songTitle.textContent = `Now Playing: ${song.title}`;
+    if (elements.songTitle) elements.songTitle.textContent = `Now Playing: ${song.title}`;
     loadQueue(currentPlaylist);
 
     if (Notification.permission === "granted") {
         clearTimeout(notificationTimeout);
         notificationTimeout = setTimeout(() => {
-            new Notification("🎶 Now Playing", {
-                body: song.title,
-                icon: "logo.png"
-            });
+            try {
+                new Notification("🎶 Now Playing", {
+                    body: song.title,
+                    icon: "logo.png"
+                });
+            } catch (e) {
+                console.warn("Notification error:", e);
+            }
         }, 300);
     }
 }
 
 function startVinylAnimation() {
+    if (!elements.vinylRecord) return;
     elements.vinylRecord.classList.toggle("spinning", isPlaying);
     elements.vinylRecord.classList.toggle("pulsing", isPlaying);
 }
 
 function resetProgressBar() {
+    if (!elements.progressBar) return;
     elements.progressBar.style.width = "0%";
 }
 
 function updateTime() {
-    if (!player?.getDuration) return;
+    if (!player || typeof player.getDuration !== "function" || typeof player.getCurrentTime !== "function") return;
+
     const duration = player.getDuration();
     const time = player.getCurrentTime();
-    const remaining = duration - time;
+    if (!duration || duration === 0) return;
 
-    elements.progressBar.style.width = `${(time / duration) * 100}%`;
-    elements.timeRemaining.textContent = `${Math.floor(remaining / 60)}:${String(Math.floor(remaining % 60)).padStart(2, "0")}`;
+    const remaining = duration - time;
+    if (elements.progressBar) {
+        elements.progressBar.style.width = `${(time / duration) * 100}%`;
+    }
+    if (elements.timeRemaining) {
+        elements.timeRemaining.textContent = `${Math.floor(remaining / 60)}:${String(Math.floor(remaining % 60)).padStart(2, "0")}`;
+    }
 }
 
 function startUpdatingTime() {
@@ -150,7 +170,11 @@ function startUpdatingTime() {
 function handlePlayerStateChange(event) {
     switch (event.data) {
         case YT.PlayerState.ENDED:
-            isLooping ? playSong(currentSongIndex, currentPlaylist) : playSong(currentSongIndex + 1, currentPlaylist);
+            if (isLooping) {
+                playSong(currentSongIndex, currentPlaylist);
+            } else {
+                playSong(currentSongIndex + 1, currentPlaylist);
+            }
             break;
         case YT.PlayerState.PLAYING:
             isPlaying = true;
@@ -158,6 +182,7 @@ function handlePlayerStateChange(event) {
             break;
         case YT.PlayerState.PAUSED:
             isPlaying = false;
+            clearInterval(updateInterval);
             break;
     }
     startVinylAnimation();
@@ -167,10 +192,13 @@ function handlePlayerError() {
     playSong(currentSongIndex + 1, currentPlaylist);
 }
 
-// --- UI Interaction Events ---
 elements.playButton?.addEventListener("click", () => {
     if (!player) return;
-    isPlaying ? player.pauseVideo() : player.playVideo();
+    if (isPlaying && typeof player.pauseVideo === "function") {
+        player.pauseVideo();
+    } else if (typeof player.playVideo === "function") {
+        player.playVideo();
+    }
     isPlaying = !isPlaying;
     startVinylAnimation();
 });
@@ -203,16 +231,19 @@ elements.moodButtons.forEach(btn => {
 });
 
 elements.progressContainer?.addEventListener("click", event => {
+    if (!player || typeof player.getDuration !== "function" || typeof player.seekTo !== "function") return;
     const barWidth = elements.progressContainer.clientWidth;
     const clickX = event.offsetX;
     const seekTo = (clickX / barWidth) * player.getDuration();
-    player.seekTo(seekTo);
+    player.seekTo(seekTo, true);
 });
 
-elements.volumeSlider?.addEventListener("input", () => {
-    const volume = parseInt(elements.volumeSlider.value);
-    if (player?.setVolume) player.setVolume(volume);
-});
+if (elements.volumeSlider) {
+    elements.volumeSlider.addEventListener("input", () => {
+        const volume = parseInt(elements.volumeSlider.value, 10);
+        if (player?.setVolume) player.setVolume(volume);
+    });
+}
 
 window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
 loadYouTubeAPI().then(() => console.log("YouTube API loaded"));
