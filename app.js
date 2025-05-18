@@ -75,11 +75,7 @@ function loadQueue(list = playlist) {
         li.textContent = song.title;
         li.dataset.index = index;
         li.style.cursor = "pointer";
-
-        if (index === currentSongIndex) {
-            li.classList.add("active-song");
-        }
-
+        if (index === currentSongIndex) li.classList.add("active-song");
         li.addEventListener("click", () => playSong(index, list));
         elements.queueList.appendChild(li);
     });
