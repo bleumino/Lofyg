@@ -34,7 +34,6 @@ const elements = {
     progressContainer: document.getElementById("progress-bar")?.parentElement,
     timeRemaining: document.getElementById("time-remaining"),
     loopButton: document.getElementById("loop-single"),
-    moodButtons: document.querySelectorAll("#mood-selector button")
     moodButtons: document.querySelectorAll("#mood-selector button"),
     volumeSlider: document.getElementById("volume-slider")
 };
@@ -59,7 +58,6 @@ function onYouTubeIframeAPIReady() {
             onReady: () => {
                 loadQueue(currentPlaylist);
                 updateSongInfo();
-                // Set initial volume to slider value or 50 if no slider
                 if (elements.volumeSlider && typeof player.setVolume === "function") {
                     player.setVolume(parseInt(elements.volumeSlider.value || "50"));
                 }
@@ -80,8 +78,6 @@ function loadQueue(list = playlist) {
 
         if (index === currentSongIndex) {
             li.classList.add("active-song");
-        } else {
-            li.classList.remove("active-song");
         }
 
         li.addEventListener("click", () => playSong(index, list));
@@ -113,9 +109,7 @@ function playSong(index, list = playlist, skipped = 0) {
 function updateSongInfo() {
     const song = currentPlaylist[currentSongIndex];
     elements.songTitle.textContent = `Now Playing: ${song.title}`;
-
-    loadQueue(currentPlaylist); // 🔥 This refreshes the highlighted song
-    loadQueue(currentPlaylist); // Refresh highlighted song
+    loadQueue(currentPlaylist);
 
     if (Notification.permission === "granted") {
         clearTimeout(notificationTimeout);
@@ -126,18 +120,6 @@ function updateSongInfo() {
             });
         }, 300);
     }
-}
-
-function showNowPlayingNotification(title) {
-    if (Notification.permission !== "granted") return;
-
-    clearTimeout(notificationTimeout);
-    notificationTimeout = setTimeout(() => {
-        new Notification("🎶 Now Playing", {
-            body: title,
-            icon: "logo.png"
-        });
-    }, 300);
 }
 
 function startVinylAnimation() {
@@ -249,27 +231,6 @@ document.addEventListener("click", e => {
         const distance = 40 + Math.random() * 20;
         fleck.style.setProperty('--x', `${Math.cos(angle) * distance}px`);
         fleck.style.setProperty('--y', `${Math.sin(angle) * distance}px`);
-        fleck.addEventListener('animationend', () => fleck.remove());
+        setTimeout(() => fleck.remove(), 1000);
     }
 });
-
-loadYouTubeAPI().then(() => {
-    if (typeof YT !== "undefined") onYouTubeIframeAPIReady();
-});
-
-const volumeSlider = document.getElementById("volume-slider");
-
-volumeSlider.addEventListener("input", () => {
-    const volume = parseInt(volumeSlider.value, 10);
-    if (player && typeof player.setVolume === "function") {
-        player.setVolume(volume);
-    }
-});
-if(elements.volumeSlider) {
-    elements.volumeSlider.addEventListener("input", () => {
-        const volume = parseInt(elements.volumeSlider.value, 10);
-        if (player && typeof player.setVolume === "function") {
-            player.setVolume(volume);
-        }
-    });
-}
