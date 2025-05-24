@@ -140,15 +140,26 @@ function resetProgressBar() {
     elements.progressBar.style.width = "0%";
 }
 
+function formatTime(seconds) {
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = Math.floor(seconds % 60);
+    return [
+        hrs > 0 ? String(hrs).padStart(2, "0") : null,
+        String(mins).padStart(2, "0"),
+        String(secs).padStart(2, "0")
+    ].filter(Boolean).join(":");
+}
+
 function updateTime() {
     if (!player?.getDuration()) return;
     const duration = player.getDuration();
     const currentTime = player.getCurrentTime();
-    const remaining = duration - currentTime;
 
     elements.progressBar.style.width = `${(currentTime / duration) * 100}%`;
-    elements.timeRemaining.textContent = `${Math.floor(remaining / 60)}:${String(Math.floor(remaining % 60)).padStart(2, "0")}`;
+    elements.timeRemaining.textContent = `${formatTime(currentTime)} / ${formatTime(duration)}`;
 }
+
 
 function startUpdatingTime() {
     clearInterval(updateInterval);
