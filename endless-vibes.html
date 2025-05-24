@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="DE7CL9W2A8_Mjqf6g0jHH9b96l44hyfrhOCt37LW0Z4"/>
     <title>Lofyg</title>
-    <link rel="stylesheet" href="app.css?v=1.0.1">
+    <link rel="stylesheet" href="cossy-lofi.css">
     <script src="https://www.youtube.com/iframe_api"></script>
 
     <!-- Google tag (gtag.js) -->
@@ -32,7 +32,7 @@
     <meta name="twitter:title" content="Lofyg – Chill and Study to Lo-Fi Beats">
     <meta name="twitter:description" content="Relax to lo-fi music. Lofyg is your chill study companion.">
     <meta name="twitter:image" content="https://comics6969.github.io/Lofyg/preview.jpg">
-    
+
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,9 +42,10 @@
 
     <header>
         <img class="logo"src="logo.png">
+        <br>
         <button id="theme-toggle" title="Switch Theme">🌙</button>
     </header>
-    <br>
+
     <main id="music-player">
         <!-- Display Song Title -->
         <section id="song-info">
@@ -53,7 +54,7 @@
         
         <!-- Vinyl Record Animation -->
         <section id="vinyl-container">
-            <img id="vinyl" src="Pink Vinyl Record Icon.png" alt="Vinyl Record">
+            <img id="vinyl" src="Vinyl Record Blue.png" alt="Vinyl Record">
         </section>
 
         <!-- Progress Bar for Song -->
@@ -61,10 +62,9 @@
             <div id="progress-bar"></div>
         </section>
 
-
         <!-- Time Remaining Display -->
         <p id="time-remaining">0:00</p>
-        
+
         <section id="volume-control">
             <label for="volume-slider">🔊 Volume</label>
             <input type="range" id="volume-slider" min="0" max="100" value="100">
@@ -75,27 +75,16 @@
             <button id="play">Play / Pause</button>
             <button id="next">Next</button>
         </section>
-        <div id="mood-selector" style="text-align:center; margin: 20px 0;">
-            <button data-mood="all" class="active">🎧 All</button>
-            <button data-mood="chill">🌿 Chill</button>
-            <button data-mood="study">📚 Study</button>
-            <button data-mood="relax">😌 Relax</button>
-            <button data-mood="focus">⚡ Focus</button>
-            <button data-mood="calm">😐 calm</button>
-            <button data-mood="slow-day">🐌 slow-day</button>
-        </div>
             <h3>Songs</h3>
 
         <!-- Song Queue -->
         <ul id="queue"></ul>
-    
 
         <!-- Loop Mode Control Buttons -->
         <section class="mode-toggle-container">
             <button id="loop-single" class="mode-toggle">Loop Current Song</button>
             <button onclick="document.location='lofi-girl-stream.html'"> 24 hour lofi radio</button>
-            <button onclick="document.location='cossy-lofi.html'"> cossy-lofi</button>
-            <button onclick="document.location='endless-vibes.html'">Endless Vibes</button>
+            <button onclick="document.location='index.html'"> Main Playlist</button>
         </section>
 
         <!-- YouTube Player Container -->
@@ -104,11 +93,10 @@
         </section>
     </main>
 
-    <script src="app.js?v=1.0.1"></script>
+    <script src="endless-vibes.js"></script>
     <script src="notifications.js"></script>
     <script src="backgroundPlayback.js"></script>
     <script src="Toggle.js"></script>
-    <script src="smartPlaylist.js"></script> 
     <script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="bleumino" data-description="Support me on Buy me a coffee!" data-message="Donate for good vibes" data-color="#BD5FFF" data-position="Right" data-x_margin="18" data-y_margin="18"></script>
 </body>
 <br>

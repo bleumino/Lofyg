@@ -11,7 +11,15 @@
       { id: "1P5BSm_oFJg", title: "Lofi Girl - Snowman", moods: ["relax", "calm"] },
       { id: "gv7hcXCnjOw", title: "Jazz Type Beat – Sunset", moods: ["chill", "study"] },
       { id: "YTUF1o9Sf3E", title: "lukrembo - affogato", moods: ["chill"] },
-      { id: "EtZ2m2Zm3vY", title: "lofi type beat – biscuit", moods: ["relax", "calm"] }
+      { id: "EtZ2m2Zm3vY", title: "lofi type beat – biscuit", moods: ["relax", "calm"] },
+      { id: "0RygB-mapsk", title: "massobeats - lotus (royalty free lofi music)", moods: ["relax", "calm", "study"] },
+      { id: "yJpneVEfOvc", title: "fla.andrei - houseplants 🍃 chill lofi jazz vibes (royalty-free music)", moods: ["study", "relax"] },
+      { id: "KFdmNZgCCuc", title: "straizo - laidback 😴 dreamy lofi jazz vibes (royalty-free music)", moods: ["chill", "slow-day"] },
+      { id: "ej52ebiVQY0", title: "Jazzy Lofi Beat: Coastline 🌅 Royalty Free Music for Creators", moods: ["relax", "chill"] },
+      { id: "nTrGU__jTLk", title: "fool parsley - something blue 🌀 royalty free lofi music (no copyright music)", moods: ["study", "calm", "relax", "slow-day"] },
+      { id: "vKCDHdw7SuA", title: "simber & 7&nine - sugar & swing 🍭 chill lofi jazz vibes (no copyright music)", moods: ["chill", "relax", "slow-day"] },
+      { id: "anwwKwp0W6s", title: "Heat Waves - lofi version", moods: ["study", "relax", "slow-day"] },
+      { id: "QXThKEAzV64", title: "Without You - lofi version", moods: ["study", "relax", "slow-day","calm", "chill"] },
   ];
 
   let currentPlaylist = [...playlist];
