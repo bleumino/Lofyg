@@ -266,23 +266,50 @@ volumeSlider.addEventListener("input", () => {
     }
 });
 
+// Ensure time container exists in the DOM
+function ensureTimeContainer() {
+  if (!document.getElementById('time-container')) {
+    const container = document.createElement('div');
+    container.id = 'time-container';
+    container.style.position = 'fixed';
+    container.style.top = '20px';
+    container.style.left = '80px';
+    container.style.fontSize = '1.2rem';
+    container.style.display = 'flex';
+    container.style.alignItems = 'center';
+    container.style.gap = '8px';
+    container.style.zIndex = '1000';
+    // Add icon and time span
+    const iconSpan = document.createElement('span');
+    iconSpan.id = 'time-icon';
+    iconSpan.textContent = '⏳';
+    const timeSpan = document.createElement('span');
+    timeSpan.id = 'local-time';
+    timeSpan.textContent = '00:00:00';
+    container.appendChild(iconSpan);
+    container.appendChild(timeSpan);
+    // Insert at top of body
+    document.body.insertBefore(container, document.body.firstChild);
+  }
+}
+
 function updateLocalTime() {
+  // Ensure elements exist
+  ensureTimeContainer();
   const timeElement = document.getElementById('local-time');
   const iconElement = document.getElementById('time-icon');
   const now = new Date();
-
   const hours = now.getHours().toString().padStart(2, '0');
   const minutes = now.getMinutes().toString().padStart(2, '0');
   const seconds = now.getSeconds().toString().padStart(2, '0');
   timeElement.textContent = `${hours}:${minutes}:${seconds}`;
-
   // Set time-based icon
   let icon = '⏳';
-  if (hours >= 5 && hours < 11) icon = '🌅';        // Morning
-  else if (hours >= 11 && hours < 17) icon = '🌞';   // Afternoon
-  else if (hours >= 17 && hours < 21) icon = '🌇';   // Evening
-  else icon = '🌙';                                  // Night
-
+  const hourNum = parseInt(hours, 10);
+  if (hourNum >= 5 && hourNum < 11) icon = '🌅';        // Morning
+  else if (hourNum >= 11 && hourNum < 17) icon = '🌞';   // Afternoon
+  else if (hourNum >= 17 && hourNum < 21) icon = '🌇';   // Evening
+  else icon = '🌙';                                      // Night
   iconElement.textContent = icon;
 }
 
