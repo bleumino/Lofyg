@@ -265,3 +265,27 @@ volumeSlider.addEventListener("input", () => {
         player.setVolume(volume);
     }
 });
+
+function updateLocalTime() {
+  const timeElement = document.getElementById('local-time');
+  const iconElement = document.getElementById('time-icon');
+  const now = new Date();
+
+  const hours = now.getHours().toString().padStart(2, '0');
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+  const seconds = now.getSeconds().toString().padStart(2, '0');
+  timeElement.textContent = `${hours}:${minutes}:${seconds}`;
+
+  // Set time-based icon
+  let icon = '⏳';
+  if (hours >= 5 && hours < 11) icon = '🌅';        // Morning
+  else if (hours >= 11 && hours < 17) icon = '🌞';   // Afternoon
+  else if (hours >= 17 && hours < 21) icon = '🌇';   // Evening
+  else icon = '🌙';                                  // Night
+
+  iconElement.textContent = icon;
+}
+
+// Start the clock
+updateLocalTime();
+setInterval(updateLocalTime, 1000); // Update every second
