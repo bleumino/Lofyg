@@ -331,11 +331,14 @@ function showQuotePopup() {
 
   popup.classList.remove('hidden');
 
+  // Hide the popup after 20 seconds
   setTimeout(() => {
     popup.classList.add('hidden');
-  }, 5000); // visible for 5 seconds
+  }, 20000); // 20 seconds
 }
 
-// First popup after 8 seconds, then every 2 minutes
+// First popup after 8 seconds
 setTimeout(showQuotePopup, 8000);
-setInterval(showQuotePopup, 120000);
+
+// Repeat every 1 minute (60,000 ms)
+setInterval(showQuotePopup, 60000);
