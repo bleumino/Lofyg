@@ -289,3 +289,53 @@ function updateTime() {
       }
   });
 })();
+
+const quotes = [
+  "It needs to be said and heard: it's OK to be who you are. – Hailee Steinfeld",
+  "One step at a time is all it takes.",
+  "Take a moment to breathe and relax.",
+  "Progress, not perfection.",
+  "Let the rhythm calm your mind.",
+  "Your energy is enough.",
+  "Keep growing at your pace.",
+  "You’re doing better than you think.",
+  "Be gentle with yourself today.",
+  "You are enough, just as you are.",
+  "Rest is productive too.",
+  "The time is always right to do what is right. – Martin Luther King Jr.",
+  "Don't let anyone ever make you feel like you don't deserve what you want. – Heath Ledger",
+  "Imperfection is beauty, madness is genius and it's better to be absolutely ridiculous than absolutely boring. – Marilyn Monroe",
+  "You’re only human. You live once and life is wonderful, so eat the damn red velvet cupcake. – Emma Stone",
+  "The best thing to hold onto in life is each other. – Audrey Hepburn",
+  "No matter what happens in life, be good to people. Being good to people is a wonderful legacy to leave behind. – Taylor Swift",
+  "Success is most often achieved by those who don’t know that failure is inevitable. – Coco Chanel",
+  "Just because you're not where you want to be yet doesn't mean you're not making progress. – Zendaya",
+  "Be humble, hungry, and always be the hardest worker in the room. – Dwayne “The Rock” Johnson",
+  "Try and fail, but never fail to try. – Jared Leto",
+  "To thine own self be true. – Dolly Parton",
+  "Success is not final, failure is not fatal: It is the courage to continue that counts. – Winston Churchill",
+  "You miss 100% of the shots you don’t take. – Wayne Gretzky",
+  "The best revenge is massive success. – Frank Sinatra",
+  "The only way to do great work is to love what you do. – Steve Jobs"
+  
+];
+
+function showQuotePopup() {
+  const popup = document.getElementById('quote-popup');
+  const quoteText = document.getElementById('quote-text');
+
+  if (!popup || !quoteText) return;
+
+  const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+  quoteText.textContent = randomQuote;
+
+  popup.classList.remove('hidden');
+
+  setTimeout(() => {
+    popup.classList.add('hidden');
+  }, 5000); // visible for 5 seconds
+}
+
+// First popup after 8 seconds, then every 2 minutes
+setTimeout(showQuotePopup, 8000);
+setInterval(showQuotePopup, 120000);

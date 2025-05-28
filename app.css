@@ -286,3 +286,27 @@ footer {
   border-radius: 50%;
   cursor: pointer;
 }
+
+.quote-popup {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  max-width: 250px;
+  background-color: #fff0f6;
+  color: #d6336c;
+  font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', cursive;
+  font-size: 14px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.quote-popup.hidden {
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+}
