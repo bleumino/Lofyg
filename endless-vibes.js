@@ -290,31 +290,27 @@ function ensureTimeContainer() {
     container.appendChild(timeSpan);
     // Insert at top of body
     document.body.insertBefore(container, document.body.firstChild);
-  }
+  }}
+  function updateLocalTime() {
+  const timeElement = document.getElementById('local-time');
+  const iconElement = document.getElementById('time-icon');
+  const now = new Date();
+
+  const hours = now.getHours().toString().padStart(2, '0');
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+  const seconds = now.getSeconds().toString().padStart(2, '0');
+  timeElement.textContent = `${hours}:${minutes}:${seconds}`;
+
+  // Set time-based icon
+  let icon = '⏳';
+  if (hours >= 5 && hours < 11) icon = '🌅';        // Morning
+  else if (hours >= 11 && hours < 17) icon = '🌞';   // Afternoon
+  else if (hours >= 17 && hours < 21) icon = '🌇';   // Evening
+  else icon = '🌙';                                  // Night
+
+  iconElement.textContent = icon;
 }
-      function updateLocalTime() {
-        const now = new Date();
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        const seconds = String(now.getSeconds()).padStart(2, '0');
-        const timeString = `${hours}:${minutes}:${seconds}`;
 
-        const icon = document.getElementById('time-icon');
-        const localTime = document.getElementById('local-time');
-        if (localTime) localTime.textContent = timeString;
-
-        if (icon) {
-          if (now.getHours() < 6 || now.getHours() >= 22) {
-            icon.textContent = "🌙";
-          } else if (now.getHours() < 12) {
-            icon.textContent = "☀️";
-          } else if (now.getHours() < 18) {
-            icon.textContent = "🌤️";
-          } else {
-            icon.textContent = "🌇";
-          }
-        }
-      }
-
-      setInterval(updateLocalTime, 1000);
-      updateLocalTime();
+// Start the clock
+updateLocalTime();
+setInterval(updateLocalTime, 1000); // Update every second
