@@ -235,7 +235,7 @@ function updateTime() {
       });
   });
 
-  const languageButtons = document.querySelectorAll("#language-selector button");
+ const languageButtons = document.querySelectorAll("#language-selector button");
 
 languageButtons.forEach(btn => {
   btn.addEventListener("click", () => {
@@ -243,20 +243,14 @@ languageButtons.forEach(btn => {
     languageButtons.forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
 
-    const selectedLang = btn.dataset.lang;
+    const selectedLang = btn.dataset.language; // ← Make sure you're using data-language in your HTML
 
-    // Combine with active mood if needed
-    const activeMoodBtn = document.querySelector("#mood-selector button.active");
-    const selectedMood = activeMoodBtn?.dataset.mood || "all";
-
-    currentPlaylist = playlist.filter(track => {
-      const moodMatch = selectedMood === "all" || track.moods?.includes(selectedMood);
-      const langMatch = selectedLang === "all" || track.language === selectedLang;
-      return moodMatch && langMatch;
-    });
+    currentPlaylist = selectedLang === "all"
+      ? [...playlist]
+      : playlist.filter(track => track.language === selectedLang);
 
     if (currentPlaylist.length === 0) {
-      alert("No tracks found for that filter.");
+      alert("No tracks found for that language.");
       return;
     }
 
