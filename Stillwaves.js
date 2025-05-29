@@ -5,7 +5,7 @@
       { id: "OCFy3wWDkWM", title: "Ai Tomioka - Good bye bye（English Ver.）（Official Audio）", moods: ["chill", "relax", "calm"], language: "english"},
       { id: "OCFy3wWDkWM", title: "冨岡 愛 - New Style (Lyric Video)", moods: ["chill", "relax"], language: "english"},
       { id: "N85aAdWecPk", title: "Ai Tomioka - Good bye bye（English Ver.）（Official Audio）", moods: ["chill", "relax"], language: "english"},
-      { id: "mAyyBp6gmnw", title: "愛 need your love", moods: ["chill", "relax"], language: "english"},
+      { id: "mAyyBp6gmnw", title: "愛 need your love", moods: ["calm", "relax"], language: "english"},
     
   ];
 
@@ -32,7 +32,6 @@
       timeRemaining: document.getElementById("time-remaining"),
       loopButton: document.getElementById("loop-single"),
       moodButtons: document.querySelectorAll("#mood-selector button"),
-      languageButtons: document.querySelectorAll("#language-selector button"), 
       volumeSlider: document.getElementById("volume-slider")
   };
 
