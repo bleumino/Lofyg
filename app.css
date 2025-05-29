@@ -327,3 +327,11 @@ footer {
   gap: 10px;
   z-index: 1000;
 }
+
+
+#language-selector button.active {
+    background: #ac095a; /* Deep rich pink for active mood */
+    box-shadow: 0 0 8px #ac095a;
+    transform: scale(1.05);
+    transition: 0.3s ease;
+}
