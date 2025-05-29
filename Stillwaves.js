@@ -7,6 +7,7 @@
       { id: "N85aAdWecPk", title: "Ai Tomioka - Good bye bye（English Ver.）（Official Audio）", moods: ["chill", "relax"], language: ["english"]},
       { id: "mAyyBp6gmnw", title: "愛 need your love", moods: ["calm", "relax"], language: ["english"]},
       { id: "deE5ak0Atxw", title: "missing you", moods: ["calm", "relax"], language: ["japanese"]},
+      { id: "CO7cE_SOibA", title: "グッバイバイ (Korean Ver.)", moods: ["calm", "relax"], language: ["korean"]},
     
   ];
 
