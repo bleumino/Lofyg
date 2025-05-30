@@ -305,3 +305,62 @@ body {
   gap: 10px;
   z-index: 1000;
 }
+
+/* 🌐 Google Translate Styling - Matching Soft Powder Blue Theme */
+#translate-wrapper {
+  position: fixed;
+  top: 20px;
+  right: 90px; /* leaves room for the clock */
+  z-index: 1000;
+  background-color: #ffffffcc; /* semi-transparent white */
+  border-radius: 20px;
+  padding: 6px 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(8px);
+  font-family: 'Cherry Bomb One', sans-serif;
+}
+
+/* Hide Google branding */
+#google_translate_element .goog-logo-link,
+#google_translate_element .goog-te-gadget span {
+  display: none !important;
+  font-size: 0 !important;
+}
+
+/* Main translate container style */
+.goog-te-gadget {
+  color: #2E4A66 !important;
+  font-size: 16px;
+  font-family: 'Cherry Bomb One', sans-serif;
+}
+
+/* Translate dropdown */
+.goog-te-combo {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 12px;
+  background-color: #9BB8D3;
+  color: white;
+  font-size: 16px;
+  font-family: 'Cherry Bomb One', sans-serif;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.goog-te-combo:hover {
+  background-color: #7A9BBE;
+}
+
+/* DARK THEME support */
+body.dark-theme #translate-wrapper {
+  background-color: rgba(44, 44, 44, 0.8);
+}
+
+body.dark-theme .goog-te-combo {
+  background-color: #2E4A66;
+  color: #9BB8D3;
+}
+
+body.dark-theme .goog-te-combo:hover {
+  background-color: #3a5c7b;
+}
