@@ -20,6 +20,11 @@
       { id: "vKCDHdw7SuA", title: "simber & 7&nine - sugar & swing 🍭 chill lofi jazz vibes (no copyright music)", moods: ["chill", "relax", "slow-day"] },
       { id: "anwwKwp0W6s", title: "Heat Waves - lofi version", moods: ["study", "relax", "slow-day"] },
       { id: "QXThKEAzV64", title: "Without You - lofi version", moods: ["study", "relax", "slow-day","calm", "chill"] },
+      { id: "8qgKYtRG77Q", title: "lukrembo - home (royalty free vlog music)", moods: ["study", "calm", "relax", "slow-day", "study", "focus"] },
+      { id: "AVzZq_vLD3w", title: "Lukrembo - Bean (no copyright music)", moods: ["chill", "relax",] },
+      { id: "Ykt9AVKoHsQs", title: "komii - matcha cafe (no copyright music)", moods: ["relax"] },
+      
+      { id: "QXThKEAzV64", title: "Without You - lofi version", moods: ["study", "relax", "slow-day","calm", "chill"] },
   ];
 
   let currentPlaylist = [...playlist];

@@ -8,6 +8,7 @@ let playlist = [
           { id: "wWFCEo-zAfc", title: "Lo-fi Hotel Lobby Playlist"},
           { id: "ZbyxjGE885I", title: "Jazz at the Library 📚 1 Hour Jazz Music 📖 Library Ambience | Studying Music | Work Aid 🎧"},
           { id: "4ewLbD2ksKAU", title: "My Beloved Autumn - Chill Fall Lofi Mix for a Rainy Autumn Day 🍂"},
+          {id:"_sT0akYdxDQ", title: "Lofi Pop 2024 🎧 The Best Lofi Covers Of Popular Songs | Best Lofi Music 2024"}
 
 ];
 
