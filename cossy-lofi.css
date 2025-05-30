@@ -318,3 +318,67 @@ body {
   font-size: 14px;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
+
+.vibe-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #ffc6e2;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+}
+
+.vibe-popup {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  background: #fffafc;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 16px;
+  width: 280px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+}
+
+.vibe-popup.hidden {
+  display: none;
+}
+
+.vibe-content textarea {
+  width: 100%;
+  height: 60px;
+  resize: none;
+  padding: 8px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.vibe-content input {
+  width: 100%;
+  padding: 6px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.vibe-content button {
+  margin-right: 6px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  background: #ff90b3;
+  color: white;
+  cursor: pointer;
+}
+
+.close-btn {
+  background: #ddd;
+  color: black;
+}

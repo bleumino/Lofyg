@@ -285,3 +285,28 @@ function updateLocalTime() {
 updateLocalTime();
 setInterval(updateLocalTime, 1000); // Update every second
 
+document.getElementById("vibeButton").addEventListener("click", () => {
+  document.getElementById("vibePopup").classList.remove("hidden");
+});
+
+document.getElementById("closeVibe").addEventListener("click", () => {
+  document.getElementById("vibePopup").classList.add("hidden");
+});
+
+document.getElementById("submitVibe").addEventListener("click", () => {
+  const vibeText = document.getElementById("vibeInput").value.trim();
+  const vibeName = document.getElementById("vibeName").value.trim();
+
+  if (vibeText.length === 0) {
+    alert("Please write a vibe first!");
+    return;
+  }
+
+  alert(`Thanks for your vibe${vibeName ? ', ' + vibeName : ''}!\n\n"${vibeText}"`);
+
+  document.getElementById("vibeInput").value = "";
+  document.getElementById("vibeName").value = "";
+  document.getElementById("vibePopup").classList.add("hidden");
+
+  // Future: You can store it to Firebase or localStorage here.
+});
