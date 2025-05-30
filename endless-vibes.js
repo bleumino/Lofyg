@@ -314,3 +314,56 @@ function ensureTimeContainer() {
 // Start the clock
 updateLocalTime();
 setInterval(updateLocalTime, 1000); // Update every second
+
+const translations = {
+  en: {
+    play: "Play",
+    pause: "Pause",
+    next: "Next",
+    previous: "Previous",
+    volume: "Volume",
+    mood: "Mood",
+    languageLabel: "Language",
+    featureRequest: "Request a Feature / Video Removal"
+  },
+  fr: {
+    play: "Lecture",
+    pause: "Pause",
+    next: "Suivant",
+    previous: "Précédent",
+    volume: "Volume",
+    mood: "Humeur",
+    languageLabel: "Langue",
+    featureRequest: "Demander une fonctionnalité / suppression de vidéo"
+  },
+  es: {
+    play: "Reproducir",
+    pause: "Pausa",
+    next: "Siguiente",
+    previous: "Anterior",
+    volume: "Volumen",
+    mood: "Estado de ánimo",
+    languageLabel: "Idioma",
+    featureRequest: "Solicitar función / eliminación de video"
+  },
+  ja: {
+    play: "再生",
+    pause: "一時停止",
+    next: "次へ",
+    previous: "前へ",
+    volume: "音量",
+    mood: "ムード",
+    languageLabel: "言語",
+    featureRequest: "機能のリクエスト / 動画削除の依頼"
+  },
+  ko: {
+    play: "재생",
+    pause: "일시 정지",
+    next: "다음",
+    previous: "이전",
+    volume: "볼륨",
+    mood: "기분",
+    languageLabel: "언어",
+    featureRequest: "기능 요청 / 동영상 삭제 요청"
+  }
+};
