@@ -369,11 +369,11 @@ body {
 }
 
 .vibe-content button {
-  margin-right: 6px;
+  margin-right: 20px;
   padding: 6px 10px;
   border: none;
   border-radius: 6px;
-  background: #ff90b3;
+  background: #4A90E2;
   color: white;
   cursor: pointer;
 }
