@@ -1,12 +1,3 @@
-// Create the translate widget container if it doesn't exist
-(function createTranslateContainer() {
-  if (!document.getElementById('google_translate_element')) {
-    const div = document.createElement('div');
-    div.id = 'google_translate_element';
-    document.body.appendChild(div);
-  }
-})();
-
 // Load Google Translate script dynamically
 function loadGoogleTranslate() {
   const script = document.createElement('script');
@@ -24,5 +15,5 @@ window.googleTranslateElementInit = function () {
   }, 'google_translate_element');
 };
 
-// Load it after DOM is ready
+// Wait for DOM to be ready before loading script
 document.addEventListener('DOMContentLoaded', loadGoogleTranslate);
