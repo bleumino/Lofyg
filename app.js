@@ -419,3 +419,25 @@ const translations = {
     featureRequest: "기능 요청 / 동영상 삭제 요청"
   }
 };
+
+function updateLanguage(lang) {
+  const elements = document.querySelectorAll("[data-i18n]");
+  elements.forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    if (translations[lang] && translations[lang][key]) {
+      el.textContent = translations[lang][key];
+    }
+  });
+}
+
+document.getElementById("language-select").addEventListener("change", function () {
+  const selectedLang = this.value;
+  updateLanguage(selectedLang);
+  localStorage.setItem("selectedLang", selectedLang); // optional: remember selection
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  const savedLang = localStorage.getItem("selectedLang") || "en";
+  document.getElementById("language-select").value = savedLang;
+  updateLanguage(savedLang);
+});
