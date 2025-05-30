@@ -6,7 +6,7 @@ function loadGoogleTranslate() {
     window.googleTranslateElementInit = function () {
       new google.translate.TranslateElement({
         pageLanguage: 'en',
-        includedLanguages: 'en,es,fr,ja,ko,vi de,it,zh-CN,zh-TW,pt,ru,ar,hi,id,th,pl,tr,nl,sv,ro,cs,el,he,hu,fa',
+        includedLanguages: 'en,es,fr,ja,ko,vi,de,it,zh-CN,zh-TW,pt,ru,ar,hi,id,th,pl,tr,nl,sv,ro,cs,el,he,hu,fa',
         layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
         autoDisplay: false
       }, 'google_translate_element');
