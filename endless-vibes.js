@@ -8,7 +8,19 @@ let playlist = [
           { id: "wWFCEo-zAfc", title: "Lo-fi Hotel Lobby Playlist"},
           { id: "ZbyxjGE885I", title: "Jazz at the Library 📚 1 Hour Jazz Music 📖 Library Ambience | Studying Music | Work Aid 🎧"},
           { id: "4ewLbD2ksKAU", title: "My Beloved Autumn - Chill Fall Lofi Mix for a Rainy Autumn Day 🍂"},
-          {id:"_sT0akYdxDQ", title: "Lofi Pop 2024 🎧 The Best Lofi Covers Of Popular Songs | Best Lofi Music 2024"}
+          {id:"_sT0akYdxDQ", title: "Lofi Pop 2024 🎧 The Best Lofi Covers Of Popular Songs | Best Lofi Music 2024"},
+          { id: "9GaBMZRHM3U", title: "Lofi Chill and Relaxation with Capybara for a Tranquil Day"},
+          { id: "Wo2G9740xyE", title: "Let go of what you can't control. | Lo-fi Rain | Study Beats | Cafe Music"},
+          { id: "wAPCSnAhhC8", title: "2 A.M Study Session 📚 [lofi hip hop]"},
+          { id: "/9M4jZuqdw04", title: "In the Zone 🐾 [lofi focus beats / work mix]"},
+          {id:"PLLRRXURicM", title: "Japan Coastal Vibes 🌅 Lofi Mix for Focus and Relaxation"},
+          { id: "rwLv6YPiGsE", title: "Lofi Girl x Assassin's Creed Shadows - Stealthy beats to relax to 🌸"},
+          { id: "cYPJaHT5f3E", title: "Peaceful Day 🎹 [calm piano]"},
+          { id: "mRbjDIDQo4Y", title: "Cozy Winter Jazz Vibes 🎄 Lofi Hiphop Christmas Mix ⛄️ Jazzy Beats"},
+          {id:"FHvwbRdp1YM", title: "silhouette ~ but it's lofi hip hop (naruto shippuden) [1 hour version]"},
+          {id:"leg3dJ4Xl_Q", title: "Popular Anime Openings But It's Lofi Remix ~ Best Anime Lofi Hip Hop Mix"},
+          {id:"DkPjOnUr4M4", title: "best anime openings but it's lofi remix part 2 extended edition (2 hours)"},
+          {id:"q9v2rMgc5vc", title: "𝐏𝐥𝐚𝐲𝐥𝐢𝐬𝐭 90s Japanese Lofi Hiphop ☕️Nostalgic Chill Vibes"},
 
 ];
 
