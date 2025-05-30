@@ -336,72 +336,15 @@ footer {
     transition: 0.3s ease;
 }
 
-
-/* 🌐 Google Translate Styling - Matching Sakura Pink Theme */
-#translate-wrapper {
-  position: fixed;
-  top: 20px;
-  right: 90px; /* leaves room for the clock */
-  z-index: 1000;
-  background-color: #ffe6f2cc; /* soft pink with transparency */
-  border-radius: 20px;
-  padding: 6px 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(8px);
-  font-family: 'Cherry Bomb One', sans-serif;
-}
-
-/* Hide Google branding */
-#google_translate_element .goog-logo-link,
-#google_translate_element .goog-te-gadget span {
-  display: none !important;
-  font-size: 0 !important;
-}
-
-/* Main translate container style */
-.goog-te-gadget {
-  color: #d63384 !important; /* deep pink */
-  font-size: 16px;
-  font-family: 'Cherry Bomb One', sans-serif;
-}
-
-/* Translate dropdown */
-.goog-te-combo {
-  padding: 6px 12px;
-  border: none;
-  border-radius: 12px;
-  background-color: #ff99cc; /* soft vibrant pink */
-  color: white;
-  font-size: 16px;
-  font-family: 'Cherry Bomb One', sans-serif;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.goog-te-combo:hover {
-  background-color: #ff66a3; /* brighter hover pink */
-}
-
-/* DARK THEME support */
-body.dark-theme #translate-wrapper {
-  background-color: rgba(44, 44, 44, 0.8);
-}
-
-body.dark-theme .goog-te-combo {
-  background-color: #661f46; /* deep plum pink */
-  color: #ffccf9;
-}
-
-body.dark-theme .goog-te-combo:hover {
-  background-color: #992f6c;
-}
-
 #google_translate_element {
-  display: block !important;
-  opacity: 1 !important;
-  z-index: 1000 !important;
-}
-.goog-te-banner-frame.skiptranslate,
-.goog-te-gadget-icon {
-  display: none !important;
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 10000;
+  background-color: white;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }

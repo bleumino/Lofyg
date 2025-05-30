@@ -1,32 +1,28 @@
-// Ensure callback is defined BEFORE script loads
-window.googleTranslateElementInit = function () {
-  console.log("✅ Google Translate initialized.");
-  new google.translate.TranslateElement({
-    pageLanguage: 'en',
-    includedLanguages: 'en,es,ja,ko,fr',
-    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-  }, 'google_translate_element');
-};
+// translate.js
 
-// Load Google Translate script dynamically
+// Dynamically load the Google Translate script
 function loadGoogleTranslate() {
-  const existing = document.querySelector('script[src*="element.js"]');
-  if (!existing) {
+  return new Promise((resolve, reject) => {
+    window.googleTranslateElementInit = function () {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'en,es,fr,ja,ko,vi',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        autoDisplay: false
+      }, 'google_translate_element');
+      resolve();
+    };
+
     const script = document.createElement('script');
-    script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-    script.async = true;
-    script.defer = true;
+    script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+    script.onerror = reject;
     document.head.appendChild(script);
-  }
+  });
 }
 
-// Ensure element exists and run loader after DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-  const el = document.getElementById('google_translate_element');
-  if (el) {
-    console.log("🧩 Found #google_translate_element, loading Translate...");
-    loadGoogleTranslate();
-  } else {
-    console.warn("⚠️ #google_translate_element not found in DOM.");
-  }
+// Optional: Automatically load it when the script runs
+loadGoogleTranslate().then(() => {
+  console.log("✅ Google Translate initialized.");
+}).catch(err => {
+  console.error("❌ Failed to load Google Translate:", err);
 });
