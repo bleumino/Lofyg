@@ -395,3 +395,13 @@ body.dark-theme .goog-te-combo {
 body.dark-theme .goog-te-combo:hover {
   background-color: #992f6c;
 }
+
+#google_translate_element {
+  display: block !important;
+  opacity: 1 !important;
+  z-index: 1000 !important;
+}
+.goog-te-banner-frame.skiptranslate,
+.goog-te-gadget-icon {
+  display: none !important;
+}
