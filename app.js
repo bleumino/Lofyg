@@ -384,72 +384,32 @@ function updateLocalTime() {
 updateLocalTime();
 setInterval(updateLocalTime, 1000); // Update every second
 
-
-document.getElementById("vibeButton").addEventListener("click", () => {
-  document.getElementById("vibePopup").classList.remove("hidden");
-});
-
-document.getElementById("closeVibe").addEventListener("click", () => {
-  document.getElementById("vibePopup").classList.add("hidden");
-});
-
-document.getElementById("submitVibe").addEventListener("click", () => {
+document.getElementById("submitVibe").addEventListener("click", async () => {
   const vibeText = document.getElementById("vibeInput").value.trim();
-  const vibeName = document.getElementById("vibeName").value.trim();
+  const vibeName = document.getElementById("vibeName").value.trim() || "Anonymous";
 
-  if (vibeText.length === 0) {
-    alert("Please write a vibe first!");
-    return;
-  }
-
-  alert(`Thanks for your vibe${vibeName ? ', ' + vibeName : ''}!\n\n"${vibeText}"`);
-
-  document.getElementById("vibeInput").value = "";
-  document.getElementById("vibeName").value = "";
-  document.getElementById("vibePopup").classList.add("hidden");
-
-  // Future: You can store it to Firebase or localStorage here.
-});
-
-ocument.getElementById("submitVibe").addEventListener("click", async () => {
-  const vibe = document.getElementById("vibeInput").value.trim();
-  const name = document.getElementById("vibeName").value.trim() || "Anonymous";
-
-  if (!vibe) {
+  if (!vibeText) {
     alert("Please write your vibe before submitting!");
     return;
   }
 
-  await fetch("https://script.google.com/macros/s/AKfycbwVrmlYmI3MUGa7Ip6LzVyrKIw041sZa37F0vQJ4ec-Lw0d0bQiaSKfEdH2PdKoFyGl7w/exec", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ vibe, name })
-  });
+  try {
+    await fetch("https://script.google.com/macros/s/AKfycbwVrmlYmI3MUGa7Ip6LzVyrKIw041sZa37F0vQJ4ec-Lw0d0bQiaSKfEdH2PdKoFyGl7w/exec", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ vibe: vibeText, name: vibeName })
+    });
+
+    alert(`Thanks for your vibe, ${vibeName}!\n\n"${vibeText}"`);
+  } catch (error) {
+    alert("Oops! Something went wrong. Try again later.");
+    console.error(error);
+    return;
+  }
 
   document.getElementById("vibeInput").value = "";
   document.getElementById("vibeName").value = "";
-  alert("Vibe sent! ✨");
+  document.getElementById("vibePopup").classList.add("hidden");
+
+  loadVibes(); // Refresh the list if displayed on the page
 });
-
-async function loadVibes() {
-  const response = await fetch("YOUR_WEB_APP_URL");
-  const vibes = await response.json();
-
-  const vibeDisplay = document.getElementById("vibeDisplay");
-  vibeDisplay.innerHTML = "";
-
-  vibes.reverse().forEach(v => {
-    const vibeEl = document.createElement("div");
-    vibeEl.className = "vibe-card";
-    vibeEl.innerHTML = `
-      <p><strong>${v.name}</strong> says:</p>
-      <p>“${v.vibe}”</p>
-      <small>${new Date(v.timestamp).toLocaleString()}</small>
-      <hr>
-    `;
-    vibeDisplay.appendChild(vibeEl);
-  });
-}
-
-window.addEventListener("load", loadVibes);
-
