@@ -411,4 +411,45 @@ document.getElementById("submitVibe").addEventListener("click", () => {
   // Future: You can store it to Firebase or localStorage here.
 });
 
+ocument.getElementById("submitVibe").addEventListener("click", async () => {
+  const vibe = document.getElementById("vibeInput").value.trim();
+  const name = document.getElementById("vibeName").value.trim() || "Anonymous";
+
+  if (!vibe) {
+    alert("Please write your vibe before submitting!");
+    return;
+  }
+
+  await fetch("https://script.google.com/macros/s/AKfycbwVrmlYmI3MUGa7Ip6LzVyrKIw041sZa37F0vQJ4ec-Lw0d0bQiaSKfEdH2PdKoFyGl7w/exec", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ vibe, name })
+  });
+
+  document.getElementById("vibeInput").value = "";
+  document.getElementById("vibeName").value = "";
+  alert("Vibe sent! ✨");
+});
+
+async function loadVibes() {
+  const response = await fetch("YOUR_WEB_APP_URL");
+  const vibes = await response.json();
+
+  const vibeDisplay = document.getElementById("vibeDisplay");
+  vibeDisplay.innerHTML = "";
+
+  vibes.reverse().forEach(v => {
+    const vibeEl = document.createElement("div");
+    vibeEl.className = "vibe-card";
+    vibeEl.innerHTML = `
+      <p><strong>${v.name}</strong> says:</p>
+      <p>“${v.vibe}”</p>
+      <small>${new Date(v.timestamp).toLocaleString()}</small>
+      <hr>
+    `;
+    vibeDisplay.appendChild(vibeEl);
+  });
+}
+
+window.addEventListener("load", loadVibes);
 
