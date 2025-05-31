@@ -346,10 +346,19 @@ button:hover {
 }
 
 .vinyl.spinning {
-  animation: spin 4s linear infinite;
+  animation: spin 3s linear infinite;
+}
+
+.vinyl.pulsing {
+  animation: pulse 1.5s ease-in-out infinite;
 }
 
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
 }
