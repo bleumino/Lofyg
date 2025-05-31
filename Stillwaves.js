@@ -151,7 +151,7 @@
       }
   }
 
- function startVinylAnimation() {
+  function startVinylAnimation() {
     const vinyl = document.querySelector('.vinyl');
     if (!vinyl) return;
 
