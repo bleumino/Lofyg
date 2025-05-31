@@ -399,3 +399,12 @@ button:hover {
 #volume-slider:focus {
   box-shadow: 0 0 8px #a678e2;
 }
+
+.vinyl.spinning {
+  animation: spin 4s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

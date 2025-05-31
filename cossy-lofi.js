@@ -167,11 +167,15 @@ function startUpdatingTime() {
 }
 
 function startVinylAnimation() {
-    if (elements.vinylRecord) {
-        elements.vinylRecord.classList.toggle("spinning", isPlaying);
-        elements.vinylRecord.classList.toggle("pulsing", isPlaying);
-        document.querySelector('.vinyl').classList.add('spinning');
-        document.querySelector('.vinyl').classList.remove('spinning');
+    const vinyl = document.querySelector('.vinyl');
+    if (!vinyl) return;
+
+    if (isPlaying) {
+        vinyl.classList.add('spinning');
+        vinyl.classList.add('pulsing');
+    } else {
+        vinyl.classList.remove('spinning');
+        vinyl.classList.remove('pulsing');
     }
 }
 
