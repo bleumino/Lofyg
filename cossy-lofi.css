@@ -328,3 +328,19 @@ button:hover {
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
   transform: scale(1.03);
 }
+
+
+#volume-slider {
+  -webkit-appearance: none;
+  width: 150px;
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(to right, #6e7fd1, #a678e2);
+  outline: none;
+  transition: box-shadow 0.3s ease;
+}
+
+#volume-slider:hover,
+#volume-slider:focus {
+  box-shadow: 0 0 8px #a678e2;
+}

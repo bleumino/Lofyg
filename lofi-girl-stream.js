@@ -168,6 +168,8 @@ function updateQueue() {
 function startVinylAnimation() {
     if (elements.vinylRecord) {
         elements.vinylRecord.classList.toggle("spinning", isPlaying);
+        document.querySelector('.vinyl').classList.add('spinning');
+        document.querySelector('.vinyl').classList.remove('spinning');
     }
 }
 

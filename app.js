@@ -167,6 +167,8 @@
       if (!elements.vinylRecord) return;
       elements.vinylRecord.classList.toggle("spinning", isPlaying);
       elements.vinylRecord.classList.toggle("pulsing", isPlaying);
+      document.querySelector('.vinyl').classList.add('spinning');
+      document.querySelector('.vinyl').classList.remove('spinning');
   }
 
   function resetProgressBar() {
@@ -219,6 +221,7 @@ function updateTime() {
               break;
       }
       startVinylAnimation();
+
   }
 
   function handlePlayerError() {
