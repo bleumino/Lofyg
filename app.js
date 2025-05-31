@@ -34,7 +34,6 @@
       { id: "mDaJZO5EcpQ", title: "oxinym & hbeat & lofi trumpet - rio left alone 🌴 royalty free lofi music (no copyright music)", moods: ["relax", "focus", "study"] },
       { id: "3gpiMt77zWM", title: "departure to the front lines ~ but it's lofi hip hop (naruto shippuden)", moods: ["relax", "focus","chill", "calm"] },
       { id: "v9jlIt7yb1Y", title: "comedy ~ but it's lofi hip hop (spy x family)", moods: ["study", "calm", "relax", "slow-day", "focus"] },
-      { id: "rPq4ZAa2nug?", title: "across the violet sky ~ but it's lofi hip hop (violet evergarden)", moods: ["chill", "relax"] },
       { id: "AAo37nU_C3k", title: "sadness & sorrow but it’s lofi (Naruto)", moods: ["relax", "focus", "study"] },
       { id: "xbDVq3FA6rU", title: "Blue Bird but is it okay if it's lofi?", moods: ["relax", "focus","chill", "calm"] },
   ];
