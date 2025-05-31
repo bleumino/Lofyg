@@ -298,3 +298,48 @@ function updateLocalTime() {
 // Start the clock
 updateLocalTime();
 setInterval(updateLocalTime, 1000); // Update every second
+
+document.addEventListener('keydown', (e) => {
+  if (document.activeElement.tagName === 'INPUT') return; // Skip if typing
+
+  switch (e.key) {
+    case ' ':
+      e.preventDefault();
+      togglePlayPause();
+      break;
+    case 'ArrowRight':
+      player.seekTo(player.getCurrentTime() + 5, true);
+      break;
+    case 'ArrowLeft':
+      player.seekTo(player.getCurrentTime() - 5, true);
+      break;
+    case 'ArrowUp':
+      setVolume(Math.min(100, player.getVolume() + 10));
+      break;
+    case 'ArrowDown':
+      setVolume(Math.max(0, player.getVolume() - 10));
+      break;
+    case 'm':
+    case 'M':
+      player.isMuted() ? player.unMute() : player.mute();
+      break;
+    case '?':
+      toggleHelpModal(); // Optional UI element
+      break;
+  }
+});
+
+function togglePlayPause() {
+  const state = player.getPlayerState();
+  if (state === YT.PlayerState.PLAYING) player.pauseVideo();
+  else player.playVideo();
+}
+
+function setVolume(vol) {
+  player.setVolume(vol);
+}
+
+function toggleHelpModal() {
+  const modal = document.getElementById('help-modal');
+  modal.classList.toggle('hidden');
+}

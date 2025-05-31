@@ -99,6 +99,21 @@
         <!-- Song Queue -->
         <ul id="queue"></ul>
     
+        <div id="help-modal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+  <div class="bg-white dark:bg-neutral-800 text-black dark:text-white p-6 rounded-2xl shadow-2xl max-w-md w-full text-sm font-sans">
+    <h2 class="text-xl font-semibold mb-4 text-center">🎹 Keyboard Shortcuts</h2>
+    <ul class="space-y-2">
+      <li><kbd class="kbd">Space</kbd> – Play / Pause</li>
+      <li><kbd class="kbd">←</kbd> / <kbd class="kbd">→</kbd> – Seek -5s / +5s</li>
+      <li><kbd class="kbd">↑</kbd> / <kbd class="kbd">↓</kbd> – Volume ±10%</li>
+      <li><kbd class="kbd">M</kbd> – Mute / Unmute</li>
+      <li><kbd class="kbd">?</kbd> – Toggle Help</li>
+    </ul>
+    <button onclick="toggleHelpModal()" class="mt-6 block mx-auto px-4 py-1 bg-neutral-200 dark:bg-neutral-700 hover:bg-neutral-300 dark:hover:bg-neutral-600 rounded-lg text-sm">
+      Close
+    </button>
+  </div>
+</div>
 
         <!-- Loop Mode Control Buttons -->
         <section class="mode-toggle-container">
