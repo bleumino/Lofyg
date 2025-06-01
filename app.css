@@ -417,3 +417,28 @@ button:hover {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.05); }
 }
+
+#play {
+  font-size: 1rem;
+  padding: 0.6rem 1.2rem;
+  background-color: #222;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 0 transparent;
+}
+
+#play.playing {
+  background-color: #444;
+  color: #ffcc70;
+  box-shadow: 0 0 10px rgba(255, 204, 112, 0.6);
+  animation: pulseGlow 1.5s infinite;
+}
+
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 8px rgba(255, 204, 112, 0.5); }
+  50% { box-shadow: 0 0 16px rgba(255, 204, 112, 0.8); }
+  100% { box-shadow: 0 0 8px rgba(255, 204, 112, 0.5); }
+}

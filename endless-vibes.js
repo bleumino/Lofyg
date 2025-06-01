@@ -342,3 +342,21 @@ function ensureTimeContainer() {
 // Start the clock
 updateLocalTime();
 setInterval(updateLocalTime, 1000); // Update every second
+
+const playButton = document.getElementById("play");
+
+function togglePlayPause() {
+  const isPlaying = player.getPlayerState && player.getPlayerState() === 1;
+
+  if (isPlaying) {
+    player.pauseVideo();
+    playButton.textContent = "▶️ Paused";
+    playButton.classList.remove("playing");
+  } else {
+    player.playVideo();
+    playButton.textContent = "⏸️ Playing...";
+    playButton.classList.add("playing");
+  }
+}
+
+playButton.addEventListener("click", togglePlayPause);
