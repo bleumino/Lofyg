@@ -358,8 +358,8 @@ document.addEventListener('keydown', (e) => {
     case 'M':
       player.isMuted() ? player.unMute() : player.mute();
       break;
-    case '?':
-      toggleHelpModal(); // Optional UI element
+    case '/':
+      if (e.shiftKey) toggleHelpModal(); // Now correctly detects `?`
       break;
   }
 });
