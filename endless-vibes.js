@@ -378,3 +378,22 @@ function toggleHelpModal() {
   const modal = document.getElementById('help-modal');
   modal.classList.toggle('hidden');
 }
+
+document.addEventListener("keydown", (e) => {
+  // Ignore if typing in an input or textarea
+  const isTyping = e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA";
+  if (isTyping) return;
+
+  if (e.code === "Space") {
+    e.preventDefault(); // Prevent scrolling
+
+    if (typeof player?.getPlayerState === "function") {
+      const state = player.getPlayerState();
+      if (state === YT.PlayerState.PLAYING) {
+        player.pauseVideo();
+      } else if (state === YT.PlayerState.PAUSED || state === YT.PlayerState.CUED) {
+        player.playVideo();
+      }
+    }
+  }
+});
