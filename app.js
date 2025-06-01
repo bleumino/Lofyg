@@ -286,16 +286,24 @@ function updateTime() {
       }
   });
 
-  // Volume slider event
-  if (elements.volumeSlider) {
-      elements.volumeSlider.addEventListener("input", () => {
-          const volume = parseInt(elements.volumeSlider.value, 10);
-          if (player && typeof player.setVolume === "function") {
-              player.setVolume(volume);
-          }
-      });
-  }
+  const volumeSlider = document.getElementById("volume-slider");
+const volumePercent = document.getElementById("volume-percent");
 
+function updateVolumeDisplay() {
+  const volume = parseInt(volumeSlider.value, 10);
+  volumePercent.textContent = `${volume}%`;
+
+  // If using YouTube IFrame API
+  if (player && typeof player.setVolume === "function") {
+    player.setVolume(volume);
+  }
+}
+
+// Initialize display
+updateVolumeDisplay();
+
+// Update on input
+volumeSlider.addEventListener("input", updateVolumeDisplay);
   // Fun particle effect on clicks
   document.addEventListener("click", e => {
       for (let i = 0; i < 8; i++) {

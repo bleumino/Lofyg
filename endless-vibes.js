@@ -275,15 +275,24 @@ document.addEventListener("click", e => {
 
 // Start
 loadYouTubeAPI().then(initialize);
-
 const volumeSlider = document.getElementById("volume-slider");
+const volumePercent = document.getElementById("volume-percent");
 
-volumeSlider.addEventListener("input", () => {
-    const volume = parseInt(volumeSlider.value, 10);
-    if (player && typeof player.setVolume === "function") {
-        player.setVolume(volume);
-    }
-});
+function updateVolumeDisplay() {
+  const volume = parseInt(volumeSlider.value, 10);
+  volumePercent.textContent = `${volume}%`;
+
+  // If using YouTube IFrame API
+  if (player && typeof player.setVolume === "function") {
+    player.setVolume(volume);
+  }
+}
+
+// Initialize display
+updateVolumeDisplay();
+
+// Update on input
+volumeSlider.addEventListener("input", updateVolumeDisplay);
 
 // Ensure time container exists in the DOM
 function ensureTimeContainer() {
@@ -333,67 +342,3 @@ function ensureTimeContainer() {
 // Start the clock
 updateLocalTime();
 setInterval(updateLocalTime, 1000); // Update every second
-
-document.addEventListener('keydown', (e) => {
-  if (document.activeElement.tagName === 'INPUT') return; // Skip if typing
-
-  switch (e.key) {
-    case ' ':
-      e.preventDefault();
-      togglePlayPause();
-      break;
-    case 'ArrowRight':
-      player.seekTo(player.getCurrentTime() + 5, true);
-      break;
-    case 'ArrowLeft':
-      player.seekTo(player.getCurrentTime() - 5, true);
-      break;
-    case 'ArrowUp':
-      setVolume(Math.min(100, player.getVolume() + 10));
-      break;
-    case 'ArrowDown':
-      setVolume(Math.max(0, player.getVolume() - 10));
-      break;
-    case 'm':
-    case 'M':
-      player.isMuted() ? player.unMute() : player.mute();
-      break;
-    case '/':
-      if (e.shiftKey) toggleHelpModal(); // Now correctly detects `?`
-      break;
-  }
-});
-
-function togglePlayPause() {
-  const state = player.getPlayerState();
-  if (state === YT.PlayerState.PLAYING) player.pauseVideo();
-  else player.playVideo();
-}
-
-function setVolume(vol) {
-  player.setVolume(vol);
-}
-
-function toggleHelpModal() {
-  const modal = document.getElementById('help-modal');
-  modal.classList.toggle('hidden');
-}
-
-document.addEventListener("keydown", (e) => {
-  // Ignore if typing in an input or textarea
-  const isTyping = e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA";
-  if (isTyping) return;
-
-  if (e.code === "Space") {
-    e.preventDefault(); // Prevent scrolling
-
-    if (typeof player?.getPlayerState === "function") {
-      const state = player.getPlayerState();
-      if (state === YT.PlayerState.PLAYING) {
-        player.pauseVideo();
-      } else if (state === YT.PlayerState.PAUSED || state === YT.PlayerState.CUED) {
-        player.playVideo();
-      }
-    }
-  }
-});

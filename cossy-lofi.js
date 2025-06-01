@@ -258,14 +258,26 @@ document.addEventListener("click", e => {
 // Start
 loadYouTubeAPI().then(initialize);
 
-const volumeSlider = document.getElementById("volume-slider");
 
-volumeSlider.addEventListener("input", () => {
-    const volume = parseInt(volumeSlider.value, 10);
-    if (player && typeof player.setVolume === "function") {
-        player.setVolume(volume);
-    }
-});
+
+const volumeSlider = document.getElementById("volume-slider");
+const volumePercent = document.getElementById("volume-percent");
+
+function updateVolumeDisplay() {
+  const volume = parseInt(volumeSlider.value, 10);
+  volumePercent.textContent = `${volume}%`;
+
+  // If using YouTube IFrame API
+  if (player && typeof player.setVolume === "function") {
+    player.setVolume(volume);
+  }
+}
+
+// Initialize display
+updateVolumeDisplay();
+
+// Update on input
+volumeSlider.addEventListener("input", updateVolumeDisplay);
 
 function updateLocalTime() {
   const timeElement = document.getElementById('local-time');

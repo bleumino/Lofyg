@@ -267,13 +267,23 @@ document.addEventListener('click', e => {
 });
 
 const volumeSlider = document.getElementById("volume-slider");
+const volumePercent = document.getElementById("volume-percent");
 
-volumeSlider.addEventListener("input", () => {
-    const volume = parseInt(volumeSlider.value, 10);
-    if (player && typeof player.setVolume === "function") {
-        player.setVolume(volume);
-    }
-});
+function updateVolumeDisplay() {
+  const volume = parseInt(volumeSlider.value, 10);
+  volumePercent.textContent = `${volume}%`;
+
+  // If using YouTube IFrame API
+  if (player && typeof player.setVolume === "function") {
+    player.setVolume(volume);
+  }
+}
+
+// Initialize display
+updateVolumeDisplay();
+
+// Update on input
+volumeSlider.addEventListener("input", updateVolumeDisplay);
 
 function updateLocalTime() {
   const timeElement = document.getElementById('local-time');
