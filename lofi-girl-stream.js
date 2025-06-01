@@ -310,25 +310,14 @@ updateLocalTime();
 setInterval(updateLocalTime, 1000); // Update every second
 
 
-document.addEventListener("keydown", (e) => {
-  // Ignore if typing in an input or textarea
-  const isTyping = e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA";
-  if (isTyping) return;
-
-  if (e.code === "Space") {
-    e.preventDefault(); // Prevent scrolling
-
-    if (typeof player?.getPlayerState === "function") {
-      const state = player.getPlayerState();
-      if (state === YT.PlayerState.PLAYING) {
-        player.pauseVideo();
-      } else if (state === YT.PlayerState.PAUSED || state === YT.PlayerState.CUED) {
-        player.playVideo();
-      }
+document.addEventListener("keydown", (event) => {
+    if (event.code === "Space" && !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) {
+        event.preventDefault();
+        isPlaying ? player.pauseVideo() : player.playVideo();
+        isPlaying = !isPlaying;
+        startVinylAnimation();
     }
-  }
 });
-
 const playButton = document.getElementById("play");
 
 function togglePlayPause() {
