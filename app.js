@@ -408,17 +408,27 @@ document.addEventListener("keydown", (event) => {
 });
 const playButton = document.getElementById("play");
 
+function updatePlayButtonUI(isPlaying) {
+  if (isPlaying) {
+    playButton.textContent = "⏸️ Playing...";
+    playButton.classList.add("playing");
+    playButton.classList.remove("paused");
+  } else {
+    playButton.textContent = "▶️ Play";
+    playButton.classList.add("paused");
+    playButton.classList.remove("playing");
+  }
+}
+
 function togglePlayPause() {
   const isPlaying = player.getPlayerState && player.getPlayerState() === 1;
 
   if (isPlaying) {
     player.pauseVideo();
-    playButton.textContent = "▶️ Paused";
-    playButton.classList.remove("playing");
+    updatePlayButtonUI(false);
   } else {
     player.playVideo();
-    playButton.textContent = "⏸️ Playing...";
-    playButton.classList.add("playing");
+    updatePlayButtonUI(true);
   }
 }
 
