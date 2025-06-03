@@ -410,11 +410,11 @@ const playButton = document.getElementById("play");
 
 function updatePlayButtonUI(isPlaying) {
   if (isPlaying) {
-    playButton.textContent = "⏸️ Playing...";
+    playButton.innerHTML = "⏸️ Playing...";
     playButton.classList.add("playing");
     playButton.classList.remove("paused");
   } else {
-    playButton.textContent = "▶️ Play";
+    playButton.innerHTML = "▶️ Play";
     playButton.classList.add("paused");
     playButton.classList.remove("playing");
   }
