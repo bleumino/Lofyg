@@ -422,17 +422,19 @@ function togglePlayPause() {
     playButton.classList.add("playing");
   }
 }
-
 function togglePlayPause() {
-  const isPlaying = player.getPlayerState && player.getPlayerState() === 1;
+  if (!player || typeof player.getPlayerState !== "function") {
+    console.warn("Player not ready");
+    return;
+  }
+
+  const isPlaying = player.getPlayerState() === 1;
 
   if (isPlaying) {
     player.pauseVideo();
-    updatePlayButtonUI(false);
+    updatePlayButton(false);
   } else {
     player.playVideo();
-    updatePlayButtonUI(true);
+    updatePlayButton(true);
   }
 }
-
-playButton.addEventListener("click", togglePlayPause);
