@@ -408,15 +408,18 @@ document.addEventListener("keydown", (event) => {
 });
 const playButton = document.getElementById("play");
 
-function updatePlayButtonUI(isPlaying) {
+function togglePlayPause() {
+  const isPlaying = player.getPlayerState && player.getPlayerState() === 1;
+  console.log("Play state:", isPlaying); // ✅ check if this logs correctly
+
   if (isPlaying) {
-    playButton.innerHTML = "⏸️ Playing...";
-    playButton.classList.add("playing");
-    playButton.classList.remove("paused");
-  } else {
-    playButton.innerHTML = "▶️ Play";
-    playButton.classList.add("paused");
+    player.pauseVideo();
+    playButton.innerHTML = "▶️ Play"; // <-- emoji + label
     playButton.classList.remove("playing");
+  } else {
+    player.playVideo();
+    playButton.innerHTML = "⏸️ Playing..."; // <-- emoji + label
+    playButton.classList.add("playing");
   }
 }
 
