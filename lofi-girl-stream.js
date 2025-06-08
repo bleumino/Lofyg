@@ -6,6 +6,8 @@ let playlist= [
     { id: "dw_Bx0e0lis", title: "Honey Coffee ☕ Sweet Day with Lofi Cafe in Forest 🍯 Lofi Hip Hop for relax, work, study 24/7" },
     { id: "IxPANmjPaek", title: "medieval lofi radio 🏰 - beats to scribe manuscripts to" },
     { id: "nPqLRmvyG2I", title: "no copyright lofi jazz music 🎷 relax/study beats 24/7" },
+    { id: "28KRPhVzCus", title: "lofi hip hop radio 💤 beats to sleep/chill to" },
+    { id: "P6Segk8cr-c", title: "sad lofi radio ☔ beats for rainy days" },
 ];
 
 let currentSongIndex = 0;

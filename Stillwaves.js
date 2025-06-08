@@ -41,6 +41,15 @@
       { id: "8DHNpcvWqhg", title: "มันเป็นใคร (Alright)", moods: ["calm", "relax", "slow-day"], language: "thai"},
       { id: "bG4PqM0Aeuo", title: "รักมือสอง", moods: ["calm", "relax",], language: "thai"},
       { id: "5viSRulpLHg", title: "Maria Froes - Vaitimbora lyrics (Acoustic cover)", moods: ["calm", "relax", "slow-day"], language: "portuguese"},
+      { id: "j-T4hRJNFJI", title: "Güliz Ayla - Olmazsan Olmaz", moods: ["calm", "relax",], language: "turkish"},
+      { id: "N5Qc3tH1PIM", title: "Sedef Sebüktekin - Ara (Official Video)", moods: ["calm", "relax", "slow-day"], language: "turkish"},
+      { id: "d3Gp6CJ9ig0", title: "Sedef Sebüktekin - Sen İstersin (Official Video)", moods: ["calm", "relax",], language: "turkish"},
+      { id: "Saxujm0_ImA", title: "Akad", moods: ["calm", "relax", "slow-day"], language: "indonesian"},
+      { id: "Lr9sqNB8jEo", title: "Stephanie Poetri - I Love You 3000 (Official Audio)", moods: ["calm", "relax", "slow-day"], language: "english"},
+      { id: "iQo-8wx0l0Y", title: ".Feast - Nina (Official Lyric Video)", moods: ["calm", "relax",], language: "indonesian"},
+      { id: "Jj_dyacpo_o", title: "Va va vis - Florina (Lyrics)", moods: ["calm", "relax", "slow-day"], language: "french"},
+      { id: "QJYn8b2hyLA", title: "Louane - Pardonne-moi (Version Acoustique) (Visualizer)", moods: ["calm", "relax", "slow-day"], language: "french"},
+      { id: "bh15Hdy2W9k", title: "너의 이름은(君の名は) - 아무것도 아니야(なんでもないや) Cover by Elina Karimova", moods: ["calm", "relax", "slow-day"], language: "japanese"},
       
   ];
 

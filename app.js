@@ -36,6 +36,20 @@
       { id: "v9jlIt7yb1Y", title: "comedy ~ but it's lofi hip hop (spy x family)", moods: ["study", "calm", "relax", "slow-day", "focus"] },
       { id: "AAo37nU_C3k", title: "sadness & sorrow but it’s lofi (Naruto)", moods: ["relax", "focus", "study"] },
       { id: "xbDVq3FA6rU", title: "Blue Bird but is it okay if it's lofi?", moods: ["relax", "focus","chill", "calm"] },
+      { id: "DhJNwRacv1A", title: "Hey Onbeşli: Turkish Lofi Music to Study, Relax & Reduce Stress | Lofi Dog in Turkey", moods: ["relax","chill", "calm"] },
+      { id: "GC0AhsnDMfc", title: "lukrembo - this is for you (royalty free vlog music)", moods: ["relax", "focus", "study", "chill", "calm", "slow-day"] },
+      { id: "5eSSSspxGUo?", title: "lukrembo - night (royalty free vlog music)", moods: ["study", "calm", "relax", "slow-day", "focus"] },
+      { id: "wr4Lk0YGCvo", title: "(no copyright music) lofi type beat “tower” | royalty free vlog music | prod. by lukrembo", moods: ["chill", "relax"] },
+      { id: "YmrHigi48D4", title: "komii - cappuccino (no copyright music)", moods: ["relax", "focus", "study"] },
+      { id: "UqPb65MKM60?", title: "komii - journey (no copyright music)", moods: ["relax", "focus","chill", "calm"] },
+      { id: "xPOy2pkImiU", title: "(no copyright music) chill type beat “branch” | free vlog music | prod. by lukrembo", moods: ["study", "calm", "relax", "slow-day", "focus"] },
+      { id: "fROFG75yMRU", title: "lukrembo - boba tea (royalty free vlog music)", moods: ["relax", "focus", "study"] },
+      { id: "B5YlDkIIQjE", title: "massobeats - stroll (royalty free lofi music)", moods: ["relax", "focus","chill", "calm"] },
+      { id: "DSWYAclv2I8", title: "[no copyright music] 'In Dreamland ' background music", moods: ["relax","chill", "calm"] },
+      { id: "BWNx0VQJjMY", title: "[no copyright music] 'Purple' lofi background music", moods: ["relax","chill", "calm"] }, 
+      { id: "w4oLP7fa9Vk", title: "[no copyright music] 'Gameplay' cute background music", moods: ["relax","chill", "calm"] },
+      { id: "VwiHerRkCvk", title: "no copyright music] 'On The Top' lofi background music", moods: ["relax","chill", "calm"] },
+      { id: "hCtwi8XkB4o", title: "[no copyright music] 'Dreamy Mode' cute background music", moods: ["relax","chill", "calm"] },
   ];
 
   let currentPlaylist = [...playlist];
