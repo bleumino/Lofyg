@@ -50,6 +50,7 @@
       { id: "Jj_dyacpo_o", title: "Va va vis - Florina (Lyrics)", moods: ["calm", "relax", "slow-day"], language: "french"},
       { id: "QJYn8b2hyLA", title: "Louane - Pardonne-moi (Version Acoustique) (Visualizer)", moods: ["calm", "relax", "slow-day"], language: "french"},
       { id: "bh15Hdy2W9k", title: "너의 이름은(君の名は) - 아무것도 아니야(なんでもないや) Cover by Elina Karimova", moods: ["calm", "relax", "slow-day"], language: "japanese"},
+      { id: "BuqTyEG1aqs", title: "아이콘(iKON) - 사랑을 했다(Love scenario) Cover By Elina Karimova", moods: ["calm", "relax",], language: "korean"},
       
   ];
 
