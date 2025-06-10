@@ -423,3 +423,26 @@ button:active {
   50% { transform: scale(1.1); }
   100% { transform: scale(1); }
 }
+
+.elin-socials {
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  color: #d63384;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.elin-socials a {
+  color: #d63384;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.elin-socials a:hover {
+  text-decoration: underline;
+  color: #ff66a3;
+}
+
+.elin-socials:hover {
+  opacity: 1;
+}
