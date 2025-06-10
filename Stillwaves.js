@@ -2,7 +2,7 @@
   // --- Playlist and Initial Variables ---
   let playlist = [
       { id: "OCFy3wWDkWM", title: "Ai Tomioka - Good bye bye（English Ver.）（Official Audio）", moods: ["chill", "relax", "calm"], language: "english"},
-      { id: "0NWBw00e1M", title: "Ai Tomioka-Good bye bye (eye to eye)", moods: ["chill", "relax"], language: "japanese"},
+      { id: "t0NWBw00e1M", title: "Ai Tomioka-Good bye bye (eye to eye)", moods: ["chill", "relax"], language: "japanese"},
       { id: "N85aAdWecPk", title: "冨岡 愛 - New Style (Lyric Video)", moods: ["chill", "relax"], language: "english"},
       { id: "mAyyBp6gmnw", title: "愛 need your love", moods: ["calm", "relax"], language: "english"},
       { id: "deE5ak0Atxw", title: "missing you", moods: ["calm", "relax"], language: "japanese"},
@@ -286,6 +286,8 @@ function updateTime() {
       });
   });
 
+
+//language switch
  const languageButtons = document.querySelectorAll("#language-selector button");
 
 languageButtons.forEach(btn => {
