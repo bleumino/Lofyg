@@ -502,3 +502,12 @@ button:hover {
 .language-btn-container button.active span.icon {
   filter: none;               /* full color on hover or active */
 }
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+#now-playing {
+  animation: bounce 2.5s ease-in-out infinite;
+}
