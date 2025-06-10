@@ -213,7 +213,6 @@ footer {
 
 #mood-selector button:hover {
   background: #ff66a3;
-  transform: scale(1.03);
 }
 
 
@@ -424,7 +423,7 @@ button:hover {
   animation: spin 5s linear infinite, pulse-shadow 2s ease-in-out infinite;
 }
 
-.body {
+body {
   cursor: url('Sakura Petal.png') 16 16, auto;
 }
 
@@ -446,13 +445,6 @@ button:active {
 
 .language-btn {
   font-size: 10px;
-}
-
-
-.language-btn.hover {
-  background: #ff66a3;
-  
-  
 }
 
 .language-btn .tooltip {
