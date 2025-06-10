@@ -410,13 +410,10 @@ button:hover {
   animation: spin 5s linear infinite, pulse-shadow 2s ease-in-out infinite;
 }
 
-body {
+.body {
   cursor: url('Sakura Petal.png') 16 16, auto;
 }
 
-button:active {
-  animation: clickBounce 0.2s ease forwards;
-}
 
 @keyframes clickBounce {
   0% { transform: scale(1); }
