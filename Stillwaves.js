@@ -472,3 +472,19 @@ function updateLanguageIndicator(language) {
   const langText = language === "all" ? "All" : language.charAt(0).toUpperCase() + language.slice(1);
   document.getElementById("current-language").textContent = langText;
 }
+
+const languageButtons = document.querySelectorAll('.language-btn');
+
+languageButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    languageButtons.forEach(btn => btn.classList.remove('active'));
+    button.classList.add('active');
+
+    // Your custom logic here, if any:
+    const selectedLanguage = button.getAttribute('data-language');
+    console.log("Selected language:", selectedLanguage);
+
+    // Optional: call your language filter function
+    // filterSongsByLanguage(selectedLanguage);
+  });
+});

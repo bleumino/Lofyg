@@ -546,14 +546,9 @@ button:active {
   box-shadow: 0 0 10px #ff99cc;
   transform: scale(1.05);
 }
-
-#language-indicator {
-  font-size: 14px;
-  margin-top: 10px;
-  color: #ff007f;
-  background: #fff0f5;
-  padding: 6px 12px;
-  border-radius: 999px;
-  display: inline-block;
-  animation: fadeIn 0.4s ease-in-out;
+.language-btn.active {
+  background-color: #4caf50;
+  color: white;
+  box-shadow: 0 0 10px #4caf50aa;
+  transform: scale(1.05);
 }
