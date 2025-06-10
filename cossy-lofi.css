@@ -414,6 +414,9 @@ button:hover {
   cursor: url('Sakura Petal.png') 16 16, auto;
 }
 
+button:active {
+  animation: clickBounce 0.2s ease forwards;
+}
 
 @keyframes clickBounce {
   0% { transform: scale(1); }
