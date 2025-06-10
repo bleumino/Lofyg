@@ -224,7 +224,7 @@ footer {
 }
 
 
-#mood-selector button.active {
+#mood-selector button {
     background: #ac095a; /* Deep rich pink for active mood */
     box-shadow: 0 0 8px #ac095a;
     transform: scale(1.05);
@@ -477,4 +477,7 @@ button:active {
   background-color: #ac095a; /* Deep rich pink for active mood */
   color: white;
   transform: scale(1.05);
+}
+.language-btn-container{
+  font-size: small;
 }
