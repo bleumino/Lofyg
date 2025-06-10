@@ -438,13 +438,6 @@ button:active {
   100% { transform: scale(1); }
 }
 
-.language-btn-container button.active {
-  background-color: #ff66a3;
-  color: white;
-  font-weight: bold;
-  box-shadow: 0 0 10px #ff99cc;
-  transform: scale(1.05);
-}
 .language-btn.active {
   background-color: #ac095a; /* Deep rich pink for active mood */
   color: white;
