@@ -451,18 +451,14 @@ document.addEventListener("keydown", (event) => {
 
 const playButton = document.getElementById("play");
 
-function togglePlayPause() {
-  const isPlaying = player.getPlayerState && player.getPlayerState() === 1;
+function onPlayerStateChange(event) {
+    const state = event.data;
 
-  if (isPlaying) {
-    player.pauseVideo();
-    playButton.textContent = "▶️ Paused";
-    playButton.classList.remove("playing");
-  } else {
-    player.playVideo();
-    playButton.textContent = "⏸️ Playing...";
-    playButton.classList.add("playing");
-  }
+    if (state === YT.PlayerState.PLAYING) {
+        playButton.textContent = 'Pause ⏸️';
+        isPlaying = true;
+    } else if (state === YT.PlayerState.PAUSED || state === YT.PlayerState.ENDED) {
+        playButton.textContent = 'Play ▶️';
+        isPlaying = false;
+    }
 }
-
-playButton.addEventListener("click", togglePlayPause);
