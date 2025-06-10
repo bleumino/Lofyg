@@ -478,6 +478,6 @@ button:active {
   color: white;
   transform: scale(1.05);
 }
-.language-btn-container{
+.language-btn {
   font-size: 5px;
 }
