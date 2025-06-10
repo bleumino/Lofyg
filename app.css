@@ -479,5 +479,5 @@ button:active {
   transform: scale(1.05);
 }
 .language-btn-container{
-  font-size: small;
+  font-size: 5px;
 }
