@@ -393,6 +393,33 @@ button:hover {
   50% { transform: translateY(-6px); }
 }
 
-#now-playing {
+#song-title {
   animation: bounce 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse-shadow {
+  0%, 100% {
+    box-shadow: 0 0 15px #ff69b4aa;
+  }
+  50% {
+    box-shadow: 0 0 25px #ff1493cc;
+  }
+}
+
+#vinyl.playing {
+  animation: spin 5s linear infinite, pulse-shadow 2s ease-in-out infinite;
+}
+
+body {
+  cursor: url('Sakura Petal.png') 16 16, auto;
+}
+
+button:active {
+  animation: clickBounce 0.2s ease forwards;
+}
+
+@keyframes clickBounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
 }

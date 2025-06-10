@@ -508,6 +508,73 @@ button:hover {
   50% { transform: translateY(-6px); }
 }
 
-#now-playing {
+#song-title {
   animation: bounce 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse-shadow {
+  0%, 100% {
+    box-shadow: 0 0 15px #ff69b4aa;
+  }
+  50% {
+    box-shadow: 0 0 25px #ff1493cc;
+  }
+}
+
+#vinyl.playing {
+  animation: spin 5s linear infinite, pulse-shadow 2s ease-in-out infinite;
+}
+
+body {
+  cursor: url('Sakura Petal.png') 16 16, auto;
+}
+
+button:active {
+  animation: clickBounce 0.2s ease forwards;
+}
+
+@keyframes clickBounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Overlay covers whole screen */
+#loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #ffe6f2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* The vinyl circle */
+#loading-vinyl {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 8px solid #ff66a3;
+  border-top: 8px solid #ac095a; /* a bit darker pink for contrast */
+  animation: spin 1.5s linear infinite;
+  margin-bottom: 15px;
+}
+
+/* Spin animation */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Loading text style */
+#loading-overlay p {
+  font-family: 'Cherry Bomb One', cursive;
+  color: #d63384;
+  font-size: 18px;
+  letter-spacing: 1.2px;
 }
