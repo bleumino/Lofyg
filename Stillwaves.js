@@ -285,30 +285,32 @@ function updateTime() {
           playSong(0, currentPlaylist);
       });
   });
+  const languageSelect = document.getElementById("languageSelect");
+  const songList = document.getElementById("songList");
 
- const languageButtons = document.querySelectorAll("#language-selector button");
+  function renderSongs(language) {
+    songList.innerHTML = "";
 
-languageButtons.forEach(btn => {
-  btn.addEventListener("click", () => {
-    // Mark active button
-    languageButtons.forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
+    const filteredSongs = language === "all"
+      ? playlist
+      : playlist.filter(song => song.language === language);
 
-    const selectedLang = btn.dataset.language; // ← Make sure you're using data-language in your HTML
-
-    currentPlaylist = selectedLang === "all"
-      ? [...playlist]
-      : playlist.filter(track => track.language === selectedLang);
-
-    if (currentPlaylist.length === 0) {
-      alert("No tracks found for that language.");
-      return;
+    if (filteredSongs.length === 0) {
+      songList.innerHTML = "<li>No songs found in this language 👀</li>";
+    } else {
+      filteredSongs.forEach(song => {
+        const li = document.createElement("li");
+        li.textContent = `🎵 ${song.title}`;
+        songList.appendChild(li);
+      });
     }
+  }
 
-    loadQueue(currentPlaylist);
-    playSong(0, currentPlaylist);
+  languageSelect.addEventListener("change", () => {
+    renderSongs(languageSelect.value);
   });
-});
+
+  renderSongs("all");
 
 
   elements.progressContainer?.addEventListener("click", (event) => {

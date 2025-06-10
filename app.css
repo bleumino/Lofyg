@@ -328,14 +328,6 @@ footer {
   z-index: 1000;
 }
 
-
-#language-selector button.active {
-    background: #ac095a; /* Deep rich pink for active mood */
-    box-shadow: 0 0 8px #ac095a;
-    transform: scale(1.05);
-    transition: 0.3s ease;
-}
-
 #google_translate_element {
   position: fixed;
   top: 90x; /* pushes it below the clock */
@@ -442,3 +434,18 @@ button:hover {
   50% { box-shadow: 0 0 16px rgba(255, 204, 112, 0.8); }
   100% { box-shadow: 0 0 8px rgba(255, 204, 112, 0.5); }
 }
+
+ #languageSelect {
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    background-color: #f5f5f5;
+    cursor: pointer;
+  }
+
+  #songList li {
+    margin: 8px 0;
+    font-size: 18px;
+    font-weight: 500;
+  }
