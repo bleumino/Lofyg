@@ -435,79 +435,6 @@ button:hover {
   100% { box-shadow: 0 0 8px rgba(255, 204, 112, 0.5); }
 }
 
-.language-btn-container {
-  display: flex;
-  flex-wrap: wrap; /* wraps to new line if space is tight */
-  gap: 8px; /* space between buttons */
-  max-width: 100%; /* full width container */
-}
-
-.language-btn-container {
-  display: flex;
-  flex-wrap: wrap;      /* wrap nicely on small screens */
-  gap: 6px;             /* consistent spacing between buttons */
-  justify-content: center;
-}
-
-.language-btn-container button {
-  padding: 4px 10px;
-  font-size: 12px;
-  border-radius: 9999px;
-  background-color: #eee;
-  cursor: pointer;
-  white-space: nowrap;
-  min-width: 40px;
-  border: none;
-  transition: 
-    background-color 0.3s ease, 
-    transform 0.15s ease,
-    box-shadow 0.3s ease;
-  user-select: none;    /* prevent text highlight on double click */
-  box-shadow: none;
-}
-
-.language-btn-container button:hover {
-  background-color: #4caf50;
-  color: white;
-  transform: scale(1.05);    /* tiny grow on hover */
-}
-
-.language-btn-container button.active {
-  background-color: #4caf50;
-  color: white;
-  box-shadow: 0 0 8px 2px rgba(76, 175, 80, 0.6); /* green glow for active */
-  transform: scale(1.1);      /* bigger pop for the active one */
-}
-
-/* Click animation */
-.language-btn-container button:active {
-  transform: scale(0.95);     /* quick press down effect */
-  transition: transform 0.1s ease;
-}
-
-/* Optional: add small flag or icon before text — you’ll need to add icons as background images or inline SVG */
-.language-btn-container button span.icon {
-  margin-right: 6px;
-  display: inline-block;
-  vertical-align: middle;
-  width: 14px;
-  height: 14px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  filter: grayscale(50%);     /* subtle color effect */
-  transition: filter 0.3s ease;
-}
-
-.language-btn-container button:hover span.icon,
-.language-btn-container button.active span.icon {
-  filter: none;               /* full color on hover or active */
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-
 #song-title {
   animation: bounce 2.5s ease-in-out infinite;
 }
@@ -547,8 +474,7 @@ button:active {
   transform: scale(1.05);
 }
 .language-btn.active {
-  background-color: #4caf50;
+  background-color: #ac095a; /* Deep rich pink for active mood */
   color: white;
-  box-shadow: 0 0 10px #4caf50aa;
   transform: scale(1.05);
 }
