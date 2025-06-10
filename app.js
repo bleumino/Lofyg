@@ -452,9 +452,3 @@ function togglePlayPause() {
     updatePlayButton(true);
   }
 }
-
-window.addEventListener('load', () => {
-  const loading = document.getElementById('loading-overlay');
-  loading.style.opacity = '0';
-  setTimeout(() => loading.style.display = 'none', 500); // fade out smoothly
-});
