@@ -467,3 +467,8 @@ function togglePlayPause() {
 }
 
 playButton.addEventListener("click", togglePlayPause);
+
+function updateLanguageIndicator(language) {
+  const langText = language === "all" ? "All" : language.charAt(0).toUpperCase() + language.slice(1);
+  document.getElementById("current-language").textContent = langText;
+}

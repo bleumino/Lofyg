@@ -538,3 +538,22 @@ button:active {
   50% { transform: scale(1.1); }
   100% { transform: scale(1); }
 }
+
+.language-btn-container button.active {
+  background-color: #ff66a3;
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 0 10px #ff99cc;
+  transform: scale(1.05);
+}
+
+#language-indicator {
+  font-size: 14px;
+  margin-top: 10px;
+  color: #ff007f;
+  background: #fff0f5;
+  padding: 6px 12px;
+  border-radius: 999px;
+  display: inline-block;
+  animation: fadeIn 0.4s ease-in-out;
+}
