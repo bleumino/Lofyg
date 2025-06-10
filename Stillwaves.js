@@ -286,7 +286,7 @@ function updateTime() {
       });
   });
   const languageSelect = document.getElementById("languageSelect");
-  const songList = document.getElementById("songList");
+  const songList = document.getElementById("queue");
 
   function renderSongs(language) {
     songList.innerHTML = "";
