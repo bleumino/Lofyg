@@ -427,6 +427,10 @@ body {
   cursor: url('Sakura Petal.png') 16 16, auto;
 }
 
+body {
+  cursor: pointer;
+}
+
 button:active {
   animation: clickBounce 0.2s ease forwards;
 }
