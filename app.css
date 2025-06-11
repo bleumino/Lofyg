@@ -424,11 +424,7 @@ button:hover {
 }
 
 body {
-  cursor: url('Sakura Petal.png') 16 16, auto;
-}
-
-body {
-  cursor: pointer;
+  cursor: url('Sakura Petal.png'), auto;
 }
 
 button:active {
