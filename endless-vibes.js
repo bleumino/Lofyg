@@ -21,6 +21,11 @@ let playlist = [
           {id:"leg3dJ4Xl_Q", title: "Popular Anime Openings But It's Lofi Remix ~ Best Anime Lofi Hip Hop Mix"},
           {id:"DkPjOnUr4M4", title: "best anime openings but it's lofi remix part 2 extended edition (2 hours)"},
           {id:"q9v2rMgc5vc", title: "𝐏𝐥𝐚𝐲𝐥𝐢𝐬𝐭 90s Japanese Lofi Hiphop ☕️Nostalgic Chill Vibes"},
+          {id:"Cpib4hanI9Y", title: "best anime openings but it's lofi remix part 4 community edition (2 hours)"},
+          {id:"vHQkbA1z2_c", title: "My Hero Academia Lofi Mix ~ ☕ [Anime Lo Fi / Chill Mix]"},
+          {id:"uMEvzhckqBw", title: "morning cravings. 🗻 anime & japan lofi beats"},
+          {id:"5Ghk5jVVLVs", title: "[Playlist] ☔️1 Hour Rainy Best Kpop Lofi Mix ☕️ Relaxing Music for Study/Work/Homework/Sleep"},
+          {id:"xtgEKMHkSjU", title: "[Kpop Lofi Playlist] 🎧2 Hour Blackpink Rainy Day Lofi Mix ☔️ Music for Relax🍃/Study📚/Sleep💤"},
 
 ];
 

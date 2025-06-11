@@ -38,7 +38,7 @@
       { id: "xbDVq3FA6rU", title: "Blue Bird but is it okay if it's lofi?", moods: ["relax", "focus","chill", "calm"] },
       { id: "DhJNwRacv1A", title: "Hey Onbeşli: Turkish Lofi Music to Study, Relax & Reduce Stress | Lofi Dog in Turkey", moods: ["relax","chill", "calm"] },
       { id: "GC0AhsnDMfc", title: "lukrembo - this is for you (royalty free vlog music)", moods: ["relax", "focus", "study", "chill", "calm", "slow-day"] },
-      { id: "5eSSSspxGUo?", title: "lukrembo - night (royalty free vlog music)", moods: ["study", "calm", "relax", "slow-day", "focus"] },
+      { id: "5eSSSspxGUo", title: "lukrembo - night (royalty free vlog music)", moods: ["study", "calm", "relax", "slow-day", "focus"] },
       { id: "wr4Lk0YGCvo", title: "(no copyright music) lofi type beat “tower” | royalty free vlog music | prod. by lukrembo", moods: ["chill", "relax"] },
       { id: "YmrHigi48D4", title: "komii - cappuccino (no copyright music)", moods: ["relax", "focus", "study"] },
       { id: "UqPb65MKM60?", title: "komii - journey (no copyright music)", moods: ["relax", "focus","chill", "calm"] },
@@ -50,6 +50,19 @@
       { id: "w4oLP7fa9Vk", title: "[no copyright music] 'Gameplay' cute background music", moods: ["relax","chill", "calm"] },
       { id: "VwiHerRkCvk", title: "no copyright music] 'On The Top' lofi background music", moods: ["relax","chill", "calm"] },
       { id: "hCtwi8XkB4o", title: "[no copyright music] 'Dreamy Mode' cute background music", moods: ["relax","chill", "calm"] },
+      { id: "Abc-M-X3jmQ", title: "[no copyright music] 'Tomato farm' lofi background music", moods: ["relax","chill", "calm"] },
+      { id: "i0kZXmwR6fY", title: "เพลงประกอบคลิปวีดิโอทําอาหารเมวน่ารัก🥯🥓🧀 ฟรี!! ไม่มีลิขสิทธิ์​ music cute​", moods: ["relax","chill", "calm"] }, 
+      { id: "vd-RmMMl708", title: "sincerely (Violet Evergarden but is it okay if it's lofi hiphop?)", moods: ["relax","chill", "calm"] },
+      { id: "XO1ZY1YX-Do", title: "gurenge (Demon Slayer but is it okay if it's lofi hiphop?)", moods: ["relax","chill", "calm"] },
+      { id: "QRnO2D1jgWM", title: "unravel (Tokyo Ghoul but is it okay if it's lofi hiphop?)", moods: ["relax","chill", "calm"] },
+      { id: "P83sl-8M5A", title: "not again (Mr. Bean but is it okay if it's lofi hiphop?)", moods: ["relax","chill", "calm"] },
+      { id: "8RMNWpY2tJg", title: "come along with me (Adventure Time but is it okay if it's lofi hiphop?)", moods: ["relax","chill", "calm"] },
+      { id: "yROYhefx-gs", title: "crossing fields (Sword Art Online but is it okay if it's lofi hiphop?)", moods: ["relax","chill", "calm"] },
+      { id: "NuT-vj7wsrc", title: "[hero too ~ but it's lofi hip hop (my hero academia)", moods: ["relax","chill", "calm"] },
+      { id: "SSk_m0DELEo", title: "grandeur ~ sped up version (black clover) [anime lofi nightcore]", moods: ["relax","chill", "calm"] },
+      { id: "ndfYhxXCgOc", title: "fly high (Haikyuu but is it okay if it's lofi?)", moods: ["relax","chill", "calm"] },   
+      { id: "nH8Z7H1j-Yg", title: "kataware doki (Kimi No Nawa/Your Name but is it okay if it's lofi hiphop)", moods: ["relax","chill", "calm"] },
+      { id: "TttnXNVMriY", title: "『Kigeki』SpyxFamily ED lofi || Gen Hoshino 'Comedy' Lofi", moods: ["relax","chill", "calm"] },
   ];
 
   let currentPlaylist = [...playlist];
