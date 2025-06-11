@@ -63,6 +63,7 @@
       { id: "ndfYhxXCgOc", title: "fly high (Haikyuu but is it okay if it's lofi?)", moods: ["relax","chill", "calm"] },   
       { id: "nH8Z7H1j-Yg", title: "kataware doki (Kimi No Nawa/Your Name but is it okay if it's lofi hiphop)", moods: ["relax","chill", "calm"] },
       { id: "TttnXNVMriY", title: "『Kigeki』SpyxFamily ED lofi || Gen Hoshino 'Comedy' Lofi", moods: ["relax","chill", "calm"] },
+      { id: "xval7pCX37U", title: "Bleumino - Lively Cafe (non copyright lofi beats)", moods: ["relax","chill", "calm"] },
   ];
 
   let currentPlaylist = [...playlist];
