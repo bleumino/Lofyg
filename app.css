@@ -428,10 +428,6 @@ button:hover {
   animation: spin 5s linear infinite, pulse-shadow 2s ease-in-out infinite;
 }
 
-body {
-  cursor: url('Sakura Petal.png'), auto;
-}
-
 button:active {
   animation: clickBounce 0.2s ease forwards;
 }
@@ -476,9 +472,10 @@ button:active {
 
 /* Special glow just for Bleumino when active */
 .active-song.highlight-bleumino {
-  box-shadow: 0 0 16px 4px #87eaf2; /* dreamy icy-blue glow */
-  background-color: rgba(135, 234, 242, 0.2); /* soft pastel blue */
-  color: #ffffff;
+box-shadow: 0 0 12px 3px #B0C4DE; /* blueish glow, you can change color */
+  background-color: #8a9cb3;
+  border-radius: 8px;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
 #shuffle-surprise {

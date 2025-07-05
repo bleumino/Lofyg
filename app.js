@@ -69,7 +69,15 @@
       { id: "MunnYFmqWYo", title: "Gustixa - lemon tree", moods: ["relax","chill", "calm"] },   
       { id: "3B6CA1REGlM", title: "Lofi Afrobeats @lofiafrobeatsofficial Good Vibes Infinitititi (African Lofi)", moods: ["relax","chill", "calm"] },
       { id: "6faYXkZtOVI", title: "doraemon lofi ~ doraemon no uta (theme song)", moods: ["relax","chill", "calm"] },
-      { id: "91YWqVLg_3Y", title: "(Regular Show) but its lofi", moods: ["relax","chill", "calm"], creator: "bleumino"},
+      { id: "91YWqVLg_3Y", title: "(Regular Show) but its lofi", moods: ["relax","chill", "calm"]},
+      { id: "HNNsnDr47vI", title: "Donut", moods: ["relax","chill", "calm"]},
+      { id: "tTRIimtYjiA", title: "i'm up", moods: ["relax","chill", "calm"]},
+      { id: "8K875HrgVVQ", title: "Cry Me A River", moods: ["relax","chill", "calm"]},
+      { id: "QZ1Udpcu9tg", title: "massobeats - bloom (royalty free lofi music)", moods: ["relax","chill", "calm"]},
+      { id: "feubxN_OwMA", title: '[COPYRIGHT FREE] LO-FI BACKGROUND MUSIC "DREAMLAND" // BLUE', moods: ["relax","chill", "calm"]},
+      { id: "Wxnpe8GjH5w", title: "Soft Lo-fi 💤 Calm & Relaxing Background Music (No Copyright)", moods: ["relax","chill", "calm"]},
+      { id: "NLyS4naMtOc", title: "Nights on Loop - LOV-Fi Beats", moods: ["relax","chill", "calm"]},
+      
   ];
 
   let currentPlaylist = [...playlist];

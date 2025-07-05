@@ -53,6 +53,14 @@
       { id: "9qlw7aSJ7B0", title: "MAMAMOO(마마무) - 별이 빛나는 밤(Starry Night) Cover By Elina Karimova", moods: ["calm", "relax",], language: "korean"},
       { id: "_g-eiuBVY2k", title: "BTS(방탄소년단) - Butter | Cover By Elina Kariomva (엘리나 커버)", moods: ["calm", "relax",], language: "english"},
       { id: "BuqTyEG1aqs", title: "아이콘(iKON) - 사랑을 했다(Love scenario) Cover By Elina Karimova", moods: ["calm", "relax",], language: "korean"},
+      { id: "98zHKN-xSHk", title: "yung kai - blue (official audio)", moods: ["calm", "relax", "slow-day"], language: "english"},
+      { id: "XZfyyk0_Yqs", title: "Patrick Watson - Je te laisserai des mots (Official French Lyric Video)", moods: ["calm", "relax", "slow-day"], language: ""},
+      { id: "bkYVPdAhTX8", title: "Take Me In Your Arms", moods: ["calm", "relax",], language: "arabic"},
+      { id: "CPuXsbYCeZU", title: "Hadal Ahbek حضل احبك - Issam Alnajjar (English Version Cover)", moods: ["calm", "relax",], language: "english"},
+      { id: "FFwCkyHXyAQ", title: "Issam Alnajjar - Hadal Ahbek (Official Lyric Video)", moods: ["calm", "relax",], language: "arabic"},
+      { id: "hNqdxGsbQsA", title: "Powfu - death bed (feat. Beabadoobee)", moods: ["calm", "relax",], language: "english"},
+      { id: "dMSVePKXYmg", title: "Ya No Es Lo Mismo", moods: ["calm", "relax",], language: "spanish"},
+      { id: "B3JcHWCA-VA", title: "Oscar Anton & Clementine - nuits d'été", moods: ["calm", "relax",], language: "french"},
       
       
   ];
