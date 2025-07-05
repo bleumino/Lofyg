@@ -63,7 +63,7 @@
       { id: "ndfYhxXCgOc", title: "fly high (Haikyuu but is it okay if it's lofi?)", moods: ["relax","chill", "calm"] },   
       { id: "nH8Z7H1j-Yg", title: "kataware doki (Kimi No Nawa/Your Name but is it okay if it's lofi hiphop)", moods: ["relax","chill", "calm"] },
       { id: "TttnXNVMriY", title: "『Kigeki』SpyxFamily ED lofi || Gen Hoshino 'Comedy' Lofi", moods: ["relax","chill", "calm"] },
-      { id: "Z1C5RnwEAeI", title: "Bleumino - Lively Cafe (non copyright lofi beats)", moods: ["relax","chill", "calm"] },
+      { id: "Z1C5RnwEAeI", title: "Bleumino - Lively Cafe (non copyright lofi beats)", moods: ["relax","chill", "calm"], creator: "bleumino"},
   ];
 
   let currentPlaylist = [...playlist];
@@ -132,13 +132,21 @@
       if (!elements.queueList) return;
       elements.queueList.innerHTML = "";
       list.forEach((song, index) => {
-          const li = document.createElement("li");
-          li.textContent = song.title;
-          li.dataset.index = index;
-          li.style.cursor = "pointer";
-          if (index === currentSongIndex) li.classList.add("active-song");
-          li.addEventListener("click", () => playSong(index, list));
-          elements.queueList.appendChild(li);
+         const li = document.createElement("li");
+li.textContent = song.title;
+li.dataset.index = index;
+li.style.cursor = "pointer";
+
+// 🔥 Add class if it's the current song
+if (index === currentSongIndex) li.classList.add("active-song");
+
+// 💙 Highlight your track
+if (song.creator === "bleumino") {
+  li.classList.add("highlight-bleumino");
+}
+
+li.addEventListener("click", () => playSong(index, list));
+elements.queueList.appendChild(li);
       });
   }
 

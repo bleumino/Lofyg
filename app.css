@@ -473,3 +473,12 @@ button:active {
   visibility: visible;
   opacity: 1;
 }
+
+.highlight-bleumino {
+  color: #AEEAFD; /* or any soft blue you like */
+  font-weight: 600;
+  background: rgba(174, 234, 253, 0.1); /* soft glow */
+  border-left: 4px solid #AEEAFD;
+  padding-left: 0.5rem;
+  border-radius: 4px;
+}
