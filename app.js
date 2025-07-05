@@ -185,6 +185,7 @@ elements.queueList.appendChild(li);
       resetProgressBar();
       startVinylAnimation();
   }
+  window.playSong = playSong; // expose globally
 
   function updateSongInfo() {
       const song = currentPlaylist[currentSongIndex];
