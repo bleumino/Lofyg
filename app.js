@@ -64,6 +64,12 @@
       { id: "nH8Z7H1j-Yg", title: "kataware doki (Kimi No Nawa/Your Name but is it okay if it's lofi hiphop)", moods: ["relax","chill", "calm"] },
       { id: "TttnXNVMriY", title: "『Kigeki』SpyxFamily ED lofi || Gen Hoshino 'Comedy' Lofi", moods: ["relax","chill", "calm"] },
       { id: "Z1C5RnwEAeI", title: "Bleumino - Lively Cafe (non copyright lofi beats)", moods: ["relax","chill", "calm"], creator: "bleumino"},
+      { id: "-UfI1X-MSig", title: "bliss - lofi hip hop beat (FREE FOR PROFIT USE)", moods: ["relax","chill", "calm"] },
+      { id: "ZJN7rLvBVg4", title: "Jar of Heart (but's lofi)", moods: ["relax","chill", "calm"] },
+      { id: "MunnYFmqWYo", title: "Gustixa - lemon tree", moods: ["relax","chill", "calm"] },   
+      { id: "3B6CA1REGlM", title: "Lofi Afrobeats @lofiafrobeatsofficial Good Vibes Infinitititi (African Lofi)", moods: ["relax","chill", "calm"] },
+      { id: "6faYXkZtOVI", title: "doraemon lofi ~ doraemon no uta (theme song)", moods: ["relax","chill", "calm"] },
+      { id: "91YWqVLg_3Y", title: "(Regular Show) but its lofi", moods: ["relax","chill", "calm"], creator: "bleumino"},
   ];
 
   let currentPlaylist = [...playlist];
@@ -383,7 +389,40 @@ const quotes = [
   "Success is not final, failure is not fatal: It is the courage to continue that counts. – Winston Churchill",
   "You miss 100% of the shots you don’t take. – Wayne Gretzky",
   "The best revenge is massive success. – Frank Sinatra",
-  "The only way to do great work is to love what you do. – Steve Jobs"
+  "The only way to do great work is to love what you do. – Steve Jobs",
+  "Spread love everywhere you go. Let no one ever come without leaving happier. — Mother Teresa",
+  "It does not matter how slowly you go, as long as you do not stop. —Confucius",
+  "The only person you are destined to become is the person you decide to be. — Ralph Waldo Emerson",
+  "The most difficult thing is the decision to act, the rest is merely tenacity. — Amelia Earhart",
+  "I didn't fail the test. I just found 100 ways to do it wrong. — Benjamin Franklin",
+  "Growth is quiet. But one day, it’ll speak for itself. -Bleumino",
+  "In union there is strength. – Aesop",
+  "The biggest adventure you can ever take is to live the life of your dreams.",
+  "Where there is love, there is life. – Mahatma Gandhi",
+  "When you do things from your soul, you feel a river moving in you, a joy. – Rumi",
+  "What lies behind us and what lies before us are tiny matters compared to what lies within us. – Ralph Waldo Emerson",
+  "What is meant to be will always find its way. Always.",
+  "Take it slow. You’re doing better than you think.",
+  "Progress isn’t loud. It’s quiet, steady, and real.",
+  "You don’t have to rush to be on time for your own life.",
+  "Rest is not laziness. It’s repair.",
+  "It’s okay if today you only managed to breathe.",
+  "You are soft, and that is your strength.",
+  "One step at a time still gets you there.",
+  "Create what you can’t find.",
+  "Bloom quietly. Grow wildly.",
+  "Nothing about you is accidental.",
+  "Stay curious. Stay kind.",
+  "Ctrl+Alt+Del your doubts.",
+  "404: Motivation not found. Still trying anyway.",
+  "You don’t have to fix everything today.",
+  "You are stardust in motion. Keep dancing.",
+  "A small step is still a step.",
+  "Don’t quit before the miracle happens.",
+  "Being creative is not about being perfect — it’s about being alive.",
+  "Let the melody hold you together when everything else feels scattered.",
+  "There’s no timeline for healing.",
+
   
 ];
 
@@ -474,3 +513,8 @@ function togglePlayPause() {
     updatePlayButton(true);
   }
 }
+
+document.getElementById("shuffle-surprise").addEventListener("click", () => {
+  const randomIndex = Math.floor(Math.random() * currentPlaylist.length);
+  playSong(randomIndex, currentPlaylist);
+});

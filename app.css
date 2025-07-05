@@ -480,3 +480,16 @@ button:active {
   background-color: rgba(135, 234, 242, 0.2); /* soft pastel blue */
   color: #ffffff;
 }
+
+#shuffle-surprise {
+  background-color: #ff66a3;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 999px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+#shuffle-surprise:hover {
+  background-color: #ff4c91;
+}

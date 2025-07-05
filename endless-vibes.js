@@ -26,6 +26,10 @@ let playlist = [
           {id:"uMEvzhckqBw", title: "morning cravings. 🗻 anime & japan lofi beats"},
           {id:"5Ghk5jVVLVs", title: "[Playlist] ☔️1 Hour Rainy Best Kpop Lofi Mix ☕️ Relaxing Music for Study/Work/Homework/Sleep"},
           {id:"xtgEKMHkSjU", title: "[Kpop Lofi Playlist] 🎧2 Hour Blackpink Rainy Day Lofi Mix ☔️ Music for Relax🍃/Study📚/Sleep💤"},
+          {id:"tJES77wNaXs", title: "regular show lofi mix | CHILLAF"},
+          {id:"I140iNpx1xM", title: "Lofi HipHop Mix 🌻 Happy and Uplifting Beats for a Beautiful Day"},
+          {id:"KxpViLLzlrc", title: "Chillhop Hideaway 🌅 [cozy beats / lofi mix]"},
+          {id:"IU3yBo2szD8", title: "The Best of Chillhop 🏆 [lofi hiphop mix / instrumental beats]"},
 
 ];
 
