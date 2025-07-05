@@ -478,5 +478,5 @@ button:active {
 .active-song.highlight-bleumino {
   box-shadow: 0 0 16px 4px #87eaf2; /* dreamy icy-blue glow */
   background-color: rgba(135, 234, 242, 0.2); /* soft pastel blue */
-  color: #0a3d45;
+  color: #ffffff;
 }
