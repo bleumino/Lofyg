@@ -61,6 +61,8 @@
       { id: "hNqdxGsbQsA", title: "Powfu - death bed (feat. Beabadoobee)", moods: ["calm", "relax",], language: "english"},
       { id: "dMSVePKXYmg", title: "Ya No Es Lo Mismo", moods: ["calm", "relax",], language: "spanish"},
       { id: "B3JcHWCA-VA", title: "Oscar Anton & Clementine - nuits d'été", moods: ["calm", "relax",], language: "french"},
+      {id: "vldYYjCQ7jc", title: "iñigo quintero - Si No Estás (Letra Oficial)", moods:["calm"], language: "spanish"},
+      {id: "6ITUy1T3hd8", title: "si no estás ‐ Iñigo Quintero (cover)", moods:["calm", "relax", "slow-day"], language: "spanish"}
       
       
   ];
