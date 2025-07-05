@@ -73,6 +73,7 @@
   ];
 
   let currentPlaylist = [...playlist];
+  window.currentPlaylist = currentPlaylist;
   let currentSongIndex = 0;
   let isPlaying = false;
   let isLooping = false;
