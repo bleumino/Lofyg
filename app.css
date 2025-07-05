@@ -474,11 +474,11 @@ button:active {
   opacity: 1;
 }
 
-.highlight-bleumino {
-  color: #AEEAFD; /* or any soft blue you like */
-  font-weight: 600;
-  background: rgba(174, 234, 253, 0.1); /* soft glow */
-  border-left: 4px solid #AEEAFD;
-  padding-left: 0.5rem;
+#queue li.highlight-bleumino {
+  background-color: rgba(174, 234, 253, 0.2); /* Light cyan/blue */
+  color: #2BAFD8; /* Strong Bleumino Blue */
+  border-left: 4px solid #2BAFD8;
+  font-weight: bold;
+  padding-left: 8px;
   border-radius: 4px;
 }
