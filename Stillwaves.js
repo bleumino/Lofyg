@@ -58,6 +58,7 @@
   ];
 
   let currentPlaylist = [...playlist];
+  window.currentPlaylist = currentPlaylist;
   let currentSongIndex = 0;
   let isPlaying = false;
   let isLooping = false;
@@ -161,6 +162,7 @@
       resetProgressBar();
       startVinylAnimation();
   }
+    window.playSong = playSong; // expose globally
 
   function updateSongInfo() {
       const song = currentPlaylist[currentSongIndex];
@@ -522,5 +524,19 @@ languageButtons.forEach(button => {
 
     // Optional: call your language filter function
     // filterSongsByLanguage(selectedLanguage);
+  });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("shuffle-surprise")?.addEventListener("click", () => {
+    const randomIndex = Math.floor(Math.random() * currentPlaylist.length);
+    playSong(randomIndex, currentPlaylist);
+
+    // Optional visual feedback
+    const btn = document.getElementById("shuffle-surprise");
+    btn.textContent = "✨ Shuffling...";
+    setTimeout(() => {
+      btn.textContent = "🎲 Surprise Me";
+    }, 1000);
   });
 });
