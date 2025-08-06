@@ -337,6 +337,7 @@ function togglePlayPause() {
 }
 
 playButton.addEventListener("click", togglePlayPause);
+
 const listenerCountSpan = document.getElementById("listener-count");
 
 function fetchListenerCount(videoId) {
@@ -356,7 +357,3 @@ function fetchListenerCount(videoId) {
       listenerCountSpan.textContent = '👀 Error loading listeners';
     });
 }
-
-window.addEventListener("load", () => {
-  fetchListenerCount("jfKfPfyJRdk"); // Lofi Girl's stream
-});
