@@ -337,23 +337,26 @@ function togglePlayPause() {
 }
 
 playButton.addEventListener("click", togglePlayPause);
-
-// Replace with your real API key (KEEP THIS PRIVATE in real apps!)
-const YOUTUBE_API_KEY = 'AIzaSyD1uj92u2HMWDm9RDyLrWyPyfPa2kZN_k0';
-
-// Reference to the <span> element in your HTML where listener count is shown
 const listenerCountSpan = document.getElementById("listener-count");
 
 function fetchListenerCount(videoId) {
   if (!videoId || !listenerCountSpan) return;
 
-  fetch(`https://www.googleapis.com/youtube/v3/videos?part=liveStreamingDetails&id=${videoId}&key=${YOUTUBE_API_KEY}`)
+  fetch(`https://www.googleapis.com/youtube/v3/videos?part=liveStreamingDetails&id=${videoId}&key=AIzaSyD1uj92u2HMWDm9RDyLrWyPyfPa2kZN_k0`)
     .then(response => response.json())
     .then(data => {
+      console.log("📡 YouTube API response:", data);
       const count = data.items?.[0]?.liveStreamingDetails?.concurrentViewers;
-      listenerCountSpan.textContent = count ? `👀 ${count} listeners` : '👀 Live info not available';
+      listenerCountSpan.textContent = count
+        ? `👀 ${count} listeners`
+        : `👀 Live info not available`;
     })
-    .catch(() => {
+    .catch(err => {
+      console.error("❌ Fetch error", err);
       listenerCountSpan.textContent = '👀 Error loading listeners';
     });
 }
+
+window.addEventListener("load", () => {
+  fetchListenerCount("jfKfPfyJRdk"); // Lofi Girl's stream
+});
