@@ -62,8 +62,12 @@
       { id: "dMSVePKXYmg", title: "Ya No Es Lo Mismo", moods: ["calm", "relax",], language: "spanish"},
       { id: "B3JcHWCA-VA", title: "Oscar Anton & Clementine - nuits d'été", moods: ["calm", "relax",], language: "french"},
       {id: "vldYYjCQ7jc", title: "iñigo quintero - Si No Estás (Letra Oficial)", moods:["calm"], language: "spanish"},
-      {id: "6ITUy1T3hd8", title: "si no estás ‐ Iñigo Quintero (cover)", moods:["calm", "relax", "slow-day"], language: "spanish"}
-      
+      {id: "6ITUy1T3hd8", title: "si no estás ‐ Iñigo Quintero (cover)", moods:["calm", "relax", "slow-day"], language: "spanish"},
+      {id: "Q1brFg4E-3c", title: "Tate McRae - r u ok (Lyrics)", moods:["slow-day", "sad"], language: "english"},
+      {id: "hsaRX6lvEAI", title: "Tate McRae - feel like shit (Lyrics)", moods:["slow-day", "sad"], language: "english"},
+      {id: "hsaRX6lvEAI", title: "Tate McRae - happy face (Lyrics)", moods:["slow-day", "sad"], language: "english"},
+      {id: "HJTBOse9dw4", title: "Tate McRae - run for the hills (Lyrics)", moods:["slow-day", "sad"], language: "english"},
+      {id: "tIgwFHV78jg", title: "saudade, saudade", moods:["slow-day", "sad"], language: "portuguese"},
       
   ];
 
@@ -439,6 +443,7 @@ const quotes = [
   "Being creative is not about being perfect — it’s about being alive.",
   "Let the melody hold you together when everything else feels scattered.",
   "There’s no timeline for healing.",
+  "always try to look on the bright side, no matter what"
 
   
 ];
