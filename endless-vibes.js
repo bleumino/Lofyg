@@ -35,6 +35,10 @@ let playlist = [
           {id:"zqmIUKoe-q0", title: "Feel so alone 💭 Sad lofi hip hop mix"},  
           {id:"pkwxGZlQF0w", title: "lofi songs for cozy days"},
           {id:"XN41UJ7EZ4E", title: "cute lofi mix songs to help you be happy - 寛げる [ J A P A N E S E L O F I F U T U R E B A S S]"},
+          {id:"6N9oPTXs7to", title: "Quiet Spring Picnic 🍃🥪🍎 Lofi Spring ~ Lofi Beats & Peaceful Moments"},
+          {id:"yajJ_QVIKwU", title: "Rain Lofi 🌧️ Lofi Hip Hop Mix for a Tranquil Atmosphere [ Lofi / Chillhop / Chill Mix ]"},
+          {id:"0wB7iuER2Z0", title: "Lofi Chill Sunset 🌅 Relaxing Beats with Capybara & Turtle ☕"},
+          {id:"6eQ5IxoOfS0", title: "Midnight Lofi Cityscape [lofi hiphop]"},
 ];
 
 // DOM Elements
