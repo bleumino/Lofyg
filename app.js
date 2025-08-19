@@ -42,7 +42,7 @@
       { id: "wr4Lk0YGCvo", title: "(no copyright music) lofi type beat “tower” | royalty free vlog music | prod. by lukrembo", moods: ["chill", "relax"] },
       { id: "YmrHigi48D4", title: "komii - cappuccino (no copyright music)", moods: ["relax", "focus", "study"] },
       { id: "UqPb65MKM60?", title: "komii - journey (no copyright music)", moods: ["relax", "focus","chill", "calm"] },
-      { id: "xPOy2pkImiU", title: "(no copyright music) chill type beat “branch” | free vlog music | prod. by lukrembo", moods: ["study", "calm", "relax", "slow-day", "focus"] },
+      { id: "xPOy2pkImiU", title: "(no copyright music) chill type beat “branch” | free vlog music | prod. by lukrembo", moods: ["study", "calm", "relax", "slow-day", "focus", "study"] },
       { id: "fROFG75yMRU", title: "lukrembo - boba tea (royalty free vlog music)", moods: ["relax", "focus", "study"] },
       { id: "B5YlDkIIQjE", title: "massobeats - stroll (royalty free lofi music)", moods: ["relax", "focus","chill", "calm"] },
       { id: "DSWYAclv2I8", title: "[no copyright music] 'In Dreamland ' background music", moods: ["relax","chill", "calm"] },
@@ -77,6 +77,13 @@
       { id: "feubxN_OwMA", title: '[COPYRIGHT FREE] LO-FI BACKGROUND MUSIC "DREAMLAND" // BLUE', moods: ["relax","chill", "calm"]},
       { id: "Wxnpe8GjH5w", title: "Soft Lo-fi 💤 Calm & Relaxing Background Music (No Copyright)", moods: ["relax","chill", "calm"]},
       { id: "NLyS4naMtOc", title: "Nights on Loop - LOV-Fi Beats", moods: ["relax","chill", "calm"]},
+      { id: "QpXq0E_ZnP4", title: "spirited away made lofi", moods: ["relax","chill", "calm"]},
+      { id: "qvSPt6a2wTQ?", title: "Lunar Eclipse", moods: ["relax","chill", "calm"]},
+      { id: "Wi1MBqYEg6Y", title: "Kingdom in Blue", moods: ["relax","chill", "calm","study"]},
+      { id: "NAz41evweQs", title: "The Oldest Man In The Room", moods: ["relax","chill", "calm"]},
+      { id: "xoopso_csJE", title: "Birds", moods: ["relax","chill", "calm"]},
+      { id: "pduHLli6NnA", title: "kalaido - hanging lanterns", moods: ["relax","chill", "calm"]},
+      { id: "WwXJrMhbi-s", title: "comfy vibes ♫", moods: ["relax","chill", "calm"]},
       
   ];
 

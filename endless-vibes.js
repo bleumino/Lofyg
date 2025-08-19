@@ -30,7 +30,11 @@ let playlist = [
           {id:"I140iNpx1xM", title: "Lofi HipHop Mix 🌻 Happy and Uplifting Beats for a Beautiful Day"},
           {id:"KxpViLLzlrc", title: "Chillhop Hideaway 🌅 [cozy beats / lofi mix]"},
           {id:"IU3yBo2szD8", title: "The Best of Chillhop 🏆 [lofi hiphop mix / instrumental beats]"},
-
+          {id:"PfuIY9CHrhw", title: "Relaxing Lo-Fi House Music Mix - Cherry Blossom Picnic Set in Tokyo"},
+          {id:"OoSzt2Ga8Oc", title: "kaizen: becoming one percent better everyday | a soothing playlist for focus time"},  
+          {id:"zqmIUKoe-q0", title: "Feel so alone 💭 Sad lofi hip hop mix"},  
+          {id:"pkwxGZlQF0w", title: "lofi songs for cozy days"},
+          {id:"XN41UJ7EZ4E", title: "cute lofi mix songs to help you be happy - 寛げる [ J A P A N E S E L O F I F U T U R E B A S S]"},
 ];
 
 // DOM Elements
@@ -369,3 +373,32 @@ function togglePlayPause() {
 }
 
 playButton.addEventListener("click", togglePlayPause);
+
+
+// The special Easter egg track ID
+const easterEggTrackId = "PfuIY9CHrhw";
+
+// Inside playSong(), after loading the video:
+function checkEasterEgg() {
+    const vinyl = document.getElementById("vinyl");
+
+    if (playlist[currentSongIndex].id === easterEggTrackId) {
+        // Change background
+        document.body.style.transition = "background 1.5s ease";
+        document.body.style.background = "#ffccf9";
+
+        // Change vinyl image
+        if (vinyl) {
+            vinyl.src = "Pink Vinyl Record Icon.png"; // replace with your special vinyl image path
+        }
+    } else {
+        // Reset background
+        document.body.style.transition = "background 1s ease";
+        document.body.style.background = "#B0C4DE"; // your normal background
+
+        // Reset vinyl image
+        if (vinyl) {
+            vinyl.src = "Vinyl Record Blue.png"; // your default vinyl image
+        }
+    }
+}
