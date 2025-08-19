@@ -170,6 +170,7 @@ function playSong(index, skipped = 0) {
     updateSongInfo();
     resetProgressBar();
     startVinylAnimation();
+    checkEasterEgg();
 }
 
 function resetProgressBar() {
