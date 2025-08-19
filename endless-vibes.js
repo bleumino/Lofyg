@@ -382,28 +382,21 @@ playButton.addEventListener("click", togglePlayPause);
 
 // The special Easter egg track ID
 const easterEggTrackId = "PfuIY9CHrhw";
-
-// Inside playSong(), after loading the video:
 function checkEasterEgg() {
     const vinyl = document.getElementById("vinyl");
 
     if (playlist[currentSongIndex].id === easterEggTrackId) {
-        // Change background
+        // Easter egg active
         document.body.style.transition = "background 1.5s ease";
         document.body.style.background = "#ffccf9";
 
-        // Change vinyl image
         if (vinyl) {
-            vinyl.src = "Pink Vinyl Record Icon.png"; // replace with your special vinyl image path
+            vinyl.src = "Pink Vinyl Record Icon.png"; // special vinyl
         }
     } else {
-        // Reset background
-        document.body.style.transition = "background 1s ease";
-        document.body.style.background = "#B0C4DE"; // your normal background
-
-        // Reset vinyl image
+        // Only reset vinyl, leave background alone so dark mode is preserved
         if (vinyl) {
-            vinyl.src = "Vinyl Record Blue.png"; // your default vinyl image
+            vinyl.src = "Vinyl Record Blue.png"; // default vinyl
         }
     }
 }
