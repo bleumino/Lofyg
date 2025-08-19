@@ -170,7 +170,6 @@ function playSong(index, skipped = 0) {
     updateSongInfo();
     resetProgressBar();
     startVinylAnimation();
-    checkEasterEgg();
 }
 
 function resetProgressBar() {
@@ -223,6 +222,7 @@ function handlePlayerStateChange(event) {
         case YT.PlayerState.PLAYING:
             isPlaying = true;
             startUpdatingTime();
+            checkEasterEgg();
             break;
         case YT.PlayerState.PAUSED:
             isPlaying = false;
