@@ -452,7 +452,7 @@ button:active {
 /* Default light mode */
 body {
     background: #B0C4DE; /* normal blue */
-    transition: background 1.5s ease;
+    transition: background-color 0.5s ease;
 }
 
 /* Dark mode for normal tracks */
