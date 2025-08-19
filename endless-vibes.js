@@ -378,36 +378,27 @@ function togglePlayPause() {
 }
 
 playButton.addEventListener("click", togglePlayPause);
-const themeToggle = document.getElementById("theme-toggle");
-const easterEggTrackId = "PfuIY9CHrhw"; // your special track ID
 
-// Initialize theme
-if (!document.body.classList.contains("light-theme") && !document.body.classList.contains("dark-theme")) {
-    document.body.classList.add("light-theme");
-}
+const easterEggTrackId = "PfuIY9CHrhw";
 
-function updateThemeButton() {
-    if (document.body.classList.contains("dark-theme")) {
-        themeToggle.textContent = "☀️"; // sun for dark mode
-    } else {
-        themeToggle.textContent = "🌙"; // moon for light mode
-    }
-}
+function checkEasterEgg() {
+    const vinyl = document.getElementById("vinyl");
+    const body = document.body;
 
-themeToggle.addEventListener("click", () => {
-    // Toggle normal light/dark
-    document.body.classList.toggle("light-theme");
-    document.body.classList.toggle("dark-theme");
+    // Remove any previous easter-egg class
+    body.classList.remove("easter-egg");
 
-    // Reapply easter egg if active track is playing
     if (playlist[currentSongIndex].id === easterEggTrackId) {
-        document.body.classList.add("easter-egg");
+        // Easter egg active
+        body.classList.add("easter-egg");
+
+        if (vinyl) {
+            vinyl.src = "Pink Vinyl Record Icon.png";
+        }
     } else {
-        document.body.classList.remove("easter-egg");
+        // Default track
+        if (vinyl) {
+            vinyl.src = "Vinyl Record Blue.png";
+        }
     }
-
-    updateThemeButton();
-});
-
-// Initial button update
-updateThemeButton();
+}
