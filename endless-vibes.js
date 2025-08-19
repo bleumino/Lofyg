@@ -379,22 +379,23 @@ function togglePlayPause() {
 
 playButton.addEventListener("click", togglePlayPause);
 
+
+// The special Easter egg track ID
+const easterEggTrackId = "PfuIY9CHrhw";
 function checkEasterEgg() {
     const vinyl = document.getElementById("vinyl");
 
     if (playlist[currentSongIndex].id === easterEggTrackId) {
         // Easter egg active
         document.body.style.transition = "background 1.5s ease";
-        document.body.style.background = "#ffccf9"; // pink
+        document.body.style.background = "#ffccf9";
 
         if (vinyl) {
             vinyl.src = "Pink Vinyl Record Icon.png"; // special vinyl
         }
     } else {
-        // Reset background to default blue
-        document.body.style.transition = "background 1s ease";
-        document.body.style.background = "#B0C4DE"; // default blue
-
+        document.body.style.transition = "background 1.5s ease";
+        document.body.style.background = "#B0C4DE";
         if (vinyl) {
             vinyl.src = "Vinyl Record Blue.png"; // default vinyl
         }
