@@ -447,3 +447,25 @@ button:active {
 .elin-socials:hover {
   opacity: 1;
 }
+
+
+/* Default light mode */
+body {
+    background: #B0C4DE; /* normal blue */
+    transition: background 1.5s ease;
+}
+
+/* Dark mode for normal tracks */
+body.dark-mode {
+    background: #1a1a1a; /* dark background for normal tracks */
+}
+
+/* Easter egg light mode */
+body.easter-egg {
+    background: #ffccf9; /* pink */
+}
+
+/* Easter egg dark mode */
+body.dark-mode.easter-egg {
+    background: #331133; /* darker pink-ish for dark mode */
+}

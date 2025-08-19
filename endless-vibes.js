@@ -379,25 +379,26 @@ function togglePlayPause() {
 
 playButton.addEventListener("click", togglePlayPause);
 
-
-// The special Easter egg track ID
 const easterEggTrackId = "PfuIY9CHrhw";
+
 function checkEasterEgg() {
     const vinyl = document.getElementById("vinyl");
+    const body = document.body;
+
+    // Remove any previous easter-egg class
+    body.classList.remove("easter-egg");
 
     if (playlist[currentSongIndex].id === easterEggTrackId) {
         // Easter egg active
-        document.body.style.transition = "background 1.5s ease";
-        document.body.style.background = "#ffccf9";
+        body.classList.add("easter-egg");
 
         if (vinyl) {
-            vinyl.src = "Pink Vinyl Record Icon.png"; // special vinyl
+            vinyl.src = "Pink Vinyl Record Icon.png";
         }
     } else {
-        document.body.style.transition = "background 1.5s ease";
-        document.body.style.background = "#B0C4DE";
+        // Default track
         if (vinyl) {
-            vinyl.src = "Vinyl Record Blue.png"; // default vinyl
+            vinyl.src = "Vinyl Record Blue.png";
         }
     }
 }
