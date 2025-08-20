@@ -1,3 +1,4 @@
+
 const themeToggle = document.getElementById("theme-toggle");
 
 // Apply saved theme on load
@@ -12,30 +13,11 @@ if (savedTheme) {
 
 themeToggle.addEventListener("click", () => {
     const isDark = document.body.classList.contains("dark-theme");
-    const isLight = document.body.classList.contains("light-theme");
-    const isEaster = document.body.classList.contains("easter-egg");
+    const newTheme = isDark ? "light-theme" : "dark-theme";
 
-    // figure out what new theme should be
-    let newTheme;
-    if (isDark) {
-        newTheme = "light-theme";
-        document.body.classList.remove("dark-theme");
-    } else if (isLight) {
-        newTheme = "dark-theme";
-        document.body.classList.remove("light-theme");
-    } else {
-        // fallback (just in case)
-        newTheme = "light-theme";
-    }
-
+    document.body.classList.remove(isDark ? "dark-theme" : "light-theme");
     document.body.classList.add(newTheme);
-
-    // keep easter egg if it was active
-    if (isEaster) {
-        document.body.classList.add("easter-egg");
-    }
-
-    localStorage.setItem("theme", newTheme + (isEaster ? " easter-egg" : ""));
+    localStorage.setItem("theme", newTheme);
     updateThemeButton(newTheme);
 });
 
