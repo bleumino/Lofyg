@@ -68,6 +68,15 @@
       {id: "hsaRX6lvEAI", title: "Tate McRae - happy face (Lyrics)", moods:["slow-day", "sad"], language: "english"},
       {id: "HJTBOse9dw4", title: "Tate McRae - run for the hills (Lyrics)", moods:["slow-day", "sad"], language: "english"},
       {id: "tIgwFHV78jg", title: "saudade, saudade", moods:["slow-day", "sad"], language: "portuguese"},
+      {id: "LnxVONZ55nQ", title: "Clean Bandit - Rather Be (Audio)", moods:["slow-day", "relax"], language: "english"},
+      {id: "92izkAK5OA0", title: "somewhere only we know (Gustixa & Rhianne)", moods:["slow-day", "relax"], language: "english"},  
+      {id: "YORtgGMXJhM", title: "fenekot - The Nights", moods:["slow-day", "relax"], language: "english"},  
+      {id: "TPpx6IWV0fk", title: "fenekot - Mistletoe", moods:["slow-day", "relax"], language: "english"},
+      {id: "xQfeZMS1CWM", title: "fenekot - Pretty Little Baby", moods:["slow-day", "relax"], language: "english"},
+      {id: "0tkgGcnRNTE", title: "나의 사춘기에게", moods:["slow-day", "relax"], language: "korean"},
+      {id: "dYnU0DZ_iQc", title: "사랑할 수밖에", moods:["slow-day", "relax"], language: "korean"},
+
+      
       
   ];
 

@@ -39,6 +39,10 @@ let playlist = [
           {id:"yajJ_QVIKwU", title: "Rain Lofi 🌧️ Lofi Hip Hop Mix for a Tranquil Atmosphere [ Lofi / Chillhop / Chill Mix ]"},
           {id:"0wB7iuER2Z0", title: "Lofi Chill Sunset 🌅 Relaxing Beats with Capybara & Turtle ☕"},
           {id:"6eQ5IxoOfS0", title: "Midnight Lofi Cityscape [lofi hiphop]"},
+          {id:"qC6YkDDmwPM", title: "Joyful Day Lofi with Bunny 🐰🎧 2 Hour Happy Lofi Song🍀 Cute Lofi🌸 cute & relaxing music✨ Lofi Hip Hop"},
+          {id:"SA_0cZ3Lsa4", title: "Playlist | To New York where jazz flows🗽l Relaxing Jazz Music For Work, Study"},
+          {id:"wgwcBTrY9og", title: "Lofi Girl - Christmas 2024 🎄"},
+          
 ];
 
 // DOM Elements
