@@ -75,6 +75,7 @@
       {id: "xQfeZMS1CWM", title: "fenekot - Pretty Little Baby", moods:["slow-day", "relax"], language: "english"},
       {id: "0tkgGcnRNTE", title: "나의 사춘기에게", moods:["slow-day", "relax"], language: "korean"},
       {id: "dYnU0DZ_iQc", title: "사랑할 수밖에", moods:["slow-day", "relax"], language: "korean"},
+      {id: "1SWp4sUaVBY", title: "Alex Warren - You'll Be Alright Kid (Official Lyric Video)", moods:["slow-day", "relax"], language: "english"},
 
       
       
