@@ -76,6 +76,23 @@
       {id: "0tkgGcnRNTE", title: "나의 사춘기에게", moods:["slow-day", "relax"], language: "korean"},
       {id: "dYnU0DZ_iQc", title: "사랑할 수밖에", moods:["slow-day", "relax"], language: "korean"},
       {id: "1SWp4sUaVBY", title: "Alex Warren - You'll Be Alright Kid (Official Lyric Video)", moods:["slow-day", "relax"], language: "english"},
+      {id: "l5Vtd3fTex0", title: "tan feelz - breathe | Official Music Video", moods:["slow-day", "relax"], language: "english"}, 
+      {id: "PvAM7wgvF5A", title: "LOUISETTE & AMAURY - Joue contre joue (Paroles)", moods:["slow-day", "relax"], language: "French"}, 
+      {id: "NCPCoAtCqfc", title: "Hello Vietnam - Pham Quynh Anh (Lyrics)", moods:["slow-day", "relax"], language: "english"},
+      {id: "8Z65MXJFPyc", title: "Tomoshi Kana(ともし・かな) - Without Crying(泣かないままで) | Emotional Japanese alt-pop with lo-fi tenderness", moods:["slow-day", "relax"], language: "japanese"},
+      {id: "AX0jQYaIeDc", title: "Alex Warren & ROSÉ - On My Mind (Official Music Video)", moods:["slow-day", "relax"], language: "english"},
+      {id: "gHPw9cLkIco", title: "恋する惑星「アナタ」 / 冨岡 愛 【中日歌詞】【歌詞付き】", moods:["slow-day", "relax"], language: "japanese"},
+      {id: "lPMIyFUVkzc", title: "恋する惑星「アナタ」- 冨岡 愛 Covered by 理芽 / RIM", moods:["slow-day", "relax"], language: "japanese"},
+      {id: "nI9PoZBu3v4", title: "HEART BEAT", moods:["slow-day", "relax"], language: "japanese"},
+      {id: "H7mxXm0Avts", title: "Sezen Aksu - Kaybolan Yıllar (Official Audio)", moods:["slow-day", "relax"], language: "turkish"},
+      {id: "qSijBXDMlK4", title: "TRINIX & Mari Froes - Vaitimbora (Lyrics)", moods:["slow-day", "relax"], language: "portuguese"},
+      {id: "TY7TbqU7eLo", title: "POLYCAT - มันเป็นใคร (เนื้อเพลง)", moods:["slow-day", "relax"], language: "thai"},
+      {id: "PuEcQHjIQos", title: "토미오카 아이(冨岡 愛) - ジェラシー(Jealousy) 【한글 번역, 가사, Korean Lyrics", moods:["slow-day", "relax"], language: "japanese"},
+      {id: "LksGbrIm84w", title: "冨岡 愛 - ぷれぜんと。(Lyric Video)", moods:["slow-day", "relax"], language: "japanese"},
+      {id: "lZRz9DVcq4s", title: "BRATTY - tuviste (lyrics video)", moods:["slow-day", "relax"], language: "spanish"},
+      {id: "Tf82c2kfPcE", title: "BRATTY - Agosto (Lyric Video)", moods:["slow-day", "relax"], language: "spanish"},
+
+       
 
       
       
