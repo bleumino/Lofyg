@@ -84,6 +84,10 @@
       { id: "xoopso_csJE", title: "Birds", moods: ["relax","chill", "calm"]},
       { id: "pduHLli6NnA", title: "kalaido - hanging lanterns", moods: ["relax","chill", "calm"]},
       { id: "WwXJrMhbi-s", title: "comfy vibes ♫", moods: ["relax","chill", "calm"]},
+      { id: "zMLLey8M-18", title: "Lofi studying music (lofi hip/hop chill beats)", moods: ["relax","chill", "calm","study"]},
+      { id: "DZ8xDLCy9pI", title: "LoFi Beats for Studying & Work | Chill Focus Music 🎧📚", moods: ["relax","chill", "calm","study"]},
+      { id: "jgtdqwhO7Rw", title: "Focus Music for Studying 2025 | Best Chill Lofi Beats", moods: ["relax","chill", "calm","study"]},
+      { id: "JLzH9Q0zPow", title: "Morning Slow 🌤 | Lofi Beat for Studying, Energy, and Coffee Vibes", moods: ["relax","chill", "calm","study"]},
       
   ];
 

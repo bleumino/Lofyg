@@ -42,6 +42,10 @@ let playlist = [
           {id:"qC6YkDDmwPM", title: "Joyful Day Lofi with Bunny 🐰🎧 2 Hour Happy Lofi Song🍀 Cute Lofi🌸 cute & relaxing music✨ Lofi Hip Hop"},
           {id:"SA_0cZ3Lsa4", title: "Playlist | To New York where jazz flows🗽l Relaxing Jazz Music For Work, Study"},
           {id:"wgwcBTrY9og", title: "Lofi Girl - Christmas 2024 🎄"},
+          {id:"NCZhmlOr0X4", title: "KPop Demon Hunters [Chill Lofi Cover Compilation]"}, 
+          {id:"wofB1wzyYYI", title: "Genshin Impact Lofi ✨ 1 Hour Lofi Hip Hop"}, 
+          {id:"yeY6KYjjh_0", title: "chill café - video game music to relax/study/vibe ☕"},
+
           
 ];
 

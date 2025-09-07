@@ -8,6 +8,7 @@ let playlist= [
     { id: "nPqLRmvyG2I", title: "no copyright lofi jazz music 🎷 relax/study beats 24/7" },
     { id: "28KRPhVzCus", title: "lofi hip hop radio 💤 beats to sleep/chill to" },
     { id: "P6Segk8cr-c", title: "sad lofi radio ☔ beats for rainy days" },
+    { id: "Na0w3Mz46GA", title: "asian lofi radio ⛩️ beats to relax/study to" },
 ];
 
 let currentSongIndex = 0;
