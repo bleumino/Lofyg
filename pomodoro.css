@@ -1,0 +1,65 @@
+/* pomodoro.css */
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #cce7ff; /* Baby blue background */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+h1 {
+    color: #004080;
+    margin-bottom: 20px;
+}
+
+#timer {
+    font-size: 4rem;
+    color: #004080;
+    margin-bottom: 20px;
+}
+
+.buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+button {
+    background-color: #0073e6;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: #005bb5;
+}
+
+button#shortBreak,
+button#longBreak {
+    background-color: #00bfff;
+}
+
+button#shortBreak:hover,
+button#longBreak:hover {
+    background-color: #0099cc;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 480px) {
+    #timer {
+        font-size: 3rem;
+    }
+    button {
+        font-size: 1rem;
+        padding: 8px 15px;
+    }
+}
