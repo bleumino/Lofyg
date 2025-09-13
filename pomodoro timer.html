@@ -1,45 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Pomodoro Timer</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
-        #timer { font-size: 48px; margin-bottom: 20px; }
-        .buttons button { margin: 5px; padding: 10px 20px; font-size: 16px; }
-        .progress-container { width: 100%; background: #eee; height: 10px; margin-bottom: 20px; }
-        .progress-bar { height: 10px; width: 0%; background: #004080; }
-        /* Hidden videos */
-        iframe.lofiVideo { width: 0; height: 0; display: none; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pomodoro Timer</title>
+<link href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="pomodoro.css">
 </head>
 <body>
-    <h1>Pomodoro Timer</h1>
+<div id="pomodoro-container">
     <div id="timer">25:00</div>
-    <div class="progress-container">
-        <div id="progressBar" class="progress-bar"></div>
-    </div>
-    <div class="buttons">
+    <div id="controls">
         <button id="start">Start</button>
         <button id="pause">Pause</button>
         <button id="reset">Reset</button>
         <button id="shortBreak">Short Break</button>
         <button id="longBreak">Long Break</button>
+        <button id="workSession">Work Session</button>
     </div>
+    <div id="progress-bar-container">
+        <div id="progressBar"></div>
+    </div>
+</div>
 
-    <!-- Hidden Lofi Videos -->
-    <iframe id="lofi1" class="lofiVideo" src="https://www.youtube.com/embed/9M4jZuqdw04?autoplay=0" frameborder="0" allow="autoplay; encrypted-media"></iframe>
-    <iframe id="lofi2" class="lofiVideo" src="https://www.youtube.com/embed/mypnwpywaaw?autoplay=0" frameborder="0" allow="autoplay; encrypted-media"></iframe>
-    <iframe id="lofi3" class="lofiVideo" src="https://www.youtube.com/embed/bQzIQa5YKvw?autoplay=0" frameborder="0" allow="autoplay; encrypted-media"></iframe>
-    <iframe id="lofi4" class="lofiVideo" src="https://www.youtube.com/embed/OkjC4z5dFrg?autoplay=0" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+<!-- Hidden Lofi Music Iframe -->
+<div style="width:1px;height:1px;opacity:0;position:absolute;left:-1000px;">
+    <div id="youtube-player"></div>
+</div>
 
-    <!-- Chime -->
-    <audio id="chime">
-        <source src="chime.mp3" type="audio/mpeg">
-    </audio>
-
-    <!-- YouTube IFrame API -->
-    <script src="https://www.youtube.com/iframe_api"></script>
-    <script src="pomodoro.js"></script>
+<script src="pomodoro.js"></script>
 </body>
 </html>
