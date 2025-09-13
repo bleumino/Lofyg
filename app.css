@@ -490,3 +490,9 @@ box-shadow: 0 0 12px 3px #B0C4DE; /* blueish glow, you can change color */
 #shuffle-surprise:hover {
   background-color: #ff4c91;
 }
+
+a:hover {
+    transform: scale(1.2);
+    display: inline-block; /* required for transform */
+    transition: transform 0.2s;
+}
