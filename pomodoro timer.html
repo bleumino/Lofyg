@@ -2,13 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="pomodoro.css">
     <title>Pomodoro Timer</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+        #timer { font-size: 48px; margin-bottom: 20px; }
+        .buttons button { margin: 5px; padding: 10px 20px; font-size: 16px; }
+        .progress-container { width: 100%; background: #eee; height: 10px; margin-bottom: 20px; }
+        .progress-bar { height: 10px; width: 0%; background: #004080; }
+        /* Hidden videos */
+        iframe.lofiVideo { width: 0; height: 0; display: none; }
+    </style>
 </head>
 <body>
     <h1>Pomodoro Timer</h1>
     <div id="timer">25:00</div>
+    <div class="progress-container">
+        <div id="progressBar" class="progress-bar"></div>
+    </div>
     <div class="buttons">
         <button id="start">Start</button>
         <button id="pause">Pause</button>
@@ -18,21 +28,18 @@
     </div>
 
     <!-- Hidden Lofi Videos -->
-     <iframe width="560" height="315" src="https://www.youtube.com/embed/9M4jZuqdw04?si=LBlHRrqWyn4djjgk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-     <iframe width="560" height="315" src="https://www.youtube.com/embed/mypnwpywaaw?si=Gg3C5RKMtd0bnD1T" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-     <iframe width="560" height="315" src="https://www.youtube.com/embed/bQzIQa5YKvw?si=yNZAIVfJN1peB_o-" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-     <iframe width="560" height="315" src="https://www.youtube.com/embed/OkjC4z5dFrg?si=eL_5OtXSSI5AiP1Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <iframe id="lofi1" class="lofiVideo" src="https://www.youtube.com/embed/9M4jZuqdw04?autoplay=0" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+    <iframe id="lofi2" class="lofiVideo" src="https://www.youtube.com/embed/mypnwpywaaw?autoplay=0" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+    <iframe id="lofi3" class="lofiVideo" src="https://www.youtube.com/embed/bQzIQa5YKvw?autoplay=0" frameborder="0" allow="autoplay; encrypted-media"></iframe>
+    <iframe id="lofi4" class="lofiVideo" src="https://www.youtube.com/embed/OkjC4z5dFrg?autoplay=0" frameborder="0" allow="autoplay; encrypted-media"></iframe>
 
-<br>
+    <!-- Chime -->
+    <audio id="chime">
+        <source src="chime.mp3" type="audio/mpeg">
+    </audio>
 
-        <section class="mode-toggle-container">
-            <button onclick="window.location.href='index.html'"> Main Playlist</button>
-            <button onclick="document.location='lofi-girl-stream.html'"> 24 hour lofi radio</button>
-            <button onclick="document.location='cossy-lofi.html'">Cossy Lofi</button>
-            <button onclick="document.location='endless-vibes.html'">Endless Vibes</button>
-            <button onclick="document.location='Stillwaves.html'"> Stillwaves </button>
-        </section>
-
+    <!-- YouTube IFrame API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="pomodoro.js"></script>
 </body>
-<script src="pomodoro.js"></script>
 </html>

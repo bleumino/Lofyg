@@ -1,7 +1,7 @@
-// Load YouTube IFrame API
 let players = [];
-let videoIds = ['lofi1','lofi2','lofi3']; // list of iframe IDs
+let videoIds = ['lofi1','lofi2','lofi3','lofi4'];
 let currentVideo = 0;
+let onBreak = false;
 
 function onYouTubeIframeAPIReady() {
     videoIds.forEach(id => {
@@ -14,7 +14,7 @@ function onYouTubeIframeAPIReady() {
 }
 
 function onPlayerStateChange(event) {
-    // If video ended, play next video
+    // Optional: play next video if it ends
     if(event.data === YT.PlayerState.ENDED) {
         playNextVideo();
     }
@@ -22,7 +22,7 @@ function onPlayerStateChange(event) {
 
 function playNextVideo() {
     if(players[currentVideo]) players[currentVideo].pauseVideo();
-    currentVideo = (currentVideo + 1) % players.length; // loop back to first
+    currentVideo = (currentVideo + 1) % players.length;
     if(players[currentVideo] && !onBreak) players[currentVideo].playVideo();
 }
 
@@ -31,7 +31,6 @@ let timer;
 let totalTime = 25*60;
 let remainingTime = totalTime;
 let isRunning = false;
-let onBreak = false;
 let completedPomodoros = 0;
 
 const timerDisplay = document.getElementById('timer');
@@ -47,7 +46,7 @@ function updateDisplay() {
     const minutes = Math.floor(remainingTime / 60).toString().padStart(2,'0');
     const seconds = (remainingTime % 60).toString().padStart(2,'0');
     timerDisplay.textContent = `${minutes}:${seconds}`;
-    if(progressBar) progressBar.style.width = ((totalTime - remainingTime) / totalTime * 100) + '%';
+    if(progressBar) progressBar.style.width = ((totalTime - remainingTime)/totalTime*100) + '%';
 }
 
 function startTimer() {
@@ -96,15 +95,15 @@ function setBreak(minutes) {
     remainingTime = totalTime;
     updateDisplay();
     if(players[currentVideo]) players[currentVideo].pauseVideo();
-    document.body.style.backgroundColor = (minutes === 5) ? '#ffe0e6' : '#ffd9b3';
+    document.body.style.backgroundColor = (minutes===5) ? '#ffe0e6' : '#ffd9b3';
 }
 
-// Button event listeners
+// Event listeners
 startBtn.addEventListener('click', startTimer);
 pauseBtn.addEventListener('click', pauseTimer);
 resetBtn.addEventListener('click', resetTimer);
 shortBreakBtn.addEventListener('click', () => setBreak(5));
 longBreakBtn.addEventListener('click', () => setBreak(15));
 
-// Initialize
+// Initialize display
 updateDisplay();
