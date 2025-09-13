@@ -1,62 +1,102 @@
-// pomodoro.js
+// Load YouTube IFrame API
+let players = [];
+let videoIds = ['lofi1','lofi2','lofi3']; // list of iframe IDs
+let currentVideo = 0;
 
+function onYouTubeIframeAPIReady() {
+    videoIds.forEach(id => {
+        players.push(new YT.Player(id, {
+            events: {
+                'onStateChange': onPlayerStateChange
+            }
+        }));
+    });
+}
+
+function onPlayerStateChange(event) {
+    // If video ended, play next video
+    if(event.data === YT.PlayerState.ENDED) {
+        playNextVideo();
+    }
+}
+
+function playNextVideo() {
+    if(players[currentVideo]) players[currentVideo].pauseVideo();
+    currentVideo = (currentVideo + 1) % players.length; // loop back to first
+    if(players[currentVideo] && !onBreak) players[currentVideo].playVideo();
+}
+
+// Timer logic
 let timer;
-let totalTime = 25 * 60; // 25 minutes
+let totalTime = 25*60;
 let remainingTime = totalTime;
 let isRunning = false;
+let onBreak = false;
+let completedPomodoros = 0;
 
 const timerDisplay = document.getElementById('timer');
+const progressBar = document.getElementById('progressBar');
 const startBtn = document.getElementById('start');
 const pauseBtn = document.getElementById('pause');
 const resetBtn = document.getElementById('reset');
 const shortBreakBtn = document.getElementById('shortBreak');
 const longBreakBtn = document.getElementById('longBreak');
+const chime = document.getElementById('chime');
 
-// Update the timer display
 function updateDisplay() {
-    const minutes = Math.floor(remainingTime / 60).toString().padStart(2, '0');
-    const seconds = (remainingTime % 60).toString().padStart(2, '0');
+    const minutes = Math.floor(remainingTime / 60).toString().padStart(2,'0');
+    const seconds = (remainingTime % 60).toString().padStart(2,'0');
     timerDisplay.textContent = `${minutes}:${seconds}`;
+    if(progressBar) progressBar.style.width = ((totalTime - remainingTime) / totalTime * 100) + '%';
 }
 
-// Start the timer
 function startTimer() {
-    if (!isRunning) {
+    if(!isRunning) {
         isRunning = true;
+        if(players[currentVideo] && !onBreak) players[currentVideo].playVideo();
         timer = setInterval(() => {
-            if (remainingTime > 0) {
+            if(remainingTime > 0) {
                 remainingTime--;
                 updateDisplay();
             } else {
                 clearInterval(timer);
                 isRunning = false;
-                alert('Time’s up! Take a break or start again.');
+                if(chime) chime.play();
+                if(onBreak) {
+                    alert("Break is over! Time to work.");
+                    onBreak = false;
+                } else {
+                    completedPomodoros++;
+                    alert(`Time’s up! Pomodoros completed: ${completedPomodoros}`);
+                }
             }
         }, 1000);
     }
 }
 
-// Pause the timer
 function pauseTimer() {
     clearInterval(timer);
     isRunning = false;
+    if(players[currentVideo] && !onBreak) players[currentVideo].pauseVideo();
 }
 
-// Reset the timer to the default Pomodoro time
 function resetTimer() {
     clearInterval(timer);
     isRunning = false;
     remainingTime = totalTime;
     updateDisplay();
+    if(players[currentVideo]) players[currentVideo].pauseVideo();
 }
 
-// Set timer for breaks
 function setBreak(minutes) {
     clearInterval(timer);
     isRunning = false;
-    totalTime = minutes * 60;
+    onBreak = true;
+    totalTime = minutes*60;
     remainingTime = totalTime;
     updateDisplay();
+    if(players[currentVideo]) players[currentVideo].pauseVideo();
+    document.body.style.backgroundColor = (minutes === 5) ? '#ffe0e6' : '#ffd9b3';
 }
 
 // Button event listeners
@@ -66,5 +106,5 @@ resetBtn.addEventListener('click', resetTimer);
 shortBreakBtn.addEventListener('click', () => setBreak(5));
 longBreakBtn.addEventListener('click', () => setBreak(15));
 
-// Initialize display
+// Initialize
 updateDisplay();
