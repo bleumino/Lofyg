@@ -100,3 +100,87 @@ header {
     background: rgba(255,255,255,1);
     transform: scale(1.05);
 }
+/* Container for add-time buttons */
+.add-time-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+/* Styling for each add-time button */
+.add-time-buttons button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-family: 'Cherry Bomb One', cursive;
+    cursor: pointer;
+    border: none;
+    border-radius: 12px;
+    background-color: #0073e6;
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 115, 230, 0.4);
+    transition: all 0.2s ease;
+}
+
+.add-time-buttons button:hover {
+    background-color: #005bb5;
+    box-shadow: 0 6px 12px rgba(0, 91, 181, 0.5);
+    transform: translateY(-2px);
+}
+
+.add-time-buttons button:active {
+    transform: translateY(1px);
+    box-shadow: 0 3px 7px rgba(0, 115, 230, 0.4);
+}
+
+#pomodoro-container {
+    transition: background 0.3s ease;
+    padding: 20px;
+    border-radius: 10px;
+    /* Keep other styles you have */
+}
+
+#background-uploader {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-family: 'Cherry Bomb One', sans-serif;
+}
+
+/* Hide the real file input */
+#background-uploader input[type="file"] {
+    display: none;
+}
+
+/* Style the label as a button */
+#background-uploader label {
+    padding: 6px 12px;
+    font-size: 14px;
+    color: white;
+    background: linear-gradient(135deg, #ffb6c1, #87ceeb);
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+    transition: all 0.2s ease;
+}
+
+#background-uploader label:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+}
+
+#background-uploader label:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+
+body {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }

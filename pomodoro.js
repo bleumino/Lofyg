@@ -117,3 +117,130 @@ workSessionBtn.addEventListener('click', () => {
 // ---------- Initialize ----------
 updateDisplay();
 loadYouTubeAPI();
+
+document.getElementById('add5').addEventListener('click', () => {
+    remainingTime += 5 * 60;
+    totalTime += 5 * 60; // optional, if you want progress bar to reflect total
+    updateDisplay();
+});
+
+document.getElementById('add10').addEventListener('click', () => {
+    remainingTime += 10 * 60;
+    totalTime += 10 * 60;
+    updateDisplay();
+});
+
+document.getElementById('add15').addEventListener('click', () => {
+    remainingTime += 15 * 60;
+    totalTime += 15 * 60;
+    updateDisplay();
+});
+
+const modeIndicator = document.getElementById('mode-indicator');
+const pomodoroContainer = document.getElementById('pomodoro-container');
+
+function setMode(mode) {
+    // Remove old classes
+    pomodoroContainer.classList.remove('work', 'short-break', 'long-break');
+
+    // Add new mode class
+    pomodoroContainer.classList.add(mode);
+
+    // Update text + emoji
+    if(mode === 'work') modeIndicator.textContent = '💼 Work';
+    if(mode === 'short-break') modeIndicator.textContent = '☕ Short Break';
+    if(mode === 'long-break') modeIndicator.textContent = '🛋️ Long Break';
+}
+
+// Update your existing break/work functions to use setMode
+function setBreak(minutes) {
+    clearInterval(timer);
+    isRunning = false;
+    totalTime = minutes * 60;
+    remainingTime = totalTime;
+    updateDisplay();
+
+    if(minutes === 5) setMode('short-break');
+    if(minutes === 15) setMode('long-break');
+}
+
+function setWorkSession(minutes = 25) {
+    clearInterval(timer);
+    isRunning = false;
+    totalTime = minutes * 60;
+    remainingTime = totalTime;
+    updateDisplay();
+    setMode('work');
+}
+
+// Add button listeners for work session and add-time buttons
+document.getElementById('workSession').addEventListener('click', () => setWorkSession());
+document.getElementById('add5').addEventListener('click', () => {
+    remainingTime += 5 * 60;
+    totalTime += 5 * 60;
+    updateDisplay();
+});
+document.getElementById('add10').addEventListener('click', () => {
+    remainingTime += 10 * 60;
+    totalTime += 10 * 60;
+    updateDisplay();
+});
+document.getElementById('add15').addEventListener('click', () => {
+    remainingTime += 15 * 60;
+    totalTime += 15 * 60;
+    updateDisplay();
+});
+
+document.getElementById('add30').addEventListener('click', () => {
+    remainingTime += 30 * 60;
+    totalTime += 30 * 60;
+    updateDisplay();
+});
+const bgUpload = document.getElementById("bg-upload");
+
+// When user uploads
+bgUpload.addEventListener("change", (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const imgData = e.target.result;
+        document.body.style.backgroundImage = `url('${imgData}')`;
+        document.body.style.backgroundSize = "cover";
+        document.body.style.backgroundPosition = "center";
+        document.body.style.backgroundRepeat = "no-repeat";
+
+        // Save to localStorage
+        localStorage.setItem("customBg", imgData);
+    };
+    reader.readAsDataURL(file);
+});
+
+// On page load, check if a background was saved
+window.addEventListener("load", () => {
+    const savedBg = localStorage.getItem("customBg");
+    if (savedBg) {
+        document.body.style.backgroundImage = `url('${savedBg}')`;
+        document.body.style.backgroundSize = "cover";
+        document.body.style.backgroundPosition = "center";
+        document.body.style.backgroundRepeat = "no-repeat";
+    }
+});
+
+
+  /* Initially hide the page */
+
+  // Immediately check localStorage
+  const savedBg = localStorage.getItem("customBg");
+  if (savedBg) {
+    document.body.style.backgroundImage = `url('${savedBg}')`;
+    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundPosition = "center";
+    document.body.style.backgroundRepeat = "no-repeat";
+  }
+
+  // Once the background is set, fade in the body
+  window.addEventListener("DOMContentLoaded", () => {
+    document.body.style.opacity = 1;
+  });

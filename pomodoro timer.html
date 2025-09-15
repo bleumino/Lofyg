@@ -8,35 +8,46 @@
 <link rel="stylesheet" href="pomodoro.css">
 </head>
 <body>
+<!-- Background uploader -->
+<div id="background-uploader">
+    <label for="bg-upload">Upload Background ➕ </label>
+    <input type="file" id="bg-upload" accept="image/*">
+</div>
+
 <div id="pomodoro-container">
+    <div id="mode-indicator">💼 Work</div>
     <div id="timer">25:00</div>
     <div id="controls">
         <button id="start">Start</button>
         <button id="pause">Pause</button>
         <button id="reset">Reset</button>
+        <button id="workSession">Work Session</button>
         <button id="shortBreak">Short Break</button>
         <button id="longBreak">Long Break</button>
-        <button id="workSession">Work Session</button>
+    </div>
+    <div class="add-time-buttons">
+        <button id="add5">+5 min</button>
+        <button id="add10">+10 min</button>
+        <button id="add15">+15 min</button>
+        <button id="add30">+30 min</button>
     </div>
     <div id="progress-bar-container">
         <div id="progressBar"></div>
     </div>
+
+    <!-- Hidden Lofi Music Iframe -->
+    <div style="width:1px;height:1px;opacity:0;position:absolute;left:-1000px;">
+        <div id="youtube-player"></div>
+    </div>
+
+    <section class="mode-toggle-container">
+        <button onclick="document.location='index.html'">Main Playlist</button>
+        <button onclick="document.location='lofi-girl-stream.html'">24 hour lofi radio</button>
+        <button onclick="document.location='cossy-lofi.html'">Cossy Lofi</button>
+        <button onclick="document.location='endless-vibes.html'">Endless Vibes</button>
+        <button onclick="document.location='Stillwaves.html'">Stillwaves</button>
+    </section>
 </div>
-
-
-<!-- Hidden Lofi Music Iframe -->
-<div style="width:1px;height:1px;opacity:0;position:absolute;left:-1000px;">
-    <div id="youtube-player"></div>
-</div>
-<br>
-
-<section class="mode-toggle-container">
-            <button onclick="document.location='index.html'">Main Playlist</button>
-            <button onclick="document.location='lofi-girl-stream.html'"> 24 hour lofi radio</button>
-            <button onclick="document.location='cossy-lofi.html'">Cossy Lofi</button>
-            <button onclick="document.location='endless-vibes.html'">Endless Vibes</button>
-            <button onclick="document.location='Stillwaves.html'"> Stillwaves </button>
-        </section>
 
 <script src="pomodoro.js"></script>
 </body>

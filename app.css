@@ -496,3 +496,17 @@ a:hover {
     display: inline-block; /* required for transform */
     transition: transform 0.2s;
 }
+
+/* Pomodoro Timer Specific Styles */
+#mode-indicator {
+    font-size: 20px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#mode-indicator span {
+    margin-left: 10px;
+    font-size: 24px;
+}
