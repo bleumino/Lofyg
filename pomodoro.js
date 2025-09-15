@@ -278,7 +278,20 @@ const quotes = [
     "Almost there!",
     "Take a deep breath!",
     "Small steps count!",
-    "Stay strong!"
+    "Stay strong!",
+    "One minute at a time!",
+    "You’re doing amazing!",
+    "Keep calm and code on!",
+    "Stay focused, stay cool!",
+    "Almost done, keep pushing!",
+    "Work smart, not just hard!",
+    "Breathe, focus, repeat.",
+    "Good vibes only!",
+    "Progress, not perfection!",
+    "You can do this!",
+    "Keep your head up!",
+    "Believe in yourself!",
+    "One task at a time!"
 ];
 
 function showRandomMotivation() {
