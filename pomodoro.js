@@ -198,28 +198,7 @@ document.getElementById('add30').addEventListener('click', () => {
 });
 const bgUpload = document.getElementById("bg-upload");
 
-// Load saved background & fade in
-function loadBackground() {
-    const savedBg = localStorage.getItem("customBg");
-    if (savedBg) {
-        const img = new Image();
-        img.src = savedBg;
-        img.onload = () => {
-            document.body.style.backgroundImage = `url('${savedBg}')`;
-            document.body.style.backgroundSize = "cover";
-            document.body.style.backgroundPosition = "center";
-            document.body.style.backgroundRepeat = "no-repeat";
-            document.body.style.opacity = 1; // fade in AFTER background loads
-        };
-    } else {
-        document.body.style.opacity = 1; // fade in immediately if no saved image
-    }
-}
-
-// Call immediately after DOM is ready
-window.addEventListener("DOMContentLoaded", loadBackground);
-
-// Background uploader
+// When user uploads
 bgUpload.addEventListener("change", (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -232,55 +211,89 @@ bgUpload.addEventListener("change", (event) => {
         document.body.style.backgroundPosition = "center";
         document.body.style.backgroundRepeat = "no-repeat";
 
+        // Save to localStorage
         localStorage.setItem("customBg", imgData);
-
-        function setTextColor(imgData) {
-    const img = new Image();
-    img.src = imgData;
-    img.onload = () => {
-        const canvas = document.createElement('canvas');
-        canvas.width = img.width;
-        canvas.height = img.height;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, img.width, img.height);
-
-        const imageData = ctx.getImageData(0, 0, img.width, img.height);
-        const data = imageData.data;
-        let r, g, b, avg;
-        let colorSum = 0;
-
-        for (let x = 0, len = data.length; x < len; x += 4) {
-            r = data[x];
-            g = data[x+1];
-            b = data[x+2];
-            avg = Math.floor((r+g+b)/3);
-            colorSum += avg;
-        }
-
-        const brightness = colorSum / (img.width * img.height);
-
-        if(brightness < 128) {
-            // dark background → use light text
-            document.body.style.color = 'white';
-        } else {
-            // light background → use dark text
-            document.body.style.color = 'black';
-        }
-    };
-}
     };
     reader.readAsDataURL(file);
 });
 
-window.addEventListener("DOMContentLoaded", () => {
+// On page load, check if a background was saved
+window.addEventListener("load", () => {
     const savedBg = localStorage.getItem("customBg");
     if (savedBg) {
         document.body.style.backgroundImage = `url('${savedBg}')`;
         document.body.style.backgroundSize = "cover";
         document.body.style.backgroundPosition = "center";
         document.body.style.backgroundRepeat = "no-repeat";
-
-        setTextColor(savedBg);
     }
-    document.body.style.opacity = 1; // fade in
 });
+
+
+  /* Initially hide the page */
+
+  // Immediately check localStorage
+  const savedBg = localStorage.getItem("customBg");
+  if (savedBg) {
+    document.body.style.backgroundImage = `url('${savedBg}')`;
+    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundPosition = "center";
+    document.body.style.backgroundRepeat = "no-repeat";
+  }
+
+  // Once the background is set, fade in the body
+  window.addEventListener("DOMContentLoaded", () => {
+    document.body.style.opacity = 1;
+  });
+
+  
+
+  const speech = document.getElementById('loaf-speech');
+
+function showSpeech(message, duration = 2000) {
+    speech.textContent = message;
+    speech.classList.add('show');
+    setTimeout(() => {
+        speech.classList.remove('show');
+    }, duration);
+}
+
+// Example triggers:
+startBtn.addEventListener('click', () => showSpeech('Focus time!'));
+pauseBtn.addEventListener('click', () => showSpeech('Taking a break...'));
+resetBtn.addEventListener('click', () => showSpeech('Back to zero!'));
+shortBreakBtn.addEventListener('click', () => showSpeech('Short break!'));
+longBreakBtn.addEventListener('click', () => showSpeech('Long break!'));
+workSessionBtn.addEventListener('click', () => showSpeech('Work session!'));
+add5.addEventListener('click', () => showSpeech('+5 min added!'));
+add10.addEventListener('click', () => showSpeech('+10 min added!'));
+add15.addEventListener('click', () => showSpeech('+15 min added!'));
+add30.addEventListener('click', () => showSpeech('+30 min added!'));
+
+// Motivational quotes
+
+const quotes = [
+    "Keep going!",
+    "You’ve got this!",
+    "Focus and shine!",
+    "Almost there!",
+    "Take a deep breath!",
+    "Small steps count!",
+    "Stay strong!"
+];
+
+function showRandomMotivation() {
+    const speech = document.getElementById('loaf-speech');
+    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+    speech.textContent = randomQuote;
+    speech.classList.add('show');
+    
+    setTimeout(() => {
+        speech.classList.remove('show');
+    }, 3000); // show for 3 seconds
+}
+
+// Randomly trigger every 1–3 minutes
+setInterval(() => {
+    if (!isRunning) return; // optional: only motivate during work sessions
+    showRandomMotivation();
+}, 60000 + Math.random() * 120000); // 1–3 min in ms

@@ -1,9 +1,6 @@
 body {
     opacity: 0;              /* start hidden */
-    transition: opacity 0.5s ease-in-out;
-}
-
-body {
+    transition: opacity 0.5s ease-in-out, background 0.5s ease;
     font-family: 'Cherry Bomb One', cursive;
     background: linear-gradient(120deg, #ffe0e6, #d0e6ff); /* soft pink → soft blue */
     color: #004080;
@@ -13,15 +10,17 @@ body {
     justify-content: center;
     min-height: 100vh;
     margin: 0;
-    transition: background 0.5s ease;
 }
 
 #timer {
-    font-size: 5rem;
+    font-size: clamp(4rem, 10vw, 6rem); /* scales with screen size */
+    letter-spacing: 2px;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.85);
+    padding: 5px 10px; /* gives some spacing if using background */
+    border-radius: 8px; /* rounded edges for a nice look */
+    color: white; /* high-contrast color */
     margin-bottom: 20px;
     text-align: center;
-    color: #003366;
-    text-shadow: 2px 2px 8px rgba(0,0,0,0.2);
     transition: transform 0.3s ease;
 }
 
@@ -34,6 +33,13 @@ body {
     50% { transform: scale(1.05); }
 }
 
+#mode-indicator {
+    color: white; /* high-contrast color */
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+    padding: 3px 8px;
+    border-radius: 6px;
+}
+
 #controls button {
     margin: 5px;
     padding: 10px 20px;
@@ -41,14 +47,16 @@ body {
     cursor: pointer;
     border: none;
     border-radius: 12px;
-    background: rgba(255,255,255,0.8);
+    background: linear-gradient(135deg, rgba(255,255,255,0.85), rgba(230,230,230,0.85));
+    backdrop-filter: blur(4px); /* optional glass effect */
     box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
     transition: all 0.2s ease-in-out;
 }
 
 #controls button:hover {
     background: rgba(255,255,255,1);
-    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    transform: translateY(-2px) scale(1.05);
 }
 
 #progress-bar-container {
@@ -65,7 +73,7 @@ body {
     width: 0%;
     background: linear-gradient(90deg, #ffb3ba, #bae1ff);
     border-radius: 10px;
-    transition: width 0.5s ease;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); /* smooth easing */
 }
 
 .hidden-videos {
@@ -95,7 +103,8 @@ header {
     cursor: pointer;
     border: none;
     border-radius: 12px;
-    background: rgba(255,255,255,0.8);
+    background: linear-gradient(135deg, rgba(255,255,255,0.85), rgba(230,230,230,0.85));
+    backdrop-filter: blur(4px); /* optional glass effect */
     color: #004080;
     box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
     transition: all 0.2s ease-in-out;
@@ -103,7 +112,8 @@ header {
 
 .mode-toggle-container button:hover {
     background: rgba(255,255,255,1);
-    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    transform: translateY(-2px) scale(1.05);
 }
 /* Container for add-time buttons */
 .add-time-buttons {
@@ -122,8 +132,9 @@ header {
     cursor: pointer;
     border: none;
     border-radius: 12px;
-    background-color: #0073e6;
-    color: #ffffff;
+    background: linear-gradient(135deg, rgba(255,255,255,0.85), rgba(230,230,230,0.85));
+    backdrop-filter: blur(4px); /* optional glass effect */
+    color: #004080;
     box-shadow: 0 4px 10px rgba(0, 115, 230, 0.4);
     transition: all 0.2s ease;
 }
@@ -131,7 +142,7 @@ header {
 .add-time-buttons button:hover {
     background-color: #005bb5;
     box-shadow: 0 6px 12px rgba(0, 91, 181, 0.5);
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(1.05);
 }
 
 .add-time-buttons button:active {
@@ -185,11 +196,122 @@ header {
     box-shadow: 0 3px 6px rgba(0,0,0,0.2);
 }
 
-
-body, #timer, button, label {
-    color: inherit;  /* inherit color from body */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* slightly darker overlay */
+    z-index: 0; /* behind your content but above background */
+    pointer-events: none; /* lets you still click buttons */
 }
 
-#timer, button, label {
-    text-shadow: 0 2px 4px rgba(0,0,0,0.7); /* default for dark text */
+#pomodoro-container,
+#timer,
+#controls,
+.mode-toggle-container,
+.add-time-buttons,
+header {
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes progressGradient {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+#progressBar {
+    background: linear-gradient(270deg, #ffb3ba, #bae1ff, #ffb3ba);
+    background-size: 400% 400%;
+    animation: progressGradient 10s ease infinite;
+}
+
+#mascot-loaf {
+    position: absolute;
+    left: 100%;           /* places Loaf immediately to the right of timer */
+    top: 50%;             /* vertically center relative to timer */
+    transform: translate(10px, -50%); /* horizontal spacing + vertical centering */
+    width: 80px;
+    height: 80px;
+    background-image: url('lofyg/Loaf.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    animation: loafIdle 1.5s ease-in-out infinite;
+    z-index: 2;
+}
+
+#pomodoro-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* centers children horizontally */
+}
+
+#timer-wrapper {
+    display: flex;
+    align-items: center; /* vertically center Loaf relative to timer */
+    justify-content: center;
+    position: relative;
+}
+
+#loaf-name {
+    position: absolute;
+    top: 100%; /* just below Loaf */
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Cherry Bomb One', cursive;
+    color: white;
+    font-size: 0.9rem;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+    margin-top: 4px;
+}
+
+#mascot-loaf:hover::after {
+    content: 'Loaf';
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.6);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    pointer-events: none;
+}
+
+#loaf-speech {
+    position: absolute;
+    bottom: 100%; /* above Loaf */
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 6px 10px;
+    border-radius: 10px;
+    font-family: 'Cherry Bomb One', cursive;
+    font-size: 0.9rem;
+    text-align: center;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 3;
+}
+
+#loaf-speech.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-20px);
+}
+
+#loaf-speech::after {
+    content: '';
+    position: absolute;
+    top: 100%; /* arrow pointing down */
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: rgba(0,0,0,0.8) transparent transparent transparent;
 }
