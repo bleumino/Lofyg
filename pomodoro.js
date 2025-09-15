@@ -233,11 +233,8 @@ bgUpload.addEventListener("change", (event) => {
         document.body.style.backgroundRepeat = "no-repeat";
 
         localStorage.setItem("customBg", imgData);
-    };
-    reader.readAsDataURL(file);
-});
 
-function setTextColor(imgData) {
+        function setTextColor(imgData) {
     const img = new Image();
     img.src = imgData;
     img.onload = () => {
@@ -271,3 +268,19 @@ function setTextColor(imgData) {
         }
     };
 }
+    };
+    reader.readAsDataURL(file);
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+    const savedBg = localStorage.getItem("customBg");
+    if (savedBg) {
+        document.body.style.backgroundImage = `url('${savedBg}')`;
+        document.body.style.backgroundSize = "cover";
+        document.body.style.backgroundPosition = "center";
+        document.body.style.backgroundRepeat = "no-repeat";
+
+        setTextColor(savedBg);
+    }
+    document.body.style.opacity = 1; // fade in
+});
