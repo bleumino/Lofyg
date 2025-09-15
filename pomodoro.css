@@ -185,3 +185,11 @@ header {
     box-shadow: 0 3px 6px rgba(0,0,0,0.2);
 }
 
+
+body, #timer, button, label {
+    color: inherit;  /* inherit color from body */
+}
+
+#timer, button, label {
+    text-shadow: 0 2px 4px rgba(0,0,0,0.7); /* default for dark text */
+}
