@@ -198,7 +198,28 @@ document.getElementById('add30').addEventListener('click', () => {
 });
 const bgUpload = document.getElementById("bg-upload");
 
-// When user uploads
+// Load saved background & fade in
+function loadBackground() {
+    const savedBg = localStorage.getItem("customBg");
+    if (savedBg) {
+        const img = new Image();
+        img.src = savedBg;
+        img.onload = () => {
+            document.body.style.backgroundImage = `url('${savedBg}')`;
+            document.body.style.backgroundSize = "cover";
+            document.body.style.backgroundPosition = "center";
+            document.body.style.backgroundRepeat = "no-repeat";
+            document.body.style.opacity = 1; // fade in AFTER background loads
+        };
+    } else {
+        document.body.style.opacity = 1; // fade in immediately if no saved image
+    }
+}
+
+// Call immediately after DOM is ready
+window.addEventListener("DOMContentLoaded", loadBackground);
+
+// Background uploader
 bgUpload.addEventListener("change", (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -211,36 +232,7 @@ bgUpload.addEventListener("change", (event) => {
         document.body.style.backgroundPosition = "center";
         document.body.style.backgroundRepeat = "no-repeat";
 
-        // Save to localStorage
         localStorage.setItem("customBg", imgData);
     };
     reader.readAsDataURL(file);
 });
-
-// On page load, check if a background was saved
-window.addEventListener("load", () => {
-    const savedBg = localStorage.getItem("customBg");
-    if (savedBg) {
-        document.body.style.backgroundImage = `url('${savedBg}')`;
-        document.body.style.backgroundSize = "cover";
-        document.body.style.backgroundPosition = "center";
-        document.body.style.backgroundRepeat = "no-repeat";
-    }
-});
-
-
-  /* Initially hide the page */
-
-  // Immediately check localStorage
-  const savedBg = localStorage.getItem("customBg");
-  if (savedBg) {
-    document.body.style.backgroundImage = `url('${savedBg}')`;
-    document.body.style.backgroundSize = "cover";
-    document.body.style.backgroundPosition = "center";
-    document.body.style.backgroundRepeat = "no-repeat";
-  }
-
-  // Once the background is set, fade in the body
-  window.addEventListener("DOMContentLoaded", () => {
-    document.body.style.opacity = 1;
-  });

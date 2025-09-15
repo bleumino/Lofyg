@@ -1,4 +1,9 @@
 body {
+    opacity: 0;              /* start hidden */
+    transition: opacity 0.5s ease-in-out;
+}
+
+body {
     font-family: 'Cherry Bomb One', cursive;
     background: linear-gradient(120deg, #ffe0e6, #d0e6ff); /* soft pink → soft blue */
     color: #004080;
@@ -180,7 +185,3 @@ header {
     box-shadow: 0 3px 6px rgba(0,0,0,0.2);
 }
 
-body {
-    opacity: 0;
-    transition: opacity 0.5s ease;
-  }
