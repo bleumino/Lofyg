@@ -315,3 +315,342 @@ header {
     border-style: solid;
     border-color: rgba(0,0,0,0.8) transparent transparent transparent;
 }
+
+/* Gear button */
+#settings-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    font-size: 24px;
+    background: linear-gradient(135deg, #ffb6c1, #87ceeb);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+    transition: all 0.2s ease-in-out;
+}
+
+#settings-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+}
+
+/* Modal overlay */
+#settings-modal {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+#settings-modal.hidden {
+    display: none;
+}
+
+/* Modal content */
+.settings-content {
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(6px);
+    padding: 25px 30px;
+    border-radius: 14px;
+    font-family: 'Cherry Bomb One', cursive;
+    text-align: center;
+    width: 300px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    animation: popIn 0.3s ease-out;
+}
+
+/* Pop-in animation */
+@keyframes popIn {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Modal headers and labels */
+.settings-content h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    color: #004080;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+}
+
+.settings-content label {
+    display: block;
+    margin: 12px 0 6px 0;
+    font-size: 1rem;
+    color: #004080;
+}
+
+/* Buttons inside modal */
+.settings-content button {
+    margin-top: 12px;
+    padding: 8px 16px;
+    font-family: 'Cherry Bomb One', cursive;
+    font-size: 1rem;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #ffb6c1, #87ceeb);
+    color: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: all 0.2s ease-in-out;
+}
+
+.settings-content button:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
+.settings-content button:active {
+    transform: translateY(1px);
+    box-shadow: 0 3px 7px rgba(0,0,0,0.2);
+}
+
+/* Font dropdown */
+#fontSelect {
+    width: 100%;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 1rem;
+    margin-bottom: 12px;
+    border: 1px solid rgba(0,0,0,0.2);
+    cursor: pointer;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(4px);
+    transition: all 0.2s ease;
+}
+
+#fontSelect:hover {
+    background: rgba(255,255,255,1);
+}
+
+.preset-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.preset-btn {
+    padding: 6px 12px;
+    font-family: 'Cherry Bomb One', cursive;
+    font-size: 1rem;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #ffb6c1, #87ceeb);
+    color: white;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+    transition: all 0.2s ease-in-out;
+}
+
+.preset-btn:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+}
+
+.preset-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: #004080;
+    transition: color 0.2s ease;
+}
+
+.close-btn:hover {
+    color: #ff6b81; /* subtle hover color */
+}
+
+/* Session counter styling */
+#session-counter {
+    font-family: 'Cherry Bomb One', cursive;
+    color: white;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+    margin-top: 12px;
+    font-size: 1.1rem;
+}
+
+/*quick notes */
+/* Quick Notes container */
+#quick-notes-container {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    width: 200px;
+    font-family: 'Cherry Bomb One', cursive;
+    color: white;
+    background: rgba(0,0,0,0.35);
+    padding: 8px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    z-index: 1001;
+    backdrop-filter: blur(4px); /* glassy effect */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#quick-notes-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.4);
+}
+
+/* Header */
+#quick-notes-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+#quick-notes-header span {
+    font-size: 0.9rem;
+}
+
+#quick-notes-header button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #ff6b81;
+    font-size: 1rem;
+    transition: color 0.2s ease;
+}
+
+#quick-notes-header button:hover {
+    color: #ffd1dc;
+}
+
+/* Notes list */
+#quick-notes-list {
+    max-height: 100px;
+    overflow-y: auto;
+    margin-bottom: 6px;
+}
+
+.quick-note {
+    background: rgba(255,255,255,0.15);
+    padding: 4px 8px;
+    border-radius: 6px;
+    margin-bottom: 4px;
+    font-size: 0.85rem;
+    transition: background 0.2s ease;
+}
+
+.quick-note:hover {
+    background: rgba(255,255,255,0.25);
+}
+
+/* Add note button */
+#add-note-btn {
+    width: 100%;
+    padding: 4px 0;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #ffb6c1, #87ceeb);
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    transition: all 0.2s ease-in-out;
+}
+
+#add-note-btn:hover {
+    transform: translateY(-1px) scale(1.05);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+.quick-note {
+    background: rgba(255,255,255,0.15);
+    padding: 4px 8px;
+    border-radius: 6px;
+    margin-bottom: 4px;
+    font-size: 0.85rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s ease, opacity 0.2s ease;
+}
+
+.quick-note:hover {
+    background: rgba(255,255,255,0.25);
+}
+
+.quick-note.done span {
+    text-decoration: line-through;
+    opacity: 0.6; /* slightly faded but still readable */
+}
+
+/* Individual delete button */
+.note-delete-btn {
+    background: transparent;
+    border: none;
+    color: #ff6b81;
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin-left: 8px;
+    transition: color 0.2s ease;
+}
+
+.note-delete-btn:hover {
+    color: #ffd1dc;
+}
+
+
+.quick-note {
+    position: relative; /* for pseudo-element positioning */
+    background: rgba(255,255,255,0.15);
+    padding: 4px 8px;
+    border-radius: 6px;
+    margin-bottom: 4px;
+    font-size: 0.85rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s ease, opacity 0.2s ease;
+}
+
+.quick-note.done {
+    opacity: 0.6;
+}
+
+/* Full-width line */
+.quick-note.done::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;  /* thickness of the line */
+    background-color: white;  /* line color */
+    transform: translateY(-50%);
+    pointer-events: none; /* keeps clicks working */
+}
+
+#mascot-loaf.jump {
+    animation: jump 0.6s ease;
+}
+
+@keyframes jump {
+    0%   { transform: translate(10px, -50%); }             /* start at current position */
+    50%  { transform: translate(10px, calc(-50% - 15px)); } /* jump up 15px */
+    100% { transform: translate(10px, -50%); }             /* return to original */
+}

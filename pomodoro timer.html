@@ -13,17 +13,64 @@
     <label for="bg-upload">Upload Background ➕ </label>
     <input type="file" id="bg-upload" accept="image/*">
 </div>
+<button id="settings-btn">⚙️</button>
+
+<div id="settings-modal" class="hidden">
+  <div class="settings-content">
+
+    <!-- settings -->
+    <h2>Settings</h2>
+    <label>
+      <input type="checkbox" id="randomMusic" checked>
+      Randomize music on load
+    </label>
+    <label>
+      <input type="checkbox" id="showQuotes" checked>
+      Show Loaf’s motivational quotes
+    </label>
+    <button id="clear-bg">Reset Background</button>
+    <label for="fontSelect">Font Style:</label>
+
+<select id="fontSelect">
+  <option value="'Cherry Bomb One', cursive">Cherry Bomb One</option>
+  <option value="Arial, sans-serif">Arial</option>
+  <option value="'Courier New', monospace">Courier New</option>
+  <option value="'Times New Roman', serif">Times New Roman</option>
+  <option value="'Comic Sans MS', cursive">Comic Sans (fun!)</option>
+</select>
+
+<h3>Timer Presets</h3>
+<div class="preset-buttons">
+    <button class="preset-btn" data-time="25">25 min</button>
+    <button class="preset-btn" data-time="50">50 min</button>
+    <button class="preset-btn" data-time="90">90 min</button>
+</div>
+
+    <button id="close-settings" class="close-btn">❌</button>
+  </div>
+</div>
+
 
 <div id="pomodoro-container">
     <div id="mode-indicator">💼 Work</div>
+    <div id="session-counter">🍅 Sessions Completed: 0</div>
    <div id="timer-wrapper" style="position: relative; display: inline-block;">
     <div id="timer">25:00</div>
     <div id="mascot-loaf">
         <div id="loaf-speech" class="hidden">Focus time!</div>
-        <div id="loaf-name">Loaf</div>
     </div>
 </div>
     
+<div id="quick-notes-container">
+    <div id="quick-notes-header">
+        <span>📝 Quick Notes</span>
+        <button id="clear-notes-btn" title="Clear all notes">🗑️</button>
+    </div>
+    <div id="quick-notes-list"></div>
+    <button id="add-note-btn" title="Add a quick note">➕ Add Note</button>
+</div>
+
+
     <div id="controls">
         <button id="start">Start</button>
         <button id="pause">Pause</button>

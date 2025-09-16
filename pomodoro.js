@@ -3,11 +3,12 @@ let playlist = [
     { id: "bQzIQa5YKvw", title: "📚 Chill Study Beats 6 • instrumental hip hop mix [2019]" },
     { id: "Fd_LPjo15j4", title: "Field Studies Vol. 1 🌳 Chillhop x Friends of Friends [lofi beats / folk / vocal]" },
     { id: "9M4jZuqdw04", title: "In the Zone 🐾 [lofi focus beats / work mix]" },
-    { id: "VDtjKuS2R3E", title: "1 P.M Study Session 🎹 [calm piano]" }
+    { id: "VDtjKuS2R3E", title: "1 P.M Study Session 🎹 [calm piano]" },
+    { id: "qEN5ZHDi1Kg", title: "back to school 📚 [lofi hip hop]" }
 ];
 
 let player;
-let currentSongIndex = 0;
+let currentSongIndex = Math.floor(Math.random() * playlist.length);
 
 // ---------- Timer Variables ----------
 let timer;
@@ -310,3 +311,217 @@ setInterval(() => {
     if (!isRunning) return; // optional: only motivate during work sessions
     showRandomMotivation();
 }, 60000 + Math.random() * 120000); // 1–3 min in ms
+
+const settingsBtn = document.getElementById('settings-btn');
+const modal = document.getElementById('settings-modal');
+const closeBtn = document.getElementById('close-settings');
+closeBtn.addEventListener('click', () => modal.classList.add('hidden'));
+const clearBg = document.getElementById('clear-bg');
+
+settingsBtn.addEventListener('click', () => modal.classList.remove('hidden'));
+closeBtn.addEventListener('click', () => modal.classList.add('hidden'));
+
+clearBg.addEventListener('click', () => {
+  localStorage.removeItem('customBg');
+  document.body.style.backgroundImage = '';
+});
+
+const fontSelect = document.getElementById('fontSelect');
+
+// Load saved font on page load
+window.addEventListener('load', () => {
+  const savedFont = localStorage.getItem('customFont');
+  if (savedFont) {
+    document.body.style.fontFamily = savedFont;
+    fontSelect.value = savedFont;
+  }
+});
+
+// Update font when user changes dropdown
+fontSelect.addEventListener('change', (e) => {
+  const selectedFont = e.target.value;
+  document.body.style.fontFamily = selectedFont;
+  localStorage.setItem('customFont', selectedFont);
+});
+
+const presetButtons = document.querySelectorAll('.preset-btn');
+
+presetButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const minutes = parseInt(btn.dataset.time);
+        totalTime = minutes * 60;       // update total time
+        remainingTime = totalTime;      // reset remaining time
+        updateDisplay();                // refresh timer display
+    });
+});
+
+
+
+// Load counter from localStorage
+let sessionCount = parseInt(localStorage.getItem('sessionCount')) || 0;
+const sessionCounterEl = document.getElementById('session-counter');
+sessionCounterEl.textContent = `🍅 Sessions Completed: ${sessionCount}`;
+
+// Function to increment counter
+function incrementSessionCounter() {
+    sessionCount++;
+    localStorage.setItem('sessionCount', sessionCount);
+    sessionCounterEl.textContent = `🍅 Sessions Completed: ${sessionCount}`;
+}
+
+// Call this function when a Pomodoro finishes
+function timerEnded() {
+    incrementSessionCounter();
+    // You can also trigger Loaf celebration here
+    alert("Time's up! Take a break or start again.");
+}
+
+// Replace the alert in your existing timer end code:
+if (remainingTime <= 0) {
+    clearInterval(timer);
+    isRunning = false;
+    nextSong();
+    timerEnded(); // use new function instead of direct alert
+}
+
+const addNoteBtn = document.getElementById('add-note-btn');
+const notesList = document.getElementById('quick-notes-list');
+const clearNotesBtn = document.getElementById('clear-notes-btn');
+
+// Load saved notes
+let notes = JSON.parse(localStorage.getItem('quickNotes')) || [];
+notes.forEach(note => displayNote(note.text, note.done));
+
+function displayNote(text, done = false) {
+    const noteEl = document.createElement('div');
+    noteEl.classList.add('quick-note');
+    if (done) noteEl.classList.add('done');
+
+    const span = document.createElement('span');
+    span.textContent = text;
+    span.style.flex = '1';
+    span.style.cursor = 'pointer';
+
+    // Toggle done status on click
+    span.addEventListener('click', () => {
+        noteEl.classList.toggle('done');
+        updateNotesStorage();
+    });
+
+    // Delete button
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = '🗑️';
+    deleteBtn.classList.add('note-delete-btn');
+    deleteBtn.addEventListener('click', () => {
+        noteEl.remove();
+        updateNotesStorage();
+    });
+
+    noteEl.appendChild(span);
+    noteEl.appendChild(deleteBtn);
+    notesList.appendChild(noteEl);
+
+    updateNotesStorage();
+}
+
+// Add new note
+addNoteBtn.addEventListener('click', () => {
+    const note = prompt("Write a quick note about this session:");
+    if (note) {
+        notes.push({ text: note, done: false });
+        displayNote(note);
+    }
+});
+
+// Clear all notes
+clearNotesBtn.addEventListener('click', () => {
+    notes = [];
+    localStorage.removeItem('quickNotes');
+    notesList.innerHTML = '';
+});
+
+// Update localStorage
+function updateNotesStorage() {
+    const currentNotes = [];
+    document.querySelectorAll('.quick-note').forEach(noteEl => {
+        currentNotes.push({
+            text: noteEl.querySelector('span').textContent,
+            done: noteEl.classList.contains('done')
+        });
+    });
+    localStorage.setItem('quickNotes', JSON.stringify(currentNotes));
+}
+
+let sessionsCompleted = 0; // increment this whenever a Pomodoro session finishes
+const loafSpeech = document.getElementById('loaf-speech');
+const mascotLoaf = document.getElementById('mascot-loaf');
+
+function checkMilestone() {
+    const milestones = [5, 10, 15]; // sessions where Loaf reacts
+    if (milestones.includes(sessionsCompleted)) {
+        // Show speech bubble
+        loafSpeech.textContent = "You're on fire! 🔥";
+        loafSpeech.classList.add('show');
+        mascotLoaf.classList.add('jump');
+
+        // Remove classes after animation
+        setTimeout(() => {
+            loafSpeech.classList.remove('show');
+            mascotLoaf.classList.remove('jump');
+        }, 1000);
+    }
+}
+
+// Call this function whenever a session ends
+function completeSession() {
+    sessionsCompleted++;
+    localStorage.setItem('sessionsCompleted', sessionsCompleted);
+    checkMilestone();
+}
+
+// Load sessions count on page load
+window.addEventListener('DOMContentLoaded', () => {
+    sessionsCompleted = parseInt(localStorage.getItem('sessionsCompleted')) || 0;
+});
+
+function checkMilestone() {
+    const milestones = [5, 10, 15]; // sessions where Loaf reacts
+    if (milestones.includes(sessionsCompleted)) {
+        // Make Loaf jump
+        mascotLoaf.classList.add('jump');
+
+        // Show speech bubble with random motivational message
+        const messages = [
+            "You're on fire! 🔥",
+            "Keep it up! 💪",
+            "Amazing progress! ✨",
+            "Focus and shine! 🌟",
+            "One step at a time!",
+            "Keep pushing forward!",
+            "You’ve got this!",
+            "Stay strong!",
+            "Almost there!",
+            "Believe in yourself!",
+            "Work smart, not just hard!",
+            "Focus mode activated!",
+            "Keep calm and code on!",
+            "Breathe, focus, repeat.",
+            "Small steps count!",
+            "You’re doing amazing!",
+            "Keep your head up!",
+            "Stay focused, stay cool!",
+            "Victory is near!",
+            "Consistency is key!"
+        ];
+
+        const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+        loafSpeech.textContent = randomMessage;
+        loafSpeech.classList.add('show');
+
+        // Remove classes after animation duration
+        setTimeout(() => {
+            mascotLoaf.classList.remove('jump');
+            loafSpeech.classList.remove('show');
+        }, 1000); // match your jump animation duration
+    }
+}
