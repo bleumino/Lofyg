@@ -67,11 +67,13 @@ function startTimer() {
         isRunning = true;
         if(player) player.playVideo();
         timer = setInterval(() => {
+            console.log('Timer tick:', remainingTime); // see it counting down
             if (remainingTime > 0) {
                 remainingTime--;
                 updateDisplay();
             } else {
-                timerEnded(); // now correctly triggers once
+                console.log('Timer ended!'); // confirm it's called
+                timerEnded();
             }
         }, 1000);
     }
