@@ -71,10 +71,11 @@ function startTimer() {
                 remainingTime--;
                 updateDisplay();
             } else {
-                clearInterval(timer);
-                isRunning = false;
-               timerEnded(); // triggers session logic + notification
-            }
+    clearInterval(timer);
+    isRunning = false;
+    console.log("Timer reached 0, calling timerEnded()");
+    timerEnded();
+}
         }, 1000);
     }
 }
