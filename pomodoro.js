@@ -516,7 +516,11 @@ if ("Notification" in window && Notification.permission === "default") {
 
 function timerEnded() {
     completeSession(); // increments session counter & handles Loaf
-    nextSong();        // continue playing music
+    if (remainingTime <= 0) {
+    clearInterval(timer);
+    isRunning = false;
+    timerEnded(); // triggers notification + session logic
+}
 
     // Browser/OS notification
     if ("Notification" in window && Notification.permission === "granted") {
