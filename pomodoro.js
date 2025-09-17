@@ -73,7 +73,7 @@ function startTimer() {
             } else {
                 clearInterval(timer);
                 isRunning = false;
-                nextSong();
+               timerEnded(); // triggers session logic + notification
             }
         }, 1000);
     }
