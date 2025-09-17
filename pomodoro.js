@@ -71,11 +71,8 @@ function startTimer() {
                 remainingTime--;
                 updateDisplay();
             } else {
-    clearInterval(timer);
-    isRunning = false;
-    console.log("Timer reached 0, calling timerEnded()");
-    timerEnded();
-}
+                timerEnded(); // now correctly triggers once
+            }
         }, 1000);
     }
 }
@@ -517,11 +514,10 @@ if ("Notification" in window && Notification.permission === "default") {
 
 function timerEnded() {
     completeSession(); // increments session counter & handles Loaf
-    if (remainingTime <= 0) {
+
+    // Stop the timer
     clearInterval(timer);
     isRunning = false;
-    timerEnded(); // triggers notification + session logic
-}
 
     // Browser/OS notification
     if ("Notification" in window && Notification.permission === "granted") {
