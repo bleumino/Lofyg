@@ -513,3 +513,31 @@ function checkMilestone() {
 if ("Notification" in window && Notification.permission === "default") {
     Notification.requestPermission();
 }
+
+function timerEnded() {
+    completeSession(); // increments session counter & handles Loaf
+    nextSong();        // continue playing music
+
+    // Browser/OS notification
+    if ("Notification" in window && Notification.permission === "granted") {
+        new Notification("Pomodoro Finished!", {
+            body: "Time's up! Take a break or start again.",
+            icon: "logo.png" // optional
+        });
+    }
+}
+
+
+function showLocalTimeNotification() {
+    if ("Notification" in window && Notification.permission === "granted") {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString();
+        new Notification("Current Time", {
+            body: `It's ${timeString}`,
+            icon: "logo.png"
+        });
+    }
+}
+
+// Example: show time every 30 minutes
+setInterval(showLocalTimeNotification, 30 * 60 * 1000);
