@@ -371,8 +371,6 @@ function incrementSessionCounter() {
 // Call this function when a Pomodoro finishes
 function timerEnded() {
     incrementSessionCounter();
-    // You can also trigger Loaf celebration here
-    alert("Time's up! Take a break or start again.");
 }
 
 // Replace the alert in your existing timer end code:
