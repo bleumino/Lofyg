@@ -74,7 +74,6 @@ function startTimer() {
                 clearInterval(timer);
                 isRunning = false;
                 nextSong();
-                alert("Time's up! Take a break or start again.");
             }
         }, 1000);
     }
