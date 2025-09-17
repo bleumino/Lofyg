@@ -525,3 +525,14 @@ function checkMilestone() {
         }, 1000); // match your jump animation duration
     }
 }
+
+if ("Notification" in window && Notification.permission === "default") {
+    Notification.requestPermission();
+}
+
+// Use this in your timerEnded function:
+function timerEnded() {
+    incrementSessionCounter(); // your existing logic
+    showPomodoroToast();       // triggers the custom corner toast
+    nextSong();                // optional: play next song
+}
