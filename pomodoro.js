@@ -368,19 +368,6 @@ function incrementSessionCounter() {
     sessionCounterEl.textContent = `🍅 Sessions Completed: ${sessionCount}`;
 }
 
-// Call this function when a Pomodoro finishes
-function timerEnded() {
-    incrementSessionCounter();
-}
-
-// Replace the alert in your existing timer end code:
-if (remainingTime <= 0) {
-    clearInterval(timer);
-    isRunning = false;
-    nextSong();
-    timerEnded(); // use new function instead of direct alert
-}
-
 const addNoteBtn = document.getElementById('add-note-btn');
 const notesList = document.getElementById('quick-notes-list');
 const clearNotesBtn = document.getElementById('clear-notes-btn');
@@ -525,10 +512,4 @@ function checkMilestone() {
 
 if ("Notification" in window && Notification.permission === "default") {
     Notification.requestPermission();
-}
-
-// Use this in your timerEnded function:
-function timerEnded() {
-    incrementSessionCounter(); // your existing logic
-    nextSong();                // optional: play next song
 }
