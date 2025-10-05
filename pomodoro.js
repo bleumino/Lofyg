@@ -544,3 +544,40 @@ function showLocalTimeNotification() {
 
 // Example: show time every 30 minutes
 setInterval(showLocalTimeNotification, 30 * 60 * 1000);
+
+//mascot selection
+const mascotImage = document.getElementById("mascot-image");
+const mascotSelector = document.querySelectorAll('input[name="mascot"]');
+
+const mascotSources = {
+    loaf: "loaf.png",
+    muffin: "muffin.png",
+};
+
+function updateMascot(selected) {
+    // Change the image
+    mascotImage.src = mascotSources[selected];
+
+    // Optional: update the quote per mascot
+    const quote = document.getElementById("quote");
+    if (selected === "loaf") {
+        quote.textContent = `"Stay focused and keep going!"`;
+    } else if (selected === "muffin") {
+        quote.textContent = `"Hop to it and do your best!"`;
+    }
+
+    // Save choice
+    localStorage.setItem("selectedMascot", selected);
+}
+
+// Event listeners
+mascotSelector.forEach(radio => {
+    radio.addEventListener("change", (e) => {
+        updateMascot(e.target.value);
+    });
+});
+
+// Load saved mascot on page load
+const savedMascot = localStorage.getItem("selectedMascot") || "loaf";
+updateMascot(savedMascot);
+document.querySelector(`input[name="mascot"][value="${savedMascot}"]`).checked = true;

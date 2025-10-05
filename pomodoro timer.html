@@ -1,108 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pomodoro Timer</title>
-<link href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="pomodoro.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="pomodoro.css">
 </head>
 <body>
-<!-- Background uploader -->
-<div id="background-uploader">
-    <label for="bg-upload">Upload Background ➕ </label>
-    <input type="file" id="bg-upload" accept="image/*">
-</div>
-<button id="settings-btn">⚙️</button>
 
-<div id="settings-modal" class="hidden">
-  <div class="settings-content">
-
-    <!-- settings -->
-    <h2>Settings</h2>
-    <label>
-      <input type="checkbox" id="randomMusic" checked>
-      Randomize music on load
-    </label>
-    <label>
-      <input type="checkbox" id="showQuotes" checked>
-      Show Loaf’s motivational quotes
-    </label>
-    <button id="clear-bg">Reset Background</button>
-    <label for="fontSelect">Font Style:</label>
-
-<select id="fontSelect">
-  <option value="'Cherry Bomb One', cursive">Cherry Bomb One</option>
-  <option value="Arial, sans-serif">Arial</option>
-  <option value="'Courier New', monospace">Courier New</option>
-  <option value="'Times New Roman', serif">Times New Roman</option>
-  <option value="'Comic Sans MS', cursive">Comic Sans (fun!)</option>
-</select>
-
-<h3>Timer Presets</h3>
-<div class="preset-buttons">
-    <button class="preset-btn" data-time="25">25 min</button>
-    <button class="preset-btn" data-time="50">50 min</button>
-    <button class="preset-btn" data-time="90">90 min</button>
-</div>
-
-    <button id="close-settings" class="close-btn">❌</button>
-  </div>
-</div>
-
-
-<div id="pomodoro-container">
-    <div id="mode-indicator">💼 Work</div>
-    <div id="session-counter">🍅 Sessions Completed: 0</div>
-   <div id="timer-wrapper" style="position: relative; display: inline-block;">
-    <div id="timer">25:00</div>
-    <div id="mascot-loaf">
-        <div id="loaf-speech" class="hidden">Focus time!</div>
-    </div>
-</div>
-    
-<div id="quick-notes-container">
-    <div id="quick-notes-header">
-        <span>📝 Quick Notes</span>
-        <button id="clear-notes-btn" title="Clear all notes">🗑️</button>
-    </div>
-    <div id="quick-notes-list"></div>
-    <button id="add-note-btn" title="Add a quick note">➕ Add Note</button>
-</div>
-
-
-    <div id="controls">
-        <button id="start">Start</button>
-        <button id="pause">Pause</button>
-        <button id="reset">Reset</button>
-        <button id="workSession">Work Session</button>
-        <button id="shortBreak">Short Break</button>
-        <button id="longBreak">Long Break</button>
-    </div>
-    <div class="add-time-buttons">
-        <button id="add5">+5 min</button>
-        <button id="add10">+10 min</button>
-        <button id="add15">+15 min</button>
-        <button id="add30">+30 min</button>
-    </div>
-    <div id="progress-bar-container">
-        <div id="progressBar"></div>
+    <!-- Background uploader -->
+    <div id="background-uploader">
+        <label for="bg-upload">Upload Background ➕ </label>
+        <input type="file" id="bg-upload" accept="image/*">
     </div>
 
-    <!-- Hidden Lofi Music Iframe -->
-    <div style="width:1px;height:1px;opacity:0;position:absolute;left:-1000px;">
-        <div id="youtube-player"></div>
+    <button id="settings-btn">⚙️</button>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="hidden">
+        <div class="settings-content">
+            
+            <!-- Settings Header -->
+            <h2>Settings</h2>
+
+            <!-- Music Options -->
+            <label>
+                <input type="checkbox" id="randomMusic" checked>
+                Randomize music on load
+            </label>
+            <label>
+                <input type="checkbox" id="showQuotes" checked>
+                Show Loaf’s motivational quotes
+            </label>
+
+            <button id="clear-bg">Reset Background</button>
+
+            <!-- Font Selector -->
+            <label for="fontSelect">Font Style:</label>
+            <select id="fontSelect">
+                <option value="'Cherry Bomb One', cursive">Cherry Bomb One</option>
+                <option value="Arial, sans-serif">Arial</option>
+                <option value="'Courier New', monospace">Courier New</option>
+                <option value="'Times New Roman', serif">Times New Roman</option>
+                <option value="'Comic Sans MS', cursive">Comic Sans (fun!)</option>
+            </select>
+
+            <!-- Mascot Selection -->
+            <div id="mascot-settings">
+                <h3>Choose Your Mascot</h3>
+                <div id="mascot-selector">
+                    <label>
+                        <input type="radio" name="mascot" value="loaf" checked>
+                        Loaf 🐸
+                    </label>
+                    <label>
+                        <input type="radio" name="mascot" value="muffin">
+                        Muffin 🐇
+                    </label>
+                </div>
+            </div>
+
+            <!-- Timer Presets -->
+            <h3>Timer Presets</h3>
+            <div class="preset-buttons">
+                <button class="preset-btn" data-time="25">25 min</button>
+                <button class="preset-btn" data-time="50">50 min</button>
+                <button class="preset-btn" data-time="90">90 min</button>
+            </div>
+
+            <button id="close-settings" class="close-btn">❌</button>
+        </div>
     </div>
 
-    <section class="mode-toggle-container">
-        <button onclick="document.location='index.html'">Main Playlist</button>
-        <button onclick="document.location='lofi-girl-stream.html'">24 hour lofi radio</button>
-        <button onclick="document.location='cossy-lofi.html'">Cossy Lofi</button>
-        <button onclick="document.location='endless-vibes.html'">Endless Vibes</button>
-        <button onclick="document.location='Stillwaves.html'">Stillwaves</button>
-    </section>
-</div>
+    <!-- Pomodoro Container -->
+    <div id="pomodoro-container">
+        <div id="mode-indicator">💼 Work</div>
+        <div id="session-counter">🍅 Sessions Completed: 0</div>
 
-<script src="pomodoro.js"></script>
+        <div id="timer-wrapper" style="position: relative; display: inline-block;">
+            <div id="timer">25:00</div>
+
+            <!-- Mascot Display -->
+            <div id="mascot-container">
+                <img id="mascot-image" src="mascot-loaf.png" alt="Mascot">
+                <div id="quote" class="hidden">"Stay focused and keep going!"</div>
+            </div>
+        </div>
+
+        <!-- Quick Notes Section -->
+        <div id="quick-notes-container">
+            <div id="quick-notes-header">
+                <span>📝 Quick Notes</span>
+                <button id="clear-notes-btn" title="Clear all notes">🗑️</button>
+            </div>
+            <div id="quick-notes-list"></div>
+            <button id="add-note-btn" title="Add a quick note">➕ Add Note</button>
+        </div>
+
+        <!-- Controls -->
+        <div id="controls">
+            <button id="start">Start</button>
+            <button id="pause">Pause</button>
+            <button id="reset">Reset</button>
+            <button id="workSession">Work Session</button>
+            <button id="shortBreak">Short Break</button>
+            <button id="longBreak">Long Break</button>
+        </div>
+
+        <!-- Add Time Buttons -->
+        <div class="add-time-buttons">
+            <button id="add5">+5 min</button>
+            <button id="add10">+10 min</button>
+            <button id="add15">+15 min</button>
+            <button id="add30">+30 min</button>
+        </div>
+
+        <!-- Progress Bar -->
+        <div id="progress-bar-container">
+            <div id="progressBar"></div>
+        </div>
+
+        <!-- Hidden Lofi Music Iframe -->
+        <div style="width:1px; height:1px; opacity:0; position:absolute; left:-1000px;">
+            <div id="youtube-player"></div>
+        </div>
+
+        <!-- Mode Toggle Buttons -->
+        <section class="mode-toggle-container">
+            <button onclick="document.location='index.html'">Main Playlist</button>
+            <button onclick="document.location='lofi-girl-stream.html'">24 hour lofi radio</button>
+            <button onclick="document.location='cossy-lofi.html'">Cossy Lofi</button>
+            <button onclick="document.location='endless-vibes.html'">Endless Vibes</button>
+            <button onclick="document.location='Stillwaves.html'">Stillwaves</button>
+        </section>
+    </div>
+
+    <script src="pomodoro.js"></script>
 </body>
 </html>
