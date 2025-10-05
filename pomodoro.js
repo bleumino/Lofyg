@@ -269,34 +269,63 @@ add10.addEventListener('click', () => showSpeech('+10 min added!'));
 add15.addEventListener('click', () => showSpeech('+15 min added!'));
 add30.addEventListener('click', () => showSpeech('+30 min added!'));
 
-// Motivational quotes
+// Mascot motivational messages system
+const mascotMessages = {
+    loaf: [
+        "Keep going!",
+        "You’ve got this!",
+        "Focus and shine!",
+        "Almost there!",
+        "Take a deep breath!",
+        "Small steps count!",
+        "Stay strong!",
+        "One minute at a time!",
+        "You’re doing amazing!",
+        "Keep calm and code on!",
+        "Stay focused, stay cool!",
+        "Almost done, keep pushing!",
+        "Work smart, not just hard!",
+        "Breathe, focus, repeat.",
+        "Good vibes only!",
+        "Progress, not perfection!",
+        "You can do this!",
+        "Keep your head up!",
+        "Believe in yourself!",
+        "One task at a time!"
+    ],
+    muffin: [
+        "Hop to it and do your best!",
+        "Every step counts, even small hops!",
+        "Stay fluffy and focused!",
+        "Sweet success is near!",
+        "You’re rising to the challenge!",
+        "Batter up! You got this!",
+        "Muffin can stop you now!",
+        "Sprinkle in some effort!",
+        "Bake your dreams come true!",
+        "You’re on a roll!",
+        "Whisk away distractions!",
+        "Rise and shine!",
+        "Stay soft, stay strong!",
+        "Hop through the hard parts!",
+        "Keep mixing it up!",
+        "You’re the top muffin!",
+        "Keep it sweet and steady!",
+        "Be the muffin you wish to see!",
+        "Bake the most of today!",
+        "Crumbs of progress add up!"
+    ]
+};
 
-const quotes = [
-    "Keep going!",
-    "You’ve got this!",
-    "Focus and shine!",
-    "Almost there!",
-    "Take a deep breath!",
-    "Small steps count!",
-    "Stay strong!",
-    "One minute at a time!",
-    "You’re doing amazing!",
-    "Keep calm and code on!",
-    "Stay focused, stay cool!",
-    "Almost done, keep pushing!",
-    "Work smart, not just hard!",
-    "Breathe, focus, repeat.",
-    "Good vibes only!",
-    "Progress, not perfection!",
-    "You can do this!",
-    "Keep your head up!",
-    "Believe in yourself!",
-    "One task at a time!"
-];
+function getSelectedMascot() {
+    return localStorage.getItem("selectedMascot") || "loaf";
+}
 
 function showRandomMotivation() {
     const speech = document.getElementById('loaf-speech');
-    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+    const mascot = getSelectedMascot();
+    const messages = mascotMessages[mascot] || mascotMessages["loaf"];
+    const randomQuote = messages[Math.floor(Math.random() * messages.length)];
     speech.textContent = randomQuote;
     speech.classList.add('show');
     
@@ -307,7 +336,7 @@ function showRandomMotivation() {
 
 // Randomly trigger every 1–3 minutes
 setInterval(() => {
-    if (!isRunning) return; // optional: only motivate during work sessions
+    if (!isRunning) return; // only motivate during work sessions
     showRandomMotivation();
 }, 60000 + Math.random() * 120000); // 1–3 min in ms
 
@@ -469,35 +498,15 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 function checkMilestone() {
-    const milestones = [5, 10, 15]; // sessions where Loaf reacts
+    const milestones = [5, 10, 15]; // sessions where mascot reacts
     if (milestones.includes(sessionsCompleted)) {
-        // Make Loaf jump
+        // Make Loaf jump (or mascot jump, if you add more mascots later)
         mascotLoaf.classList.add('jump');
 
-        // Show speech bubble with random motivational message
-        const messages = [
-            "You're on fire! 🔥",
-            "Keep it up! 💪",
-            "Amazing progress! ✨",
-            "Focus and shine! 🌟",
-            "One step at a time!",
-            "Keep pushing forward!",
-            "You’ve got this!",
-            "Stay strong!",
-            "Almost there!",
-            "Believe in yourself!",
-            "Work smart, not just hard!",
-            "Focus mode activated!",
-            "Keep calm and code on!",
-            "Breathe, focus, repeat.",
-            "Small steps count!",
-            "You’re doing amazing!",
-            "Keep your head up!",
-            "Stay focused, stay cool!",
-            "Victory is near!",
-            "Consistency is key!"
-        ];
-
+        // Show speech bubble with random motivational message from mascotMessages
+        const mascot = getSelectedMascot();
+        // For milestone, pick a random message from mascot's messages, but you can also add special ones if you wish
+        const messages = mascotMessages[mascot] || mascotMessages["loaf"];
         const randomMessage = messages[Math.floor(Math.random() * messages.length)];
         loafSpeech.textContent = randomMessage;
         loafSpeech.classList.add('show');
@@ -550,26 +559,30 @@ const mascotImage = document.getElementById("mascot-image");
 const mascotSelector = document.querySelectorAll('input[name="mascot"]');
 
 const mascotSources = {
-    loaf: "loaf.png",
-    muffin: "muffin.png",
+    loaf: "lofyg/loaf.png",
+    muffin: "lofyg/muffin.png",
 };
 
 function updateMascot(selected) {
     // Change the image
     mascotImage.src = mascotSources[selected];
 
-    // Optional: update the quote per mascot
+    // Update quote
     const quote = document.getElementById("quote");
-    if (selected === "loaf") {
-        quote.textContent = `"Stay focused and keep going!"`;
-    } else if (selected === "muffin") {
-        quote.textContent = `"Hop to it and do your best!"`;
-    }
+    const messages = mascotMessages[selected] || mascotMessages["loaf"];
+    quote.textContent = `"${messages[0]}"`;
+
+    // Set data-name for hover tooltip
+    const mascotContainer = document.getElementById("mascot-container");
+    mascotContainer.setAttribute("data-name", selected.charAt(0).toUpperCase() + selected.slice(1));
+
+    // Show/hide speech divs
+    document.getElementById("loaf-speech").classList.toggle("hidden", selected !== "loaf");
+    document.getElementById("muffin-speech").classList.toggle("hidden", selected !== "muffin");
 
     // Save choice
     localStorage.setItem("selectedMascot", selected);
 }
-
 // Event listeners
 mascotSelector.forEach(radio => {
     radio.addEventListener("change", (e) => {
@@ -581,3 +594,20 @@ mascotSelector.forEach(radio => {
 const savedMascot = localStorage.getItem("selectedMascot") || "loaf";
 updateMascot(savedMascot);
 document.querySelector(`input[name="mascot"][value="${savedMascot}"]`).checked = true;
+
+
+function updateMascot(selected) {
+    // Change image
+    mascotImage.src = mascotSources[selected];
+
+    // Update hover tooltip
+    const mascotContainer = document.getElementById("mascot-container");
+    mascotContainer.setAttribute("data-name", selected.charAt(0).toUpperCase() + selected.slice(1));
+
+    // Show/hide speech bubbles
+    document.getElementById("loaf-speech").classList.toggle("hidden", selected !== "loaf");
+    document.getElementById("muffin-speech").classList.toggle("hidden", selected !== "muffin");
+
+    localStorage.setItem("selectedMascot", selected);
+}
+

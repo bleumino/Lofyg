@@ -228,19 +228,8 @@ header {
     animation: progressGradient 10s ease infinite;
 }
 
-#mascot-loaf {
-    position: absolute;
-    left: 100%;           /* places Loaf immediately to the right of timer */
-    top: 50%;             /* vertically center relative to timer */
-    transform: translate(10px, -50%); /* horizontal spacing + vertical centering */
-    width: 80px;
-    height: 80px;
-    background-image: url('lofyg/Loaf.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    animation: loafIdle 1.5s ease-in-out infinite;
-    z-index: 2;
-}
+
+
 
 #pomodoro-container {
     display: flex;
@@ -266,11 +255,10 @@ header {
     text-shadow: 0 2px 6px rgba(0,0,0,0.8);
     margin-top: 4px;
 }
-
-#mascot-loaf:hover::after {
-    content: 'Loaf';
+#mascot-container:hover::after {
+    content: attr(data-name); /* shows "Loaf" or "Muffin" */
     position: absolute;
-    top: -25px;
+    top: -30px;      /* adjust so it’s above the image */
     left: 50%;
     transform: translateX(-50%);
     background: rgba(0,0,0,0.6);
@@ -279,6 +267,7 @@ header {
     border-radius: 4px;
     font-size: 0.8rem;
     pointer-events: none;
+    white-space: nowrap;
 }
 
 #loaf-speech {
@@ -645,13 +634,31 @@ header {
     pointer-events: none; /* keeps clicks working */
 }
 
-#mascot-loaf.jump {
-    animation: jump 0.6s ease;
+@keyframes jump {
+    0%   { transform: translateY(0); }
+    50%  { transform: translateY(-18px); }
+    100% { transform: translateY(0); }
 }
 
-@keyframes jump {
-    0%   { transform: translate(10px, -50%); }             /* start at current position */
-    50%  { transform: translate(10px, calc(-50% - 15px)); } /* jump up 15px */
-    100% { transform: translate(10px, -50%); }             /* return to original */
+#timer-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+#mascot-container {
+  position: absolute;
+  top: 23%;              /* middle of the timer wrapper */
+  left: 70%;            /* right next to the timer */
+  transform: translateY(-50%) translateX(20px); /* small gap */
+  width: 70px;
+  height: auto;
+  z-index: 10;           /* make sure it’s above the timer */
+}
+
+#mascot-container img {
+  width: 70px;
+  height: auto;
 }
 
