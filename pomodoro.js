@@ -559,8 +559,8 @@ const mascotImage = document.getElementById("mascot-image");
 const mascotSelector = document.querySelectorAll('input[name="mascot"]');
 
 const mascotSources = {
-    loaf: "lofyg/loaf.png",
-    muffin: "lofyg/muffin.png",
+    loaf: "lofyg/Loaf.png",   // match the exact filename & capitalization
+    muffin: "lofyg/Muffin.png" // make sure the other file matches exactly
 };
 
 function updateMascot(selected) {
@@ -595,19 +595,16 @@ const savedMascot = localStorage.getItem("selectedMascot") || "loaf";
 updateMascot(savedMascot);
 document.querySelector(`input[name="mascot"][value="${savedMascot}"]`).checked = true;
 
-
 function updateMascot(selected) {
-    // Change image
     mascotImage.src = mascotSources[selected];
 
-    // Update hover tooltip
+    // Update tooltip
     const mascotContainer = document.getElementById("mascot-container");
     mascotContainer.setAttribute("data-name", selected.charAt(0).toUpperCase() + selected.slice(1));
 
-    // Show/hide speech bubbles
+    // Show/hide speech divs
     document.getElementById("loaf-speech").classList.toggle("hidden", selected !== "loaf");
     document.getElementById("muffin-speech").classList.toggle("hidden", selected !== "muffin");
 
     localStorage.setItem("selectedMascot", selected);
 }
-
