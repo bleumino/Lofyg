@@ -586,6 +586,26 @@ const mascotSources = {
     Mochi:`lofyg/Mochi.png`
 };
 
+const mascotPersonality = {
+    loaf: {
+        traits: ["Calm", "Steady", "Focused"],
+        color: "#4CAF50", // green for Loaf
+        emoji: "🐸",
+        style: "Zen and chill"
+    },
+    muffin: {
+        traits: ["Energetic", "Cheerful", "Bouncy"],
+        color: "#FFC107", // warm yellow/orange
+        emoji: "🐰",
+        style: "Playful and fun"
+    },
+    mochi: {
+        traits: ["Clever", "Calm", "Feminine"],
+        color: "#D88C4E", // amber/orange
+        emoji: "🦊",
+        style: "Thoughtful and composed"
+    }
+};
 function updateMascot(selected) {
     // Change the image
     mascotImage.src = mascotSources[selected];
@@ -636,27 +656,6 @@ function updateMascot(selected) {
 
     localStorage.setItem("selectedMascot", selected);
 }
-
-const mascotPersonality = {
-    loaf: {
-        traits: ["Calm", "Steady", "Focused"],
-        color: "#4CAF50", // greenish
-        emoji: "🐸",
-        style: "Zen and chill"
-    },
-    muffin: {
-        traits: ["Energetic", "Cheerful", "Bouncy"],
-        color: "#FFC107", // pastel yellow/orange
-        emoji: "🐰",
-        style: "Playful and fun"
-    },
-    mochi: {
-        traits: ["Clever", "Calm", "Feminine"],
-        color: "#D88C4E", // amber/orange
-        emoji: "🦊",
-        style: "Thoughtful and composed"
-    }
-};
 
 function showMascotPersonality(selected) {
     const info = mascotPersonality[selected];
