@@ -583,7 +583,7 @@ const mascotSelector = document.querySelectorAll('input[name="mascot"]');
 const mascotSources = {
     loaf: "lofyg/Loaf.png",   // match the exact filename & capitalization
     muffin: "lofyg/Muffin.png", // make sure the other file matches exactly
-    mochi: "lofyg/Mochi.png"
+    Mochi:"lofyg/Mochi.png"
 };
 
 const mascotPersonality = {
@@ -606,8 +606,12 @@ const mascotPersonality = {
         style: "Thoughtful and composed"
     }
 };
+// Load saved mascot on page load
+const savedMascot = localStorage.getItem("selectedMascot") || "loaf";
+updateMascot(savedMascot);
+document.querySelector(`input[name="mascot"][value="${savedMascot}"]`).checked = true;
+
 function updateMascot(selected) {
-    // Change the image
     mascotImage.src = mascotSources[selected];
 
     // Update quote
@@ -615,7 +619,8 @@ function updateMascot(selected) {
     const messages = mascotMessages[selected] || mascotMessages["loaf"];
     quote.textContent = `"${messages[0]}"`;
 
-    // Set data-name for hover tooltip
+
+    // Update tooltip
     const mascotContainer = document.getElementById("mascot-container");
     mascotContainer.setAttribute("data-name", selected.charAt(0).toUpperCase() + selected.slice(1));
 
@@ -624,23 +629,11 @@ function updateMascot(selected) {
     document.getElementById("muffin-speech").classList.toggle("hidden", selected !== "muffin");
     document.getElementById("mochi-speech").classList.toggle("hidden", selected !== "mochi");
 
-    // Save choice
     localStorage.setItem("selectedMascot", selected);
 
-    // Update UI colours based on mascot
     updateUIColors(selected);
+    showMascotPersonality(selected);
 }
-// Event listeners
-mascotSelector.forEach(radio => {
-    radio.addEventListener("change", (e) => {
-        updateMascot(e.target.value);
-    });
-});
-
-// Load saved mascot on page load
-const savedMascot = localStorage.getItem("selectedMascot") || "loaf";
-updateMascot(savedMascot);
-document.querySelector(`input[name="mascot"][value="${savedMascot}"]`).checked = true;
 
 function showMascotPersonality(selected) {
     const info = mascotPersonality[selected];
