@@ -606,6 +606,9 @@ function updateMascot(selected) {
 
     // Save choice
     localStorage.setItem("selectedMascot", selected);
+
+    // Update UI colours based on mascot
+    updateUIColors(selected);
 }
 // Event listeners
 mascotSelector.forEach(radio => {
@@ -632,4 +635,50 @@ function updateMascot(selected) {
     document.getElementById("mochi-speech").classList.toggle("hidden", selected !== "mochi");
 
     localStorage.setItem("selectedMascot", selected);
+}
+
+const mascotPersonality = {
+    loaf: {
+        traits: ["Calm", "Steady", "Focused"],
+        color: "#4CAF50", // greenish
+        emoji: "🐸",
+        style: "Zen and chill"
+    },
+    muffin: {
+        traits: ["Energetic", "Cheerful", "Bouncy"],
+        color: "#FFC107", // pastel yellow/orange
+        emoji: "🐰",
+        style: "Playful and fun"
+    },
+    mochi: {
+        traits: ["Clever", "Calm", "Feminine"],
+        color: "#D88C4E", // amber/orange
+        emoji: "🦊",
+        style: "Thoughtful and composed"
+    }
+};
+
+function showMascotPersonality(selected) {
+    const info = mascotPersonality[selected];
+    console.log(`${info.emoji} ${selected.charAt(0).toUpperCase() + selected.slice(1)}: ${info.traits.join(', ')} — ${info.style}`);
+}
+
+function updateUIColors(selected) {
+    const info = mascotPersonality[selected];
+    
+    // Example: change all buttons
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach(btn => {
+        btn.style.backgroundColor = info.color;
+        btn.style.borderColor = info.color;
+        btn.style.color = "#fff"; // keep text readable
+    });
+
+    // Example: change progress bar
+    const progressBar = document.getElementById('progressBar');
+    if (progressBar) progressBar.style.backgroundColor = info.color;
+    
+    // Example: change mode indicator text color
+    const modeIndicator = document.getElementById('mode-indicator');
+    if (modeIndicator) modeIndicator.style.color = info.color;
 }
