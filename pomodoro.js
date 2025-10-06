@@ -602,6 +602,7 @@ function updateMascot(selected) {
     // Show/hide speech divs
     document.getElementById("loaf-speech").classList.toggle("hidden", selected !== "loaf");
     document.getElementById("muffin-speech").classList.toggle("hidden", selected !== "muffin");
+    document.getElementById("mochi-speech").classList.toggle("hidden", selected !== "mochi");
 
     // Save choice
     localStorage.setItem("selectedMascot", selected);
