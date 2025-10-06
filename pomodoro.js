@@ -606,12 +606,8 @@ const mascotPersonality = {
         style: "Thoughtful and composed"
     }
 };
-// Load saved mascot on page load
-const savedMascot = localStorage.getItem("selectedMascot") || "loaf";
-updateMascot(savedMascot);
-document.querySelector(`input[name="mascot"][value="${savedMascot}"]`).checked = true;
-
 function updateMascot(selected) {
+    // Change the image
     mascotImage.src = mascotSources[selected];
 
     // Update quote
@@ -619,6 +615,35 @@ function updateMascot(selected) {
     const messages = mascotMessages[selected] || mascotMessages["loaf"];
     quote.textContent = `"${messages[0]}"`;
 
+    // Set data-name for hover tooltip
+    const mascotContainer = document.getElementById("mascot-container");
+    mascotContainer.setAttribute("data-name", selected.charAt(0).toUpperCase() + selected.slice(1));
+
+    // Show/hide speech divs
+    document.getElementById("loaf-speech").classList.toggle("hidden", selected !== "loaf");
+    document.getElementById("muffin-speech").classList.toggle("hidden", selected !== "muffin");
+    document.getElementById("mochi-speech").classList.toggle("hidden", selected !== "mochi");
+
+    // Save choice
+    localStorage.setItem("selectedMascot", selected);
+
+    // Update UI colours based on mascot
+    updateUIColors(selected);
+}
+// Event listeners
+mascotSelector.forEach(radio => {
+    radio.addEventListener("change", (e) => {
+        updateMascot(e.target.value);
+    });
+});
+
+// Load saved mascot on page load
+const savedMascot = localStorage.getItem("selectedMascot") || "loaf";
+updateMascot(savedMascot);
+document.querySelector(`input[name="mascot"][value="${savedMascot}"]`).checked = true;
+
+function updateMascot(selected) {
+    mascotImage.src = mascotSources[selected];
 
     // Update tooltip
     const mascotContainer = document.getElementById("mascot-container");
