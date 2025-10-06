@@ -583,7 +583,7 @@ const mascotSelector = document.querySelectorAll('input[name="mascot"]');
 const mascotSources = {
     loaf: "lofyg/Loaf.png",   // match the exact filename & capitalization
     muffin: "lofyg/Muffin.png", // make sure the other file matches exactly
-    Mochi:`lofyg/Mochi.png`
+    Mochi:"lofyg/Mochi.png"
 };
 
 const mascotPersonality = {
