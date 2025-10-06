@@ -614,27 +614,38 @@ mascotSelector.forEach(radio => {
     });
 });
 
-// Load saved mascot on page load
-const savedMascot = localStorage.getItem("selectedMascot") || "loaf";
-updateMascot(savedMascot);
-document.querySelector(`input[name="mascot"][value="${savedMascot}"]`).checked = true;
+// Load saved mascot on page load safely after DOMContentLoaded
+window.addEventListener('DOMContentLoaded', () => {
+    const savedMascot = localStorage.getItem("selectedMascot") || "loaf";
+    const radioInput = document.querySelector(`input[name="mascot"][value="${savedMascot}"]`);
+    if (radioInput) radioInput.checked = true;
+    updateMascot(savedMascot);
+});
 
 function updateMascot(selected) {
+    if (!mascotSources[selected] || !mascotImage) return;
+
     mascotImage.src = mascotSources[selected];
 
     // Update tooltip
     const mascotContainer = document.getElementById("mascot-container");
-    mascotContainer.setAttribute("data-name", selected.charAt(0).toUpperCase() + selected.slice(1));
+    if (mascotContainer) {
+        mascotContainer.setAttribute("data-name", selected.charAt(0).toUpperCase() + selected.slice(1));
+    }
 
-    // Update quote
+    // Update quote safely
     const quote = document.getElementById("quote");
     const messages = mascotMessages[selected] || mascotMessages["loaf"];
-    quote.textContent = `"${messages[0]}"`;
+    if (quote) quote.textContent = `"${messages[0]}"`;
 
-    // Show/hide speech divs
-    document.getElementById("loaf-speech").classList.toggle("hidden", selected !== "loaf");
-    document.getElementById("muffin-speech").classList.toggle("hidden", selected !== "muffin");
-    document.getElementById("mochi-speech").classList.toggle("hidden", selected !== "mochi");
+    // Show/hide speech divs safely
+    const loafSpeechDiv = document.getElementById("loaf-speech");
+    const muffinSpeechDiv = document.getElementById("muffin-speech");
+    const mochiSpeechDiv = document.getElementById("mochi-speech");
+
+    if (loafSpeechDiv) loafSpeechDiv.classList.toggle("hidden", selected !== "loaf");
+    if (muffinSpeechDiv) muffinSpeechDiv.classList.toggle("hidden", selected !== "muffin");
+    if (mochiSpeechDiv) mochiSpeechDiv.classList.toggle("hidden", selected !== "mochi");
 
     localStorage.setItem("selectedMascot", selected);
 
