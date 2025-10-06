@@ -583,7 +583,7 @@ const mascotSelector = document.querySelectorAll('input[name="mascot"]');
 const mascotSources = {
     loaf: "lofyg/Loaf.png",   // match the exact filename & capitalization
     muffin: "lofyg/Muffin.png", // make sure the other file matches exactly
-    Mochi:"lofyg/Mochi.png"
+    mochi: "lofyg/Mochi.png"
 };
 
 const mascotPersonality = {
@@ -641,21 +641,6 @@ mascotSelector.forEach(radio => {
 const savedMascot = localStorage.getItem("selectedMascot") || "loaf";
 updateMascot(savedMascot);
 document.querySelector(`input[name="mascot"][value="${savedMascot}"]`).checked = true;
-
-function updateMascot(selected) {
-    mascotImage.src = mascotSources[selected];
-
-    // Update tooltip
-    const mascotContainer = document.getElementById("mascot-container");
-    mascotContainer.setAttribute("data-name", selected.charAt(0).toUpperCase() + selected.slice(1));
-
-    // Show/hide speech divs
-    document.getElementById("loaf-speech").classList.toggle("hidden", selected !== "loaf");
-    document.getElementById("muffin-speech").classList.toggle("hidden", selected !== "muffin");
-    document.getElementById("mochi-speech").classList.toggle("hidden", selected !== "mochi");
-
-    localStorage.setItem("selectedMascot", selected);
-}
 
 function showMascotPersonality(selected) {
     const info = mascotPersonality[selected];
