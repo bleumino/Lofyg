@@ -314,7 +314,29 @@ const mascotMessages = {
         "Be the muffin you wish to see!",
         "Bake the most of today!",
         "Crumbs of progress add up!"
-    ]
+    ],
+    mochi: [
+    "Stay sly and focused!",
+    "You’ve got this — clever as a fox!",
+    "Focus mode: stealth activated.",
+    "Slow and smart wins the race.",
+    "Think sharp, act calm.",
+    "Stay curious, stay creative.",
+    "One quiet move at a time.",
+    "Focus is your superpower.",
+    "You’re clever, capable, and calm.",
+    "Take a breath, then leap!",
+    "Small steps today, giant leaps tomorrow.",
+    "Observe first, act second.",
+    "Patience is power.",
+    "A clever plan beats rushing ahead.",
+    "Quiet minds achieve clarity.",
+    "Stay alert, stay ready.",
+    "Wisdom grows in calm moments.",
+    "Think like a fox, move like the wind.",
+    "Your focus is your secret weapon.",
+    "Soft steps, sharp mind."
+]
 };
 
 function getSelectedMascot() {
@@ -560,7 +582,8 @@ const mascotSelector = document.querySelectorAll('input[name="mascot"]');
 
 const mascotSources = {
     loaf: "lofyg/Loaf.png",   // match the exact filename & capitalization
-    muffin: "lofyg/Muffin.png" // make sure the other file matches exactly
+    muffin: "lofyg/Muffin.png", // make sure the other file matches exactly
+    Mochi:`lofyg/Mochi.png`
 };
 
 function updateMascot(selected) {
@@ -605,6 +628,7 @@ function updateMascot(selected) {
     // Show/hide speech divs
     document.getElementById("loaf-speech").classList.toggle("hidden", selected !== "loaf");
     document.getElementById("muffin-speech").classList.toggle("hidden", selected !== "muffin");
+    document.getElementById("mochi-speech").classList.toggle("hidden", selected !== "mochi");
 
     localStorage.setItem("selectedMascot", selected);
 }
