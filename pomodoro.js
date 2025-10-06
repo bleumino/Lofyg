@@ -583,7 +583,7 @@ const mascotSelector = document.querySelectorAll('input[name="mascot"]');
 const mascotSources = {
     loaf: "lofyg/Loaf.png",   // match the exact filename & capitalization
     muffin: "lofyg/Muffin.png", // make sure the other file matches exactly
-    Mochi:"lofyg/Mochi.png"
+    mochi: "lofyg/Mochi.png"
 };
 
 const mascotPersonality = {
@@ -606,30 +606,7 @@ const mascotPersonality = {
         style: "Thoughtful and composed"
     }
 };
-function updateMascot(selected) {
-    // Change the image
-    mascotImage.src = mascotSources[selected];
-
-    // Update quote
-    const quote = document.getElementById("quote");
-    const messages = mascotMessages[selected] || mascotMessages["loaf"];
-    quote.textContent = `"${messages[0]}"`;
-
-    // Set data-name for hover tooltip
-    const mascotContainer = document.getElementById("mascot-container");
-    mascotContainer.setAttribute("data-name", selected.charAt(0).toUpperCase() + selected.slice(1));
-
-    // Show/hide speech divs
-    document.getElementById("loaf-speech").classList.toggle("hidden", selected !== "loaf");
-    document.getElementById("muffin-speech").classList.toggle("hidden", selected !== "muffin");
-    document.getElementById("mochi-speech").classList.toggle("hidden", selected !== "mochi");
-
-    // Save choice
-    localStorage.setItem("selectedMascot", selected);
-
-    // Update UI colours based on mascot
-    updateUIColors(selected);
-}
+// (Removed duplicate/overwriting updateMascot definition)
 // Event listeners
 mascotSelector.forEach(radio => {
     radio.addEventListener("change", (e) => {
@@ -648,6 +625,11 @@ function updateMascot(selected) {
     // Update tooltip
     const mascotContainer = document.getElementById("mascot-container");
     mascotContainer.setAttribute("data-name", selected.charAt(0).toUpperCase() + selected.slice(1));
+
+    // Update quote
+    const quote = document.getElementById("quote");
+    const messages = mascotMessages[selected] || mascotMessages["loaf"];
+    quote.textContent = `"${messages[0]}"`;
 
     // Show/hide speech divs
     document.getElementById("loaf-speech").classList.toggle("hidden", selected !== "loaf");
