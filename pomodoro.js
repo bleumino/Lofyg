@@ -10,7 +10,18 @@ const playlists = {
     ],
     happy: [
         { id: "qEN5ZHDi1Kg", title: "back to school 📚 [lofi hip hop]" }
+    ],
+
+    "ultiment study": [
+        { id: "-FlxM_0S2lA", title: "Best of lofi 2018 🎶 beats to chill/study to" }
+    ],
+    sleepy: [
+        { id: "fTjm59DFifg", title: "late night vibes... 😴" }
+    ],
+    "last minute cram sesion": [
+        { id: "", title: "12 A.M Study Session 📚 [lofi hip hop]" }
     ]
+
 };
 
 // Start with a random mood (or default to chill)
