@@ -138,6 +138,21 @@ moodButtons.forEach(btn => {
             player.loadVideoById(playlist[currentSongIndex].id);
             player.playVideo();
         }
+
+        const moodButtons = document.querySelectorAll('.mood-btn');
+
+    moodButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        // Remove active class from all
+        moodButtons.forEach(b => b.classList.remove('active'));
+        // Add active class to clicked button
+        btn.classList.add('active');
+        
+        // Your existing code to change playlist
+        const selectedMood = btn.dataset.mood;
+        updatePlaylistForMood(selectedMood); // assuming you have this function
+    });
+});
     });
 });
 
@@ -723,3 +738,4 @@ function updateMoodButtonColors(selectedColor) {
 
 // Call this whenever you update mascot colors
 updateMoodButtonColors(mascotPersonality[getSelectedMascot()].color);
+

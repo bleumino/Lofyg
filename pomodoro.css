@@ -690,3 +690,14 @@ header {
     transform: scale(1.1);
     background-color: #66bb6a;
 }
+
+.mood-btn {
+  opacity: 0.6;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.mood-btn.active {
+  opacity: 1;
+  transform: scale(1.1);
+  border: 2px solid #fff; /* optional: adds a border to highlight */
+}
