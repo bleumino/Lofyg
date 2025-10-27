@@ -15,11 +15,14 @@ const playlists = {
     "ultiment study": [
         { id: "-FlxM_0S2lA", title: "Best of lofi 2018 🎶 beats to chill/study to" }
     ],
+    
     sleepy: [
         { id: "fTjm59DFifg", title: "late night vibes... 😴" }
     ],
     "last minute cram sesion": [
-        { id: "", title: "12 A.M Study Session 📚 [lofi hip hop]" }
+        { id: "l98w9OSKVNA", title: "12 A.M Study Session 📚 [lofi hip hop]" },
+        { id: "Vjc__j8t3B0", title: "✨speedrunning your assignments like an academic weapon i know you are /not so chill piano/lofi songs" },
+        { id: "Lofi Girl - Christmas 2023 🎄", title: "1YBtzAAChU8" }
     ]
 
 };
@@ -135,35 +138,26 @@ workSessionBtn.addEventListener('click', () => {
 
 const moodButtons = document.querySelectorAll('.mood-btn');
 
+// Cleaner mood button event listener with active highlight and playlist switching
 moodButtons.forEach(btn => {
     btn.addEventListener('click', () => {
         const mood = btn.dataset.mood;
-        if (!playlists[mood]) return;
-        
+        if (!playlists[mood] || currentMood === mood) return; // do nothing if invalid or already selected
+
+        // Remove active class from all
+        moodButtons.forEach(b => b.classList.remove('active'));
+        // Add active class to clicked button
+        btn.classList.add('active');
+
         currentMood = mood;
         playlist = playlists[mood];
-        currentSongIndex = 0; // start first song of mood
+        currentSongIndex = Math.floor(Math.random() * playlist.length);
         localStorage.setItem("selectedMood", mood);
 
         if (player) {
             player.loadVideoById(playlist[currentSongIndex].id);
             player.playVideo();
         }
-
-        const moodButtons = document.querySelectorAll('.mood-btn');
-
-    moodButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-        // Remove active class from all
-        moodButtons.forEach(b => b.classList.remove('active'));
-        // Add active class to clicked button
-        btn.classList.add('active');
-        
-        // Your existing code to change playlist
-        const selectedMood = btn.dataset.mood;
-        updatePlaylistForMood(selectedMood); // assuming you have this function
-    });
-});
     });
 });
 
