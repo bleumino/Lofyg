@@ -136,30 +136,104 @@ workSessionBtn.addEventListener('click', () => {
     updateDisplay();
 });
 
+// --- Mood Selector Refactor (fixes: persistent highlight, playlist, color, and player readiness) ---
 const moodButtons = document.querySelectorAll('.mood-btn');
+let playerReady = false;
+let player = null;
 
-// Cleaner mood button event listener with active highlight and playlist switching
+function setActiveMoodButton(mood) {
+    moodButtons.forEach(btn => {
+        if (btn.dataset.mood === mood) {
+            btn.classList.add('active');
+            btn.style.outline = '2px solid #fff'; // ensure visible highlight
+        } else {
+            btn.classList.remove('active');
+            btn.style.outline = '';
+        }
+    });
+}
+
+function switchMood(mood) {
+    if (!playlists[mood]) return;
+    if (currentMood === mood && playlist === playlists[mood]) return;
+    currentMood = mood;
+    playlist = playlists[mood];
+    currentSongIndex = Math.floor(Math.random() * playlist.length);
+    localStorage.setItem("selectedMood", mood);
+    setActiveMoodButton(mood);
+    // Only load if player is ready
+    if (playerReady && player && playlist[currentSongIndex]) {
+        player.loadVideoById(playlist[currentSongIndex].id);
+        player.playVideo();
+    }
+}
+
 moodButtons.forEach(btn => {
     btn.addEventListener('click', () => {
         const mood = btn.dataset.mood;
-        if (!playlists[mood] || currentMood === mood) return; // do nothing if invalid or already selected
-
-        // Remove active class from all
-        moodButtons.forEach(b => b.classList.remove('active'));
-        // Add active class to clicked button
-        btn.classList.add('active');
-
-        currentMood = mood;
-        playlist = playlists[mood];
-        currentSongIndex = Math.floor(Math.random() * playlist.length);
-        localStorage.setItem("selectedMood", mood);
-
-        if (player) {
-            player.loadVideoById(playlist[currentSongIndex].id);
-            player.playVideo();
-        }
+        if (!playlists[mood] || currentMood === mood) return;
+        switchMood(mood);
     });
 });
+
+// On page load, restore active button and playlist
+window.addEventListener('DOMContentLoaded', () => {
+    const savedMood = localStorage.getItem("selectedMood") || "chill";
+    if (playlists[savedMood]) {
+        currentMood = savedMood;
+        playlist = playlists[currentMood];
+        currentSongIndex = Math.floor(Math.random() * playlist.length);
+        setActiveMoodButton(savedMood);
+    }
+});
+
+// --- YouTube API: ensure playerReady before loading video ---
+function loadYouTubeAPI() {
+    const script = document.createElement('script');
+    script.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(script);
+}
+
+window.onYouTubeIframeAPIReady = function() {
+    player = new YT.Player('youtube-player', {
+        height: '0',
+        width: '0',
+        videoId: playlist[currentSongIndex].id,
+        playerVars: { autoplay: 0, controls: 0, modestbranding: 1 },
+        events: {
+            onReady: function() {
+                playerReady = true;
+                // On first ready, ensure the correct video is loaded
+                if (playlist[currentSongIndex]) {
+                    player.loadVideoById(playlist[currentSongIndex].id);
+                }
+            },
+            onStateChange: handleStateChange
+        }
+    });
+};
+
+// Override global function if previously declared
+if (typeof onYouTubeIframeAPIReady === 'function') {
+    window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
+}
+
+// --- Mood button color update (ensure no highlight conflict) ---
+function updateMoodButtonColors(selectedColor) {
+    const buttons = document.querySelectorAll('#mood-selector .mood-btn');
+    buttons.forEach(btn => {
+        btn.style.backgroundColor = selectedColor;
+        // Keep outline for active mood
+        if (btn.classList.contains('active')) {
+            btn.style.outline = '2px solid #fff';
+        } else {
+            btn.style.outline = '';
+        }
+    });
+}
+
+// Call this whenever you update mascot colors
+updateMoodButtonColors(mascotPersonality[getSelectedMascot()].color);
 
 // ---------- Initialize ----------
 updateDisplay();
