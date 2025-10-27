@@ -1,13 +1,21 @@
 // ---------- Lofi Music Playlist ----------
-let playlist = [
-    { id: "bQzIQa5YKvw", title: "📚 Chill Study Beats 6 • instrumental hip hop mix [2019]" },
-    { id: "Fd_LPjo15j4", title: "Field Studies Vol. 1 🌳 Chillhop x Friends of Friends [lofi beats / folk / vocal]" },
-    { id: "9M4jZuqdw04", title: "In the Zone 🐾 [lofi focus beats / work mix]" },
-    { id: "VDtjKuS2R3E", title: "1 P.M Study Session 🎹 [calm piano]" },
-    { id: "qEN5ZHDi1Kg", title: "back to school 📚 [lofi hip hop]" }
-];
+const playlists = {
+    chill: [
+        { id: "bQzIQa5YKvw", title: "📚 Chill Study Beats 6 • instrumental hip hop mix [2019]" },
+        { id: "Fd_LPjo15j4", title: "Field Studies Vol. 1 🌳 Chillhop x Friends of Friends [lofi beats / folk / vocal]" }
+    ],
+    focus: [
+        { id: "9M4jZuqdw04", title: "In the Zone 🐾 [lofi focus beats / work mix]" },
+        { id: "VDtjKuS2R3E", title: "1 P.M Study Session 🎹 [calm piano]" }
+    ],
+    happy: [
+        { id: "qEN5ZHDi1Kg", title: "back to school 📚 [lofi hip hop]" }
+    ]
+};
 
-let player;
+// Start with a random mood (or default to chill)
+let currentMood = localStorage.getItem("selectedMood") || "chill";
+let playlist = playlists[currentMood];
 let currentSongIndex = Math.floor(Math.random() * playlist.length);
 
 // ---------- Timer Variables ----------
@@ -112,6 +120,25 @@ workSessionBtn.addEventListener('click', () => {
     totalTime = 25*60;
     remainingTime = totalTime;
     updateDisplay();
+});
+
+const moodButtons = document.querySelectorAll('.mood-btn');
+
+moodButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const mood = btn.dataset.mood;
+        if (!playlists[mood]) return;
+        
+        currentMood = mood;
+        playlist = playlists[mood];
+        currentSongIndex = 0; // start first song of mood
+        localStorage.setItem("selectedMood", mood);
+
+        if (player) {
+            player.loadVideoById(playlist[currentSongIndex].id);
+            player.playVideo();
+        }
+    });
 });
 
 // ---------- Initialize ----------
@@ -677,3 +704,22 @@ function updateUIColors(selected) {
     const modeIndicator = document.getElementById('mode-indicator');
     if (modeIndicator) modeIndicator.style.color = info.color;
 }
+
+window.addEventListener('DOMContentLoaded', () => {
+    const savedMood = localStorage.getItem("selectedMood") || "chill";
+    if (playlists[savedMood]) {
+        currentMood = savedMood;
+        playlist = playlists[currentMood];
+        currentSongIndex = Math.floor(Math.random() * playlist.length);
+    }
+});
+
+function updateMoodButtonColors(selectedColor) {
+    const buttons = document.querySelectorAll('#mood-selector .mood-btn');
+    buttons.forEach(btn => {
+        btn.style.backgroundColor = selectedColor;
+    });
+}
+
+// Call this whenever you update mascot colors
+updateMoodButtonColors(mascotPersonality[getSelectedMascot()].color);
