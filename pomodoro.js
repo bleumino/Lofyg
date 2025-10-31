@@ -218,22 +218,6 @@ if (typeof onYouTubeIframeAPIReady === 'function') {
     window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
 }
 
-// --- Mood button color update (ensure no highlight conflict) ---
-function updateMoodButtonColors(selectedColor) {
-    const buttons = document.querySelectorAll('#mood-selector .mood-btn');
-    buttons.forEach(btn => {
-        btn.style.backgroundColor = selectedColor;
-        // Keep outline for active mood
-        if (btn.classList.contains('active')) {
-            btn.style.outline = '2px solid #fff';
-        } else {
-            btn.style.outline = '';
-        }
-    });
-}
-
-// Call this whenever you update mascot colors
-updateMoodButtonColors(mascotPersonality[getSelectedMascot()].color);
 
 // ---------- Initialize ----------
 updateDisplay();
@@ -815,6 +799,5 @@ function updateMoodButtonColors(selectedColor) {
     });
 }
 
-// Call this whenever you update mascot colors
+// ✅ Run this last, after everything else has loaded
 updateMoodButtonColors(mascotPersonality[getSelectedMascot()].color);
-
