@@ -45,6 +45,9 @@ let playlist = [
           {id:"NCZhmlOr0X4", title: "KPop Demon Hunters [Chill Lofi Cover Compilation]"}, 
           {id:"wofB1wzyYYI", title: "Genshin Impact Lofi ✨ 1 Hour Lofi Hip Hop"}, 
           {id:"yeY6KYjjh_0", title: "chill café - video game music to relax/study/vibe ☕"},
+          {id:"0DrlYGIoesQ", title: "Support Human Made lofi 🌿 Deep Focus & Study Music Playlist (No AI)"},
+          {id:"cTYYfW5MLXQ", title: "🍂 Chillhop Essentials · Fall 2025 [chill lofi beats / jazzy hiphop mix]"},
+     
 
           
 ];

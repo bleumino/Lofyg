@@ -91,6 +91,9 @@
       {id: "LksGbrIm84w", title: "冨岡 愛 - ぷれぜんと。(Lyric Video)", moods:["slow-day", "relax"], language: "japanese"},
       {id: "lZRz9DVcq4s", title: "BRATTY - tuviste (lyrics video)", moods:["slow-day", "relax"], language: "spanish"},
       {id: "Tf82c2kfPcE", title: "BRATTY - Agosto (Lyric Video)", moods:["slow-day", "relax"], language: "spanish"},
+      {id: "zvpo0STisUI", title: "Tate McRae - slower (Lyric Video)", moods:["slow-day", "sad"], language: "english"},
+      {id: "CjmSXgNjjwY", title: "Cat Burns - go (Higher & Faster)", moods:["slow-day", "sad"], language: "english"},
+      {id: "4sKNt6gbohQ", title: "sophiemarie.b - hey little girl (live) [official lyric video]", moods:["slow-day", "sad"], language: "english"},
 
        
 
