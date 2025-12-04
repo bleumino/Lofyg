@@ -94,9 +94,11 @@
       {id: "zvpo0STisUI", title: "Tate McRae - slower (Lyric Video)", moods:["slow-day", "sad"], language: "english"},
       {id: "CjmSXgNjjwY", title: "Cat Burns - go (Higher & Faster)", moods:["slow-day", "sad"], language: "english"},
       {id: "4sKNt6gbohQ", title: "sophiemarie.b - hey little girl (live) [official lyric video]", moods:["slow-day", "sad"], language: "english"},
+      {id: "Wgspd3PrNiQ", title: "nuits d'été (acoustic)", moods:["slow-day", "sad"], language: "french"},
+      {id: "NJpwaUnClx0", title: "Oscar Anton & Clementine - reflet", moods:["slow-day", "sad"], language: "french, english"},
+      {id: "NGAW-DGkXuM", title: "Tate McRae - run for the hills", moods:["slow-day", "sad"], language: "english"},
 
-       
-
+    
       
       
   ];
