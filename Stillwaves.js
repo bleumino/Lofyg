@@ -1,3 +1,17 @@
+// --- Tate McRae Song Highlight Styles ---
+const style = document.createElement('style');
+style.textContent = `
+.tate-song.active-song {
+  background: linear-gradient(90deg, #f6e6ff 70%, #e0b3ff 100%);
+  color: #a94ac7 !important;
+  font-weight: bold;
+  border-left: 4px solid #a94ac7;
+  box-shadow: 0 2px 8px 0 rgba(169,74,199,0.08);
+  transition: background 0.3s, color 0.3s;
+}
+`;
+document.head.appendChild(style);
+
 (function() {
   // --- Playlist and Initial Variables ---
   let playlist = [
