@@ -166,6 +166,10 @@
       });
   };
 
+  /**
+   * CSS style for Tate McRae songs:
+   * .tate-song { background: #f6e6ff; color: #a94ac7; font-weight: bold; }
+   */
   function loadQueue(list = playlist) {
       if (!elements.queueList) return;
       elements.queueList.innerHTML = "";
@@ -174,6 +178,11 @@
           li.textContent = song.title;
           li.dataset.index = index;
           li.style.cursor = "pointer";
+          // Highlight Tate McRae songs
+          if (song.title.toLowerCase().includes("tate mcrae")) {
+              li.classList.add("tate-song");
+          }
+          // Highlight currently playing song
           if (index === currentSongIndex) li.classList.add("active-song");
           li.addEventListener("click", () => playSong(index, list));
           elements.queueList.appendChild(li);
