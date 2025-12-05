@@ -342,23 +342,7 @@ function updateTime() {
       elements.loopButton.classList.toggle("active-mode", isLooping);
   });
 
-  elements.moodButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-          elements.moodButtons.forEach(b => b.classList.remove("active"));
-          btn.classList.add("active");
-
-          const mood = btn.dataset.mood;
-          currentPlaylist = mood === "all" ? [...playlist] : playlist.filter(track => track.moods.includes(mood));
-
-          if (currentPlaylist.length === 0) {
-              alert("No tracks found for this mood.");
-              return;
-          }
-
-          loadQueue(currentPlaylist);
-          playSong(0, currentPlaylist);
-      });
-  });
+  // Mood filter logic now handled by unified stacked filtering below
 
 
 // Language switch: replace button logic with dropdown
@@ -383,24 +367,6 @@ if (langContainer) {
   // Replace buttons with dropdown
   langContainer.innerHTML = "";
   langContainer.appendChild(dropdown);
-
-  dropdown.addEventListener("change", () => {
-    const selectedLang = dropdown.value;
-
-    currentPlaylist = selectedLang === "all"
-      ? [...playlist]
-      : playlist.filter(track => track.language === selectedLang);
-
-    if (currentPlaylist.length === 0) {
-      alert("No tracks found for that language.");
-      return;
-    }
-
-    loadQueue(currentPlaylist);
-    playSong(0, currentPlaylist);
-
-    updateLanguageIndicator(selectedLang);
-  });
 }
 
 
@@ -612,4 +578,42 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.textContent = "🎲 Surprise Me";
     }, 1000);
   });
+});
+
+let selectedLanguage = "all"; // default
+let selectedMood = "all";     // default
+
+// Helper: stacked filtering for BOTH language and mood
+function filterAndLoad() {
+    currentPlaylist = playlist.filter(track => {
+        const matchesLang = selectedLanguage === "all" || track.language === selectedLanguage;
+        const matchesMood = selectedMood === "all" || track.moods.includes(selectedMood);
+        return matchesLang && matchesMood;
+    });
+    if (currentPlaylist.length === 0) {
+        alert("No tracks match your selection.");
+        return;
+    }
+    loadQueue(currentPlaylist);
+    playSong(0, currentPlaylist);
+    updateLanguageIndicator(selectedLanguage);
+}
+
+// Language dropdown event
+const langDropdown = document.getElementById("language-dropdown");
+if (langDropdown) {
+    langDropdown.addEventListener("change", () => {
+        selectedLanguage = langDropdown.value;
+        filterAndLoad();
+    });
+}
+
+// Mood buttons event
+elements.moodButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+        elements.moodButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        selectedMood = btn.dataset.mood;
+        filterAndLoad();
+    });
 });
