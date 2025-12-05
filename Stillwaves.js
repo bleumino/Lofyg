@@ -361,16 +361,31 @@ function updateTime() {
   });
 
 
-//language switch
- const languageButtons = document.querySelectorAll("#language-selector button");
+// Language switch: replace button logic with dropdown
+const langContainer = document.getElementById("language-selector");
+if (langContainer) {
+  // Create dropdown
+  const dropdown = document.createElement("select");
+  dropdown.id = "language-dropdown";
+  dropdown.style.padding = "6px";
+  dropdown.style.borderRadius = "6px";
+  dropdown.style.fontSize = "14px";
 
-languageButtons.forEach(btn => {
-  btn.addEventListener("click", () => {
-    // Mark active button
-    languageButtons.forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
+  // Build options from existing buttons
+  const originalButtons = langContainer.querySelectorAll("button");
+  originalButtons.forEach(btn => {
+    const option = document.createElement("option");
+    option.value = btn.dataset.language;
+    option.textContent = btn.textContent.trim();
+    dropdown.appendChild(option);
+  });
 
-    const selectedLang = btn.dataset.language; // ← Make sure you're using data-language in your HTML
+  // Replace buttons with dropdown
+  langContainer.innerHTML = "";
+  langContainer.appendChild(dropdown);
+
+  dropdown.addEventListener("change", () => {
+    const selectedLang = dropdown.value;
 
     currentPlaylist = selectedLang === "all"
       ? [...playlist]
@@ -383,8 +398,10 @@ languageButtons.forEach(btn => {
 
     loadQueue(currentPlaylist);
     playSong(0, currentPlaylist);
+
+    updateLanguageIndicator(selectedLang);
   });
-});
+}
 
 
   elements.progressContainer?.addEventListener("click", (event) => {
@@ -581,21 +598,7 @@ function updateLanguageIndicator(language) {
   document.getElementById("current-language").textContent = langText;
 }
 
-const languageButtons = document.querySelectorAll('.language-btn');
-
-languageButtons.forEach(button => {
-  button.addEventListener('click', () => {
-    languageButtons.forEach(btn => btn.classList.remove('active'));
-    button.classList.add('active');
-
-    // Your custom logic here, if any:
-    const selectedLanguage = button.getAttribute('data-language');
-    console.log("Selected language:", selectedLanguage);
-
-    // Optional: call your language filter function
-    // filterSongsByLanguage(selectedLanguage);
-  });
-});
+// Language button event listeners replaced by dropdown. (See above.)
 
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("shuffle-surprise")?.addEventListener("click", () => {
