@@ -586,14 +586,21 @@ let selectedMood = "all";     // default
 // Helper: stacked filtering for BOTH language and mood
 function filterAndLoad() {
     currentPlaylist = playlist.filter(track => {
-        const matchesLang = selectedLanguage === "all" || track.language === selectedLanguage;
+        // Split languages into an array, trim spaces, and lowercase for consistency
+        const languages = track.language.split(",").map(l => l.trim().toLowerCase());
+        const matchesLang = selectedLanguage === "all" || languages.includes(selectedLanguage.toLowerCase());
+
+        // Check mood
         const matchesMood = selectedMood === "all" || track.moods.includes(selectedMood);
+
         return matchesLang && matchesMood;
     });
+
     if (currentPlaylist.length === 0) {
         alert("No tracks match your selection.");
         return;
     }
+
     loadQueue(currentPlaylist);
     playSong(0, currentPlaylist);
     updateLanguageIndicator(selectedLanguage);
