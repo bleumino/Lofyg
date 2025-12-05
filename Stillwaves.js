@@ -580,47 +580,91 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-let selectedLanguage = "all"; // default
-let selectedMood = "all";     // default
+// --- Language and Mood Filter Logic (Corrected Version) ---
+document.addEventListener("DOMContentLoaded", () => {
+  // Ensure selectedLanguage and selectedMood are initialized
+  let selectedLanguage = "all";
+  let selectedMood = "all";
 
-// Helper: stacked filtering for BOTH language and mood
-function filterAndLoad() {
+  // Helper: update language indicator
+  function updateLanguageIndicator(language) {
+    const langText = language === "all"
+      ? "All"
+      : language.charAt(0).toUpperCase() + language.slice(1);
+    const langElem = document.getElementById("current-language");
+    if (langElem) langElem.textContent = langText;
+  }
+
+  // Unified filter function
+  function filterAndLoad() {
     currentPlaylist = playlist.filter(track => {
-        // Split languages into an array, trim spaces, and lowercase for consistency
-        const languages = track.language.split(",").map(l => l.trim().toLowerCase());
-        const matchesLang = selectedLanguage === "all" || languages.includes(selectedLanguage.toLowerCase());
+      // Languages: handle comma-separated/bilingual
+      const languages = track.language.split(",").map(l => l.trim().toLowerCase());
+      const matchesLang =
+        selectedLanguage === "all" ||
+        languages.includes(selectedLanguage.toLowerCase());
 
-        // Check mood
-        const matchesMood = selectedMood === "all" || track.moods.includes(selectedMood);
+      // Moods: handle array or comma string
+      let moods;
+      if (Array.isArray(track.moods)) {
+        moods = [];
+        track.moods.forEach(m => {
+          if (typeof m === "string") {
+            // If moods array contains comma-separated values, split them
+            m.split(",").forEach(part => {
+              moods.push(part.trim().toLowerCase());
+            });
+          }
+        });
+      } else if (typeof track.moods === "string") {
+        moods = track.moods.split(",").map(m => m.trim().toLowerCase());
+      } else {
+        moods = [];
+      }
+      const matchesMood =
+        selectedMood === "all" ||
+        moods.includes(selectedMood.toLowerCase());
 
-        return matchesLang && matchesMood;
+      return matchesLang && matchesMood;
     });
 
     if (currentPlaylist.length === 0) {
-        alert("No tracks match your selection.");
-        return;
+      alert("No tracks match your selection.");
+      return;
     }
 
     loadQueue(currentPlaylist);
     playSong(0, currentPlaylist);
     updateLanguageIndicator(selectedLanguage);
-}
+  }
 
-// Language dropdown event
-const langDropdown = document.getElementById("language-dropdown");
-if (langDropdown) {
+  // Language dropdown event
+  const langDropdown = document.getElementById("language-dropdown");
+  if (langDropdown) {
+    selectedLanguage = langDropdown.value ? langDropdown.value.toLowerCase() : "all";
     langDropdown.addEventListener("change", () => {
-        selectedLanguage = langDropdown.value;
-        filterAndLoad();
+      selectedLanguage = langDropdown.value.toLowerCase();
+      filterAndLoad();
     });
-}
+    updateLanguageIndicator(selectedLanguage);
+  }
 
-// Mood buttons event
-elements.moodButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
+  // Mood buttons event
+  if (elements.moodButtons && elements.moodButtons.length > 0) {
+    // Set default mood selection
+    const activeMoodBtn = Array.from(elements.moodButtons).find(
+      btn => btn.classList.contains("active")
+    );
+    if (activeMoodBtn) {
+      selectedMood = activeMoodBtn.dataset.mood.toLowerCase();
+    }
+    elements.moodButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
         elements.moodButtons.forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
-        selectedMood = btn.dataset.mood;
+        selectedMood = btn.dataset.mood.toLowerCase();
         filterAndLoad();
+      });
     });
+  }
 });
