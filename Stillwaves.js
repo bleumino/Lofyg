@@ -343,29 +343,37 @@ function updateTime() {
   });
 
 
-// Language switch: replace button logic with dropdown
-const langContainer = document.getElementById("language-selector");
-if (langContainer) {
-  // Create dropdown
-  const dropdown = document.createElement("select");
-  dropdown.id = "language-dropdown";
-  dropdown.style.padding = "6px";
-  dropdown.style.borderRadius = "6px";
-  dropdown.style.fontSize = "14px";
+//language switch
+ const languageButtons = document.querySelectorAll("#language-selector button");
 
-  // Build options from existing buttons
-  const originalButtons = langContainer.querySelectorAll("button");
-  originalButtons.forEach(btn => {
-    const option = document.createElement("option");
-    option.value = btn.dataset.language;
-    option.textContent = btn.textContent.trim();
-    dropdown.appendChild(option);
-  });
+languageButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    // Mark active button
+    languageButtons.forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
 
+<<<<<<< HEAD
   // Replace buttons with dropdown
   langContainer.innerHTML = "";
   langContainer.appendChild(dropdown);
 }
+=======
+    const selectedLang = btn.dataset.language; // ← Make sure you're using data-language in your HTML
+
+    currentPlaylist = selectedLang === "all"
+      ? [...playlist]
+      : playlist.filter(track => track.language === selectedLang);
+
+    if (currentPlaylist.length === 0) {
+      alert("No tracks found for that language.");
+      return;
+    }
+
+    loadQueue(currentPlaylist);
+    playSong(0, currentPlaylist);
+  });
+});
+>>>>>>> parent of eb1096f (Replace language buttons with dropdown selector)
 
 
   elements.progressContainer?.addEventListener("click", (event) => {
@@ -562,6 +570,24 @@ function updateLanguageIndicator(language) {
   document.getElementById("current-language").textContent = langText;
 }
 
+<<<<<<< HEAD
+=======
+const languageButtons = document.querySelectorAll('.language-btn');
+
+languageButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    languageButtons.forEach(btn => btn.classList.remove('active'));
+    button.classList.add('active');
+
+    // Your custom logic here, if any:
+    const selectedLanguage = button.getAttribute('data-language');
+    console.log("Selected language:", selectedLanguage);
+
+    // Optional: call your language filter function
+    // filterSongsByLanguage(selectedLanguage);
+  });
+});
+>>>>>>> parent of eb1096f (Replace language buttons with dropdown selector)
 
 document.addEventListener("DOMContentLoaded", () => {
   // Surprise shuffle
