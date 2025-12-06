@@ -575,34 +575,36 @@ const moodButtons = document.querySelectorAll("#mood-selector button");
 
 function filterPlaylist() {
     currentPlaylist = playlist.filter(track => {
-        // Handle language filter
-        let langMatch = selectedLanguage === "all";
-        if (!langMatch) {
-            let langs = [];
-            if (typeof track.language === "string") {
-                langs = track.language.split(",").map(l => l.trim().toLowerCase());
-            } else if (Array.isArray(track.language)) {
-                langs = track.language.map(l => l.trim().toLowerCase());
-            }
-            langMatch = langs.includes(selectedLanguage);
+        // Normalize languages
+        let langs = [];
+        if (typeof track.language === "string") {
+            langs = track.language.split(",").map(l => l.trim().toLowerCase());
+        } else if (Array.isArray(track.language)) {
+            track.language.forEach(l => {
+                langs.push(...l.split(",").map(x => x.trim().toLowerCase()));
+            });
         }
-        // Handle mood filter
-        let moodMatch = selectedMood === "all";
-        if (!moodMatch) {
-            let moods = [];
-            if (Array.isArray(track.moods)) {
-                track.moods.forEach(m => m.split(",").forEach(p => moods.push(p.trim().toLowerCase())));
-            } else if (typeof track.moods === "string") {
-                moods = track.moods.split(",").map(m => m.trim().toLowerCase());
-            }
-            moodMatch = moods.includes(selectedMood);
+        const langMatch = selectedLanguage === "all" || langs.includes(selectedLanguage);
+
+        // Normalize moods
+        let moods = [];
+        if (Array.isArray(track.moods)) {
+            track.moods.forEach(m => {
+                moods.push(...m.split(",").map(x => x.trim().toLowerCase()));
+            });
+        } else if (typeof track.moods === "string") {
+            moods = track.moods.split(",").map(m => m.trim().toLowerCase());
         }
+        const moodMatch = selectedMood === "all" || moods.includes(selectedMood);
+
         return langMatch && moodMatch;
     });
+
     if (currentPlaylist.length === 0) {
         alert("No tracks match your selection.");
         return;
     }
+
     loadQueue(currentPlaylist);
     playSong(0, currentPlaylist);
     updateLanguageIndicator(selectedLanguage);
