@@ -566,103 +566,64 @@ function updateLanguageIndicator(language) {
 
 // Language button event listeners replaced by dropdown. (See above.)
 
-// --- Language and Mood Filter Logic (Fixed Version) ---
-document.addEventListener("DOMContentLoaded", () => {
-  // Surprise shuffle
-  document.getElementById("shuffle-surprise")?.addEventListener("click", () => {
-    const randomIndex = Math.floor(Math.random() * currentPlaylist.length);
-    playSong(randomIndex, currentPlaylist);
-    const btn = document.getElementById("shuffle-surprise");
-    btn.textContent = "✨ Shuffling...";
-    setTimeout(() => {
-      btn.textContent = "🎲 Surprise Me";
-    }, 1000);
-  });
+// --- Language and Mood Filter Setup ---
+let selectedLanguage = "all";
+let selectedMood = "all";
 
-  // --- Language and Mood Filter Logic ---
-  let selectedLanguage = "all";
-  let selectedMood = "all";
+const langDropdown = document.getElementById("language-dropdown");
+const moodButtons = document.querySelectorAll("#mood-selector button");
 
-  const langDropdown = document.getElementById("language-dropdown");
-  const moodButtons = document.querySelectorAll("#mood-selector button");
-
-  function updateLanguageIndicator(language) {
-    const langText = language === "all" ? "All" : language.charAt(0).toUpperCase() + language.slice(1);
-    const langElem = document.getElementById("current-language");
-    if (langElem) langElem.textContent = langText;
-  }
-
-  function filterAndLoad() {
-    // Filtering logic supporting multi-language and multi-mood
+function filterAndLoad() {
     currentPlaylist = playlist.filter(track => {
-      // Multi-language: allow comma-separated or array
-      let languages = [];
-      if (typeof track.language === "string") {
-        languages = track.language.split(",").map(l => l.trim().toLowerCase());
-      } else if (Array.isArray(track.language)) {
-        languages = track.language.map(l => l.trim().toLowerCase());
-      }
-      const matchesLang = selectedLanguage === "all" ||
-        languages.includes(selectedLanguage.toLowerCase());
+        // Handle multi-language
+        let languages = [];
+        if (typeof track.language === "string") {
+            languages = track.language.split(",").map(l => l.trim().toLowerCase());
+        } else if (Array.isArray(track.language)) {
+            languages = track.language.map(l => l.trim().toLowerCase());
+        }
+        const matchesLang = selectedLanguage === "all" || languages.includes(selectedLanguage);
 
-      // Multi-mood: moods can be array of strings or comma-separated inside array
-      let moods = [];
-      if (Array.isArray(track.moods)) {
-        track.moods.forEach(m => {
-          if (typeof m === "string") {
-            m.split(",").forEach(part => {
-              const mood = part.trim().toLowerCase();
-              if (mood) moods.push(mood);
-            });
-          }
-        });
-      } else if (typeof track.moods === "string") {
-        moods = track.moods.split(",").map(m => m.trim().toLowerCase());
-      }
-      const matchesMood = selectedMood === "all" ||
-        moods.includes(selectedMood.toLowerCase());
+        // Handle multi-mood
+        let moods = [];
+        if (Array.isArray(track.moods)) {
+            track.moods.forEach(m => m.split(",").forEach(p => moods.push(p.trim().toLowerCase())));
+        } else if (typeof track.moods === "string") {
+            moods = track.moods.split(",").map(m => m.trim().toLowerCase());
+        }
+        const matchesMood = selectedMood === "all" || moods.includes(selectedMood);
 
-      return matchesLang && matchesMood;
+        return matchesLang && matchesMood;
     });
 
     if (currentPlaylist.length === 0) {
-      alert("No tracks match your selection.");
-      return;
+        alert("No tracks match your selection.");
+        return;
     }
+
     loadQueue(currentPlaylist);
-    // If current song in old playlist is present in new filtered playlist, keep it playing; else play first
-    const currentId = window.player && currentPlaylist.length > 0 ? player.getVideoData()?.video_id : null;
-    let playIdx = 0;
-    if (currentId) {
-      const idx = currentPlaylist.findIndex(song => song.id === currentId);
-      if (idx !== -1) playIdx = idx;
-    }
-    playSong(playIdx, currentPlaylist);
+    playSong(0, currentPlaylist);
     updateLanguageIndicator(selectedLanguage);
-  }
+}
 
-  // Language dropdown listener
-  if (langDropdown) {
-    selectedLanguage = langDropdown.value ? langDropdown.value.toLowerCase() : "all";
+// Language dropdown listener
+if (langDropdown) {
+    selectedLanguage = langDropdown.value.toLowerCase();
     langDropdown.addEventListener("change", () => {
-      selectedLanguage = langDropdown.value.toLowerCase();
-      filterAndLoad();
+        selectedLanguage = langDropdown.value.toLowerCase();
+        filterAndLoad();
     });
     updateLanguageIndicator(selectedLanguage);
-  }
+}
 
-  // Mood buttons listener
-  if (moodButtons.length > 0) {
-    // Set default active mood if any button has 'active'
-    const activeBtn = Array.from(moodButtons).find(btn => btn.classList.contains("active"));
-    if (activeBtn) selectedMood = activeBtn.dataset.mood.toLowerCase();
+// Mood buttons listener
+if (moodButtons.length > 0) {
     moodButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        moodButtons.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        selectedMood = btn.dataset.mood.toLowerCase();
-        filterAndLoad();
-      });
+        btn.addEventListener("click", () => {
+            moodButtons.forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            selectedMood = btn.dataset.mood.toLowerCase();
+            filterAndLoad();
+        });
     });
-  }
-});
+}
