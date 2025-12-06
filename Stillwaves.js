@@ -105,12 +105,12 @@ document.head.appendChild(style);
       {id: "LksGbrIm84w", title: "冨岡 愛 - ぷれぜんと。(Lyric Video)", moods:["slow-day", "relax"], language: "japanese"},
       {id: "lZRz9DVcq4s", title: "BRATTY - tuviste (lyrics video)", moods:["slow-day", "relax"], language: "spanish"},
       {id: "Tf82c2kfPcE", title: "BRATTY - Agosto (Lyric Video)", moods:["slow-day", "relax"], language: "spanish"},
-      {id: "zvpo0STisUI", title: "Tate McRae - slower (Lyric Video)", moods:["slow-day", "sad"], language: "english", useBackgroundVideo: true},
+      {id: "zvpo0STisUI", title: "Tate McRae - slower (Lyric Video)", moods:["slow-day", "sad"], language: "english", backgroundType: "lyrics-video"},
       {id: "CjmSXgNjjwY", title: "Cat Burns - go (Higher & Faster)", moods:["slow-day", "sad"], language: "english"},
       {id: "4sKNt6gbohQ", title: "sophiemarie.b - hey little girl (live) [official lyric video]", moods:["slow-day", "sad"], language: "english"},
       {id: "Wgspd3PrNiQ", title: "nuits d'été (acoustic)", moods:["slow-day", "sad"], language: "french"},
       {id: "NJpwaUnClx0", title: "Oscar Anton & Clementine - reflet", moods:["slow-day", "sad"], language: "french, english"},
-      {id: "NGAW-DGkXuM", title: "Tate McRae - run for the hills", moods:["slow-day", "sad"], language: "english", useBackgroundVideo: true},
+      {id: "NGAW-DGkXuM", title: "Tate McRae - run for the hills", moods:["slow-day", "sad"], language: "english", backgroundType: "normal-video"},
 
     
       
@@ -208,7 +208,7 @@ let skipLock = false;      // simple lock to prevent rapid double-skips
       });
   }
 
-  // Refactored playSong: Dedicated iframe for background video, correct video for each song, seamless switching.
+  // Flexible background support: lyrics-video, normal-video, image, default.
   function playSong(index, list = playlist, skipped = 0) {
     // Guard: ensure player API ready
     if (!player || typeof player.loadVideoById !== "function" || typeof player.playVideo !== "function") {
@@ -228,10 +228,11 @@ let skipLock = false;      // simple lock to prevent rapid double-skips
 
     const song = list[index];
     const videoId = song.id;
-    const useBg = !!song.useBackgroundVideo;
+    const bgType = song.backgroundType || (song.useBackgroundVideo ? "normal-video" : "default");
     const ytPlayerElem = document.getElementById("youtube-player");
     let bgDiv = document.getElementById("bg-video-container");
     let bgIframe = document.getElementById("bg-video-iframe");
+    let bgImg = document.getElementById("bg-image");
 
     // Remove invalid video IDs
     if (!videoId || videoId.length < 8) {
@@ -240,13 +241,32 @@ let skipLock = false;      // simple lock to prevent rapid double-skips
       return;
     }
 
-    // --- BACKGROUND VIDEO MODE ---
-    if (useBg) {
-      // Hide the main player (audio only, keep for progress/time/controls)
-      if (ytPlayerElem) {
-        ytPlayerElem.style.display = "none";
-      }
-      // Create bgDiv if needed
+    // --- CLEANUP: Remove/hide all background elements first ---
+    // Hide and clean up bgDiv, bgIframe, bgImg
+    if (bgDiv) {
+      bgDiv.style.display = "none";
+      // Remove all children (iframe or img)
+      while (bgDiv.firstChild) bgDiv.removeChild(bgDiv.firstChild);
+    }
+    if (bgImg) {
+      bgImg.parentNode && bgImg.parentNode.removeChild(bgImg);
+    }
+
+    // Show main player by default, will hide if needed below
+    if (ytPlayerElem) {
+      ytPlayerElem.style.display = "";
+      ytPlayerElem.style.position = "";
+      ytPlayerElem.style.width = "";
+      ytPlayerElem.style.height = "";
+      ytPlayerElem.style.zIndex = "";
+      ytPlayerElem.style.pointerEvents = "";
+      ytPlayerElem.style.opacity = "";
+      ytPlayerElem.style.objectFit = "";
+    }
+
+    // --- BACKGROUND MODES ---
+    if (bgType === "lyrics-video") {
+      // Fullscreen YouTube iframe as background (muted, looping)
       if (!bgDiv) {
         bgDiv = document.createElement("div");
         bgDiv.id = "bg-video-container";
@@ -263,42 +283,130 @@ let skipLock = false;      // simple lock to prevent rapid double-skips
         });
         document.body.appendChild(bgDiv);
       }
-      // Remove any existing iframe if not matching videoId
-      if (bgIframe && bgIframe.dataset.vid !== videoId) {
-        bgIframe.parentNode.removeChild(bgIframe);
-        bgIframe = null;
+      bgDiv.style.display = "block";
+      // Create the background iframe
+      bgIframe = document.createElement("iframe");
+      bgIframe.id = "bg-video-iframe";
+      bgIframe.dataset.vid = videoId;
+      bgIframe.src =
+        `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&playsinline=1`;
+      Object.assign(bgIframe.style, {
+        position: "absolute",
+        top: "0",
+        left: "0",
+        width: "100vw",
+        height: "100vh",
+        zIndex: "-1",
+        pointerEvents: "none",
+        opacity: "0.8",
+        objectFit: "cover",
+        border: "none"
+      });
+      bgIframe.setAttribute("frameborder", "0");
+      bgIframe.setAttribute("allow", "autoplay; encrypted-media");
+      bgIframe.setAttribute("allowfullscreen", "1");
+      // Remove any existing children in the container
+      while (bgDiv.firstChild) bgDiv.removeChild(bgDiv.firstChild);
+      bgDiv.appendChild(bgIframe);
+      // Hide main player visually (audio only)
+      if (ytPlayerElem) ytPlayerElem.style.display = "none";
+      // Load audio to main hidden player
+      try {
+        player.loadVideoById(videoId);
+        setTimeout(() => player.playVideo(), 200);
+      } catch (e) {
+        console.warn("loadVideoById failed, retrying next.", e);
+        setTimeout(() => playSong(index + 1, list, skipped + 1), 250);
+        return;
       }
-      // Create iframe for background video if not present
-      if (!bgIframe) {
-        bgIframe = document.createElement("iframe");
-        bgIframe.id = "bg-video-iframe";
-        bgIframe.dataset.vid = videoId;
-        bgIframe.src =
-          `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&playsinline=1`;
-        Object.assign(bgIframe.style, {
-          position: "absolute",
+    } else if (bgType === "normal-video") {
+      // Visual video as muted background (same as legacy useBackgroundVideo)
+      if (!bgDiv) {
+        bgDiv = document.createElement("div");
+        bgDiv.id = "bg-video-container";
+        Object.assign(bgDiv.style, {
+          position: "fixed",
           top: "0",
           left: "0",
           width: "100vw",
           height: "100vh",
           zIndex: "-1",
+          overflow: "hidden",
           pointerEvents: "none",
-          opacity: "0.8",
-          objectFit: "cover",
-          border: "none"
+          background: "#000"
         });
-        bgIframe.setAttribute("frameborder", "0");
-        bgIframe.setAttribute("allow", "autoplay; encrypted-media");
-        bgIframe.setAttribute("allowfullscreen", "1");
-        // Remove any existing iframes in the container
-        while (bgDiv.firstChild) bgDiv.removeChild(bgDiv.firstChild);
-        bgDiv.appendChild(bgIframe);
+        document.body.appendChild(bgDiv);
       }
-      // Show bgDiv
       bgDiv.style.display = "block";
-      // Hide main player
+      // Create the background iframe
+      bgIframe = document.createElement("iframe");
+      bgIframe.id = "bg-video-iframe";
+      bgIframe.dataset.vid = videoId;
+      bgIframe.src =
+        `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&playsinline=1`;
+      Object.assign(bgIframe.style, {
+        position: "absolute",
+        top: "0",
+        left: "0",
+        width: "100vw",
+        height: "100vh",
+        zIndex: "-1",
+        pointerEvents: "none",
+        opacity: "0.8",
+        objectFit: "cover",
+        border: "none"
+      });
+      bgIframe.setAttribute("frameborder", "0");
+      bgIframe.setAttribute("allow", "autoplay; encrypted-media");
+      bgIframe.setAttribute("allowfullscreen", "1");
+      while (bgDiv.firstChild) bgDiv.removeChild(bgDiv.firstChild);
+      bgDiv.appendChild(bgIframe);
       if (ytPlayerElem) ytPlayerElem.style.display = "none";
-      // Load correct audio in hidden main player for playback, controls, progress, etc.
+      try {
+        player.loadVideoById(videoId);
+        setTimeout(() => player.playVideo(), 200);
+      } catch (e) {
+        console.warn("loadVideoById failed, retrying next.", e);
+        setTimeout(() => playSong(index + 1, list, skipped + 1), 250);
+        return;
+      }
+    } else if (bgType === "image" && song.backgroundSrc) {
+      // Fullscreen background image
+      if (!bgDiv) {
+        bgDiv = document.createElement("div");
+        bgDiv.id = "bg-video-container";
+        Object.assign(bgDiv.style, {
+          position: "fixed",
+          top: "0",
+          left: "0",
+          width: "100vw",
+          height: "100vh",
+          zIndex: "-1",
+          overflow: "hidden",
+          pointerEvents: "none",
+          background: "#000"
+        });
+        document.body.appendChild(bgDiv);
+      }
+      bgDiv.style.display = "block";
+      bgImg = document.createElement("img");
+      bgImg.id = "bg-image";
+      bgImg.src = song.backgroundSrc;
+      Object.assign(bgImg.style, {
+        position: "absolute",
+        top: "0",
+        left: "0",
+        width: "100vw",
+        height: "100vh",
+        zIndex: "-1",
+        pointerEvents: "none",
+        objectFit: "cover",
+        opacity: "0.85",
+        border: "none"
+      });
+      while (bgDiv.firstChild) bgDiv.removeChild(bgDiv.firstChild);
+      bgDiv.appendChild(bgImg);
+      if (ytPlayerElem) ytPlayerElem.style.display = "none";
       try {
         player.loadVideoById(videoId);
         setTimeout(() => player.playVideo(), 200);
@@ -308,16 +416,8 @@ let skipLock = false;      // simple lock to prevent rapid double-skips
         return;
       }
     } else {
-      // --- NORMAL SONG MODE ---
-      // Remove/hide background video container and iframe if present
-      if (bgDiv) {
-        bgDiv.style.display = "none";
-        // Remove bg iframe for full cleanup
-        if (bgIframe) {
-          bgIframe.parentNode.removeChild(bgIframe);
-        }
-      }
-      // Show main player
+      // --- DEFAULT MODE: no background, site default ---
+      if (bgDiv) bgDiv.style.display = "none";
       if (ytPlayerElem) {
         ytPlayerElem.style.display = "";
         ytPlayerElem.style.position = "";
@@ -328,7 +428,6 @@ let skipLock = false;      // simple lock to prevent rapid double-skips
         ytPlayerElem.style.opacity = "";
         ytPlayerElem.style.objectFit = "";
       }
-      // Load correct audio/video in main player
       try {
         player.loadVideoById(videoId);
         setTimeout(() => player.playVideo(), 200);
