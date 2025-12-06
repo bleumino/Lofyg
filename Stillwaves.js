@@ -342,8 +342,6 @@ function updateTime() {
       elements.loopButton.classList.toggle("active-mode", isLooping);
   });
 
-  // Mood filter logic now handled by unified stacked filtering below
-
 
 // Language switch: replace button logic with dropdown
 const langContainer = document.getElementById("language-selector");
@@ -564,72 +562,17 @@ function updateLanguageIndicator(language) {
   document.getElementById("current-language").textContent = langText;
 }
 
-// Language button event listeners replaced by dropdown. (See above.)
 
-// --- Language and Mood Filter Setup ---
-let selectedLanguage = "all";
-let selectedMood = "all";
+document.addEventListener("DOMContentLoaded", () => {
+  // Surprise shuffle
+  document.getElementById("shuffle-surprise")?.addEventListener("click", () => {
+    const randomIndex = Math.floor(Math.random() * currentPlaylist.length);
+    playSong(randomIndex, currentPlaylist);
+    const btn = document.getElementById("shuffle-surprise");
+    btn.textContent = "✨ Shuffling...";
+    setTimeout(() => {
+      btn.textContent = "🎲 Surprise Me";
+    }, 1000);
+  });
 
-const langDropdown = document.getElementById("language-dropdown");
-const moodButtons = document.querySelectorAll("#mood-selector button");
-
-function filterPlaylist({ filterBy = "language" } = {}) {
-    if (filterBy === "language") {
-        currentPlaylist = playlist.filter(track => {
-            // Normalize languages
-            let langs = [];
-            if (typeof track.language === "string") {
-                langs = track.language.split(",").map(l => l.trim().toLowerCase());
-            } else if (Array.isArray(track.language)) {
-                track.language.forEach(l => {
-                    langs.push(...l.split(",").map(x => x.trim().toLowerCase()));
-                });
-            }
-            return selectedLanguage === "all" || langs.includes(selectedLanguage);
-        });
-    } else if (filterBy === "mood") {
-        currentPlaylist = playlist.filter(track => {
-            // Normalize moods
-            let moods = [];
-            if (Array.isArray(track.moods)) {
-                track.moods.forEach(m => {
-                    moods.push(...m.split(",").map(x => x.trim().toLowerCase()));
-                });
-            } else if (typeof track.moods === "string") {
-                moods = track.moods.split(",").map(m => m.trim().toLowerCase());
-            }
-            return selectedMood === "all" || moods.includes(selectedMood);
-        });
-    }
-
-    if (currentPlaylist.length === 0) {
-        alert("No tracks match your selection.");
-        return;
-    }
-
-    loadQueue(currentPlaylist);
-    playSong(0, currentPlaylist);
-    updateLanguageIndicator(selectedLanguage);
-}
-
-// Language dropdown listener
-if (langDropdown) {
-    langDropdown.addEventListener("change", () => {
-        selectedLanguage = langDropdown.value.toLowerCase();
-        filterPlaylist({ filterBy: "language" });
-    });
-    selectedLanguage = langDropdown.value.toLowerCase();
-    updateLanguageIndicator(selectedLanguage);
-}
-
-// Mood buttons listener
-if (moodButtons.length > 0) {
-    moodButtons.forEach(btn => {
-        btn.addEventListener("click", () => {
-            moodButtons.forEach(b => b.classList.remove("active"));
-            btn.classList.add("active");
-            selectedMood = btn.dataset.mood.toLowerCase();
-            filterPlaylist({ filterBy: "mood" });
-        });
-    });
-}
+  
