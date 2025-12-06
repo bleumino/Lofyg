@@ -102,13 +102,13 @@ document.head.appendChild(style);
       {id: "TY7TbqU7eLo", title: "POLYCAT - มันเป็นใคร (เนื้อเพลง)", moods:["slow-day", "relax"], language: "thai"},
       {id: "PuEcQHjIQos", title: "토미오카 아이(冨岡 愛) - ジェラシー(Jealousy) 【한글 번역, 가사, Korean Lyrics", moods:["slow-day", "relax"], language: "japanese"},
       {id: "LksGbrIm84w", title: "冨岡 愛 - ぷれぜんと。(Lyric Video)", moods:["slow-day", "relax"], language: "japanese"},
-      {id: "lZRz9DVcq4s", title: "BRATTY - tuviste (lyrics video)", moods:["slow-day", "relax"], language: "spanish"},
+      {id: "lZRz9DVcq4s", title: "BRATTY - tuviste (lyrics video)", moods:["slow-day", "relax"], language: "spanish", backgroundType: "lyrics-video"},
       {id: "Tf82c2kfPcE", title: "BRATTY - Agosto (Lyric Video)", moods:["slow-day", "relax"], language: "spanish"},
       {id: "zvpo0STisUI", title: "Tate McRae - slower (Lyric Video)", moods:["slow-day", "sad"], language: "english", backgroundType: "lyrics-video"},
       {id: "CjmSXgNjjwY", title: "Cat Burns - go (Higher & Faster)", moods:["slow-day", "sad"], language: "english"},
       {id: "4sKNt6gbohQ", title: "sophiemarie.b - hey little girl (live) [official lyric video]", moods:["slow-day", "sad"], language: "english"},
       {id: "Wgspd3PrNiQ", title: "nuits d'été (acoustic)", moods:["slow-day", "sad"], language: "french"},
-      {id: "NJpwaUnClx0", title: "Oscar Anton & Clementine - reflet", moods:["slow-day", "sad"], language: "french, english"},
+      {id: "NJpwaUnClx0", title: "Oscar Anton & Clementine - reflet", moods:["slow-day", "sad"], language: "french, english", backgroundType: "normal-video"},
       {id: "NGAW-DGkXuM", title: "Tate McRae - run for the hills", moods:["slow-day", "sad"], language: "english", backgroundType: "normal-video"},
 
     
