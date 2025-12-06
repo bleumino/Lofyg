@@ -105,7 +105,7 @@ document.head.appendChild(style);
       {id: "LksGbrIm84w", title: "冨岡 愛 - ぷれぜんと。(Lyric Video)", moods:["slow-day", "relax"], language: "japanese"},
       {id: "lZRz9DVcq4s", title: "BRATTY - tuviste (lyrics video)", moods:["slow-day", "relax"], language: "spanish"},
       {id: "Tf82c2kfPcE", title: "BRATTY - Agosto (Lyric Video)", moods:["slow-day", "relax"], language: "spanish"},
-      {id: "zvpo0STisUI", title: "Tate McRae - slower (Lyric Video)", moods:["slow-day", "sad"], language: "english"},
+      {id: "zvpo0STisUI", title: "Tate McRae - slower (Lyric Video)", moods:["slow-day", "sad"], language: "english", useBackgroundVideo: true},
       {id: "CjmSXgNjjwY", title: "Cat Burns - go (Higher & Faster)", moods:["slow-day", "sad"], language: "english"},
       {id: "4sKNt6gbohQ", title: "sophiemarie.b - hey little girl (live) [official lyric video]", moods:["slow-day", "sad"], language: "english"},
       {id: "Wgspd3PrNiQ", title: "nuits d'été (acoustic)", moods:["slow-day", "sad"], language: "french"},
@@ -208,6 +208,7 @@ let skipLock = false;      // simple lock to prevent rapid double-skips
       });
   }
 
+  // Enhanced playSong to support fullscreen background video for tracks with useBackgroundVideo: true
   function playSong(index, list = playlist, skipped = 0) {
     // Guard: ensure player API ready
     if (!player || typeof player.loadVideoById !== "function" || typeof player.playVideo !== "function") {
@@ -225,13 +226,84 @@ let skipLock = false;      // simple lock to prevent rapid double-skips
     currentSongIndex = index;
     pendingSongIndex = index; // mark which index we requested
 
-    const videoId = list[index].id;
+    const song = list[index];
+    const videoId = song.id;
+    const useBg = !!song.useBackgroundVideo;
+    const ytPlayerElem = document.getElementById("youtube-player");
+    let bgDiv = document.getElementById("bg-video-container");
+
+    // Remove any previous background video container if present
+    if (bgDiv && !useBg) {
+      bgDiv.parentNode.removeChild(bgDiv);
+      // Restore normal player visibility
+      if (ytPlayerElem) {
+        ytPlayerElem.style.display = "";
+        ytPlayerElem.style.position = "";
+        ytPlayerElem.style.width = "";
+        ytPlayerElem.style.height = "";
+        ytPlayerElem.style.zIndex = "";
+        ytPlayerElem.style.pointerEvents = "";
+        ytPlayerElem.style.opacity = "";
+        ytPlayerElem.style.objectFit = "";
+      }
+    }
 
     // Skip invalid IDs gracefully
     if (!videoId || videoId.length < 8) {
         console.warn("Invalid video id, skipping to next.", videoId);
         playSong(index + 1, list, skipped + 1);
         return;
+    }
+
+    // If useBackgroundVideo, create or update a fullscreen container for the player
+    if (useBg) {
+      if (!bgDiv) {
+        bgDiv = document.createElement("div");
+        bgDiv.id = "bg-video-container";
+        Object.assign(bgDiv.style, {
+          position: "fixed",
+          top: "0",
+          left: "0",
+          width: "100vw",
+          height: "100vh",
+          zIndex: "-1",
+          overflow: "hidden",
+          pointerEvents: "none",
+          background: "#000"
+        });
+        document.body.appendChild(bgDiv);
+      }
+      // Move the youtube-player element into the bgDiv
+      if (ytPlayerElem && ytPlayerElem.parentNode !== bgDiv) {
+        bgDiv.appendChild(ytPlayerElem);
+      }
+      // Style the player for background effect
+      if (ytPlayerElem) {
+        ytPlayerElem.style.display = "block";
+        ytPlayerElem.style.position = "absolute";
+        ytPlayerElem.style.top = "0";
+        ytPlayerElem.style.left = "0";
+        ytPlayerElem.style.width = "100vw";
+        ytPlayerElem.style.height = "100vh";
+        ytPlayerElem.style.zIndex = "-1";
+        ytPlayerElem.style.pointerEvents = "none";
+        ytPlayerElem.style.opacity = "0.8";
+        ytPlayerElem.style.objectFit = "cover";
+        // Hide controls and overlays if possible (relies on iframe API)
+      }
+    } else {
+      // For normal tracks, ensure the player is in its normal container (if you have one)
+      // If you have a container, put it back. Otherwise, just make sure it's visible.
+      if (ytPlayerElem) {
+        ytPlayerElem.style.display = "";
+        ytPlayerElem.style.position = "";
+        ytPlayerElem.style.width = "";
+        ytPlayerElem.style.height = "";
+        ytPlayerElem.style.zIndex = "";
+        ytPlayerElem.style.pointerEvents = "";
+        ytPlayerElem.style.opacity = "";
+        ytPlayerElem.style.objectFit = "";
+      }
     }
 
     // Load video (use loadVideoById to replace current video). We rely on onStateChange to set actual start time.
@@ -248,7 +320,7 @@ let skipLock = false;      // simple lock to prevent rapid double-skips
     updateSongInfo();
     resetProgressBar();
     startVinylAnimation();
-}
+  }
 
   function updateSongInfo() {
       const song = currentPlaylist[currentSongIndex];
