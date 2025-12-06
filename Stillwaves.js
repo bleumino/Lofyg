@@ -343,37 +343,29 @@ function updateTime() {
   });
 
 
-//language switch
- const languageButtons = document.querySelectorAll("#language-selector button");
+// Language switch: replace button logic with dropdown
+const langContainer = document.getElementById("language-selector");
+if (langContainer) {
+  // Create dropdown
+  const dropdown = document.createElement("select");
+  dropdown.id = "language-dropdown";
+  dropdown.style.padding = "6px";
+  dropdown.style.borderRadius = "6px";
+  dropdown.style.fontSize = "14px";
 
-languageButtons.forEach(btn => {
-  btn.addEventListener("click", () => {
-    // Mark active button
-    languageButtons.forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
+  // Build options from existing buttons
+  const originalButtons = langContainer.querySelectorAll("button");
+  originalButtons.forEach(btn => {
+    const option = document.createElement("option");
+    option.value = btn.dataset.language;
+    option.textContent = btn.textContent.trim();
+    dropdown.appendChild(option);
+  });
 
-<<<<<<< HEAD
   // Replace buttons with dropdown
   langContainer.innerHTML = "";
   langContainer.appendChild(dropdown);
 }
-=======
-    const selectedLang = btn.dataset.language; // ← Make sure you're using data-language in your HTML
-
-    currentPlaylist = selectedLang === "all"
-      ? [...playlist]
-      : playlist.filter(track => track.language === selectedLang);
-
-    if (currentPlaylist.length === 0) {
-      alert("No tracks found for that language.");
-      return;
-    }
-
-    loadQueue(currentPlaylist);
-    playSong(0, currentPlaylist);
-  });
-});
->>>>>>> parent of eb1096f (Replace language buttons with dropdown selector)
 
 
   elements.progressContainer?.addEventListener("click", (event) => {
@@ -570,24 +562,6 @@ function updateLanguageIndicator(language) {
   document.getElementById("current-language").textContent = langText;
 }
 
-<<<<<<< HEAD
-=======
-const languageButtons = document.querySelectorAll('.language-btn');
-
-languageButtons.forEach(button => {
-  button.addEventListener('click', () => {
-    languageButtons.forEach(btn => btn.classList.remove('active'));
-    button.classList.add('active');
-
-    // Your custom logic here, if any:
-    const selectedLanguage = button.getAttribute('data-language');
-    console.log("Selected language:", selectedLanguage);
-
-    // Optional: call your language filter function
-    // filterSongsByLanguage(selectedLanguage);
-  });
-});
->>>>>>> parent of eb1096f (Replace language buttons with dropdown selector)
 
 document.addEventListener("DOMContentLoaded", () => {
   // Surprise shuffle
@@ -601,4 +575,53 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 1000);
   });
 
-  
+  // Mood buttons listener for filtering
+const moodButtons = document.querySelectorAll("#mood-selector button");
+let selectedMood = "all"; // default
+
+moodButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+        // Remove active class from all buttons
+        moodButtons.forEach(b => b.classList.remove("active"));
+
+        // Add active class to clicked button
+        btn.classList.add("active");
+
+        // Set selected mood
+        selectedMood = btn.dataset.mood.toLowerCase();
+
+        // Filter playlist by mood
+        const filteredPlaylist = playlist.filter(track => {
+            let moods = [];
+            if (Array.isArray(track.moods)) {
+                track.moods.forEach(m => moods.push(...m.split(",").map(x => x.trim().toLowerCase())));
+            } else if (typeof track.moods === "string") {
+                moods = track.moods.split(",").map(m => m.trim().toLowerCase());
+            }
+            return selectedMood === "all" || moods.includes(selectedMood);
+        });
+
+        // Update currentPlaylist and queue
+        currentPlaylist = filteredPlaylist.length > 0 ? filteredPlaylist : [...playlist];
+        loadQueue(currentPlaylist);
+        playSong(0, currentPlaylist);
+    });
+});
+
+  // Language dropdown listener for filtering
+  const langDropdown = document.getElementById("language-dropdown");
+  langDropdown.addEventListener("change", () => {
+      const selectedLang = langDropdown.value.toLowerCase();
+
+      // Filter playlist by language
+      const filteredPlaylist = playlist.filter(track => {
+          return selectedLang === "all" || (track.language && track.language.toLowerCase() === selectedLang);
+      });
+
+      // Update currentPlaylist and queue
+      currentPlaylist = filteredPlaylist.length > 0 ? filteredPlaylist : [...playlist];
+      loadQueue(currentPlaylist);
+      playSong(0, currentPlaylist);
+      updateLanguageIndicator(selectedLang);
+  });
+});
