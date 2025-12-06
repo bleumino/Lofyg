@@ -580,50 +580,36 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// --- Language and Mood Filter Logic (Corrected Version) ---
+// --- Language and Mood Filter Logic (Fixed Version) ---
 document.addEventListener("DOMContentLoaded", () => {
-  // Ensure selectedLanguage and selectedMood are initialized
   let selectedLanguage = "all";
   let selectedMood = "all";
 
-  // Helper: update language indicator
+  const langDropdown = document.getElementById("language-dropdown");
+  const moodButtons = document.querySelectorAll("#mood-selector button");
+
   function updateLanguageIndicator(language) {
-    const langText = language === "all"
-      ? "All"
-      : language.charAt(0).toUpperCase() + language.slice(1);
+    const langText = language === "all" ? "All" : language.charAt(0).toUpperCase() + language.slice(1);
     const langElem = document.getElementById("current-language");
     if (langElem) langElem.textContent = langText;
   }
 
-  // Unified filter function
   function filterAndLoad() {
     currentPlaylist = playlist.filter(track => {
-      // Languages: handle comma-separated/bilingual
+      // Handle bilingual/multi-language songs
       const languages = track.language.split(",").map(l => l.trim().toLowerCase());
-      const matchesLang =
-        selectedLanguage === "all" ||
-        languages.includes(selectedLanguage.toLowerCase());
+      const matchesLang = selectedLanguage === "all" || languages.includes(selectedLanguage.toLowerCase());
 
-      // Moods: handle array or comma string
-      let moods;
+      // Handle moods (array or comma-separated string)
+      let moods = [];
       if (Array.isArray(track.moods)) {
-        moods = [];
         track.moods.forEach(m => {
-          if (typeof m === "string") {
-            // If moods array contains comma-separated values, split them
-            m.split(",").forEach(part => {
-              moods.push(part.trim().toLowerCase());
-            });
-          }
+          if (typeof m === "string") m.split(",").forEach(part => moods.push(part.trim().toLowerCase()));
         });
       } else if (typeof track.moods === "string") {
         moods = track.moods.split(",").map(m => m.trim().toLowerCase());
-      } else {
-        moods = [];
       }
-      const matchesMood =
-        selectedMood === "all" ||
-        moods.includes(selectedMood.toLowerCase());
+      const matchesMood = selectedMood === "all" || moods.includes(selectedMood.toLowerCase());
 
       return matchesLang && matchesMood;
     });
@@ -638,8 +624,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateLanguageIndicator(selectedLanguage);
   }
 
-  // Language dropdown event
-  const langDropdown = document.getElementById("language-dropdown");
+  // Language dropdown listener
   if (langDropdown) {
     selectedLanguage = langDropdown.value ? langDropdown.value.toLowerCase() : "all";
     langDropdown.addEventListener("change", () => {
@@ -649,18 +634,15 @@ document.addEventListener("DOMContentLoaded", () => {
     updateLanguageIndicator(selectedLanguage);
   }
 
-  // Mood buttons event
-  if (elements.moodButtons && elements.moodButtons.length > 0) {
-    // Set default mood selection
-    const activeMoodBtn = Array.from(elements.moodButtons).find(
-      btn => btn.classList.contains("active")
-    );
-    if (activeMoodBtn) {
-      selectedMood = activeMoodBtn.dataset.mood.toLowerCase();
-    }
-    elements.moodButtons.forEach(btn => {
+  // Mood buttons listener
+  if (moodButtons.length > 0) {
+    // Set default active mood if any button has 'active'
+    const activeBtn = Array.from(moodButtons).find(btn => btn.classList.contains("active"));
+    if (activeBtn) selectedMood = activeBtn.dataset.mood.toLowerCase();
+
+    moodButtons.forEach(btn => {
       btn.addEventListener("click", () => {
-        elements.moodButtons.forEach(b => b.classList.remove("active"));
+        moodButtons.forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
         selectedMood = btn.dataset.mood.toLowerCase();
         filterAndLoad();
