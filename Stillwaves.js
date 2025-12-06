@@ -131,56 +131,225 @@ let skipLock = false;      // simple lock to prevent rapid double-skips
   let player;
   let notificationTimeout;
 
-let bgYTPlayer = null; // global reference for lyrics-video iframe
+let lyricsYTPlayer = null; // global reference for lyrics-video fullscreen player
+let lyricsYTReady = false;
+let lyricsYTPlayerId = "lyrics-video-player-iframe";
 
-// Helper to initialize lyrics-video background (as background iframe)
-function initBackgroundLyricsVideo(videoId) {
-  let bgDiv = document.getElementById("bg-video-container");
-  let bgIframe;
-  if (!bgDiv) {
-    bgDiv = document.createElement("div");
-    bgDiv.id = "bg-video-container";
-    Object.assign(bgDiv.style, {
-      position: "fixed",
-      top: "0",
-      left: "0",
-      width: "100vw",
-      height: "100vh",
-      zIndex: "-1",
-      overflow: "hidden",
-      pointerEvents: "none",
-      background: "#000"
-    });
-    document.body.appendChild(bgDiv);
+// Helper to initialize fullscreen lyrics-video YouTube iframe and attach controls
+function initLyricsVideoFullscreen(videoId, onReadyCallback) {
+  // Remove any previous lyricsYTPlayer and DOM
+  const oldDiv = document.getElementById("lyrics-video-fullscreen-container");
+  if (oldDiv) oldDiv.parentNode.removeChild(oldDiv);
+  if (lyricsYTPlayer && typeof lyricsYTPlayer.destroy === "function") {
+    try { lyricsYTPlayer.destroy(); } catch (e) {}
+    lyricsYTPlayer = null;
+    lyricsYTReady = false;
   }
-  bgDiv.style.display = "block";
-  // Create the background iframe
-  bgIframe = document.createElement("iframe");
-  bgIframe.id = "bg-video-iframe";
-  bgIframe.dataset.vid = videoId;
-  bgIframe.src =
-    `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&playsinline=1`;
-  Object.assign(bgIframe.style, {
-    position: "absolute",
+  // Create fullscreen overlay container
+  const container = document.createElement("div");
+  container.id = "lyrics-video-fullscreen-container";
+  Object.assign(container.style, {
+    position: "fixed",
     top: "0",
     left: "0",
     width: "100vw",
     height: "100vh",
-    zIndex: "-1",
-    pointerEvents: "none",
-    opacity: "0.8",
-    objectFit: "cover",
-    border: "none"
+    zIndex: "1000",
+    background: "#000",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center"
   });
-  bgIframe.setAttribute("frameborder", "0");
-  bgIframe.setAttribute("allow", "autoplay; encrypted-media");
-  bgIframe.setAttribute("allowfullscreen", "1");
-  // Remove any existing children in the container
-  while (bgDiv.firstChild) bgDiv.removeChild(bgDiv.firstChild);
-  bgDiv.appendChild(bgIframe);
-  // Hide main player visually (audio only)
-  const ytPlayerElem = document.getElementById("youtube-player");
-  if (ytPlayerElem) ytPlayerElem.style.display = "none";
+  // Player div for YT iframe
+  const playerDiv = document.createElement("div");
+  playerDiv.id = lyricsYTPlayerId;
+  Object.assign(playerDiv.style, {
+    width: "100vw",
+    height: "calc(100vh - 80px)",
+    maxHeight: "90vh"
+  });
+  container.appendChild(playerDiv);
+  // Controls bar
+  const controlsBar = document.createElement("div");
+  controlsBar.id = "lyrics-video-controls-bar";
+  Object.assign(controlsBar.style, {
+    width: "100vw",
+    height: "64px",
+    background: "rgba(0,0,0,0.7)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "24px",
+    position: "absolute",
+    bottom: "0",
+    left: "0",
+    zIndex: "1001"
+  });
+  // Play/Pause button
+  const playPauseBtn = document.createElement("button");
+  playPauseBtn.id = "lyrics-playpause-btn";
+  playPauseBtn.textContent = "▶️";
+  playPauseBtn.style.fontSize = "2rem";
+  playPauseBtn.style.background = "none";
+  playPauseBtn.style.border = "none";
+  playPauseBtn.style.color = "white";
+  playPauseBtn.style.cursor = "pointer";
+  controlsBar.appendChild(playPauseBtn);
+  // Progress bar container
+  const progressBarOuter = document.createElement("div");
+  progressBarOuter.id = "lyrics-progress-outer";
+  Object.assign(progressBarOuter.style, {
+    width: "400px",
+    height: "10px",
+    background: "#444",
+    borderRadius: "5px",
+    overflow: "hidden",
+    cursor: "pointer",
+    position: "relative"
+  });
+  const progressBarInner = document.createElement("div");
+  progressBarInner.id = "lyrics-progress-inner";
+  Object.assign(progressBarInner.style, {
+    height: "100%",
+    width: "0%",
+    background: "#a94ac7",
+    borderRadius: "5px",
+    transition: "width 0.2s"
+  });
+  progressBarOuter.appendChild(progressBarInner);
+  controlsBar.appendChild(progressBarOuter);
+  // Time display
+  const timeDisplay = document.createElement("span");
+  timeDisplay.id = "lyrics-time-display";
+  timeDisplay.style.color = "#fff";
+  timeDisplay.style.fontSize = "1.1rem";
+  timeDisplay.textContent = "0:00 / 0:00";
+  controlsBar.appendChild(timeDisplay);
+  // Exit fullscreen button
+  const exitBtn = document.createElement("button");
+  exitBtn.id = "lyrics-exit-btn";
+  exitBtn.textContent = "⤫";
+  exitBtn.title = "Exit Lyrics Video";
+  exitBtn.style.fontSize = "2rem";
+  exitBtn.style.background = "none";
+  exitBtn.style.border = "none";
+  exitBtn.style.color = "white";
+  exitBtn.style.cursor = "pointer";
+  controlsBar.appendChild(exitBtn);
+  container.appendChild(controlsBar);
+  document.body.appendChild(container);
+
+  // Load the YT IFrame API if needed
+  function startYTPlayer() {
+    lyricsYTPlayer = new YT.Player(lyricsYTPlayerId, {
+      width: "100%",
+      height: "100%",
+      videoId: videoId,
+      playerVars: {
+        autoplay: 1,
+        controls: 0,
+        modestbranding: 1,
+        showinfo: 0,
+        rel: 0,
+        iv_load_policy: 3,
+        loop: 0,
+        playlist: videoId
+      },
+      events: {
+        onReady: function(e) {
+          lyricsYTReady = true;
+          e.target.playVideo();
+          playPauseBtn.textContent = "⏸️";
+          if (typeof onReadyCallback === "function") onReadyCallback();
+        },
+        onStateChange: function(e) {
+          // 1 = playing, 2 = paused, 0 = ended
+          if (e.data === 1) {
+            playPauseBtn.textContent = "⏸️";
+            lyricsControlsUpdater();
+          } else if (e.data === 2) {
+            playPauseBtn.textContent = "▶️";
+          } else if (e.data === 0) {
+            // Ended: exit or advance
+            // Simulate next song
+            try {
+              container.remove();
+            } catch (e) {}
+            lyricsYTPlayer && lyricsYTPlayer.destroy && lyricsYTPlayer.destroy();
+            lyricsYTPlayer = null;
+            lyricsYTReady = false;
+            playSong(currentSongIndex + 1, currentPlaylist);
+          }
+        }
+      }
+    });
+  }
+  if (window.YT && YT.Player) {
+    startYTPlayer();
+  } else {
+    // Load API if not loaded
+    const script = document.createElement("script");
+    script.src = "https://www.youtube.com/iframe_api";
+    script.onload = () => setTimeout(startYTPlayer, 500);
+    document.head.appendChild(script);
+  }
+  // --- Controls logic ---
+  let lyricsProgressInterval = null;
+  function lyricsControlsUpdater() {
+    if (lyricsProgressInterval) clearInterval(lyricsProgressInterval);
+    lyricsProgressInterval = setInterval(() => {
+      if (!lyricsYTPlayer || typeof lyricsYTPlayer.getCurrentTime !== "function") return;
+      const dur = lyricsYTPlayer.getDuration ? lyricsYTPlayer.getDuration() : 0;
+      const cur = lyricsYTPlayer.getCurrentTime ? lyricsYTPlayer.getCurrentTime() : 0;
+      if (dur > 0) {
+        progressBarInner.style.width = `${(cur / dur) * 100}%`;
+        timeDisplay.textContent = `${formatTime(cur)} / ${formatTime(dur)}`;
+      }
+    }, 500);
+  }
+  // Play/Pause toggle
+  playPauseBtn.onclick = function() {
+    if (!lyricsYTPlayer || !lyricsYTReady) return;
+    const state = lyricsYTPlayer.getPlayerState();
+    if (state === 1) {
+      lyricsYTPlayer.pauseVideo();
+    } else {
+      lyricsYTPlayer.playVideo();
+    }
+  };
+  // Progress bar seek
+  progressBarOuter.onclick = function(e) {
+    if (!lyricsYTPlayer || !lyricsYTReady) return;
+    const rect = progressBarOuter.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const percent = x / rect.width;
+    const dur = lyricsYTPlayer.getDuration();
+    if (dur > 0) {
+      lyricsYTPlayer.seekTo(dur * percent, true);
+    }
+  };
+  // Exit button
+  exitBtn.onclick = function() {
+    try { container.remove(); } catch (e) {}
+    lyricsYTPlayer && lyricsYTPlayer.destroy && lyricsYTPlayer.destroy();
+    lyricsYTPlayer = null;
+    lyricsYTReady = false;
+    // Resume normal player (if needed)
+    playSong(currentSongIndex, currentPlaylist);
+  };
+  // Keyboard: space for play/pause, esc for exit
+  container.tabIndex = -1;
+  container.focus();
+  container.addEventListener("keydown", function(e) {
+    if (e.code === "Space") {
+      playPauseBtn.click();
+      e.preventDefault();
+    } else if (e.code === "Escape") {
+      exitBtn.click();
+      e.preventDefault();
+    }
+  });
 }
 
   if ("Notification" in window && Notification.permission === "default") {
@@ -262,8 +431,14 @@ function initBackgroundLyricsVideo(videoId) {
 
   // Flexible background support: lyrics-video, normal-video, image, default.
   function playSong(index, list = playlist, skipped = 0) {
-    // Guard: ensure player API ready
-    if (!player || typeof player.loadVideoById !== "function" || typeof player.playVideo !== "function") {
+    // Guard: ensure player API ready (unless lyrics-video, which uses its own player)
+    const song = list[index] || {};
+    const bgType = song.backgroundType || (song.useBackgroundVideo ? "normal-video" : "default");
+    // For lyrics-video, we allow proceeding even if main player is not ready
+    if (
+      bgType !== "lyrics-video" &&
+      (!player || typeof player.loadVideoById !== "function" || typeof player.playVideo !== "function")
+    ) {
       console.warn("Player API not ready, retrying...");
       setTimeout(() => playSong(index, list, skipped), 500);
       return;
@@ -278,12 +453,9 @@ function initBackgroundLyricsVideo(videoId) {
     currentSongIndex = index;
     pendingSongIndex = index; // mark which index we requested
 
-    const song = list[index];
     const videoId = song.id;
-    const bgType = song.backgroundType || (song.useBackgroundVideo ? "normal-video" : "default");
     const ytPlayerElem = document.getElementById("youtube-player");
     let bgDiv = document.getElementById("bg-video-container");
-    let bgIframe = document.getElementById("bg-video-iframe");
     let bgImg = document.getElementById("bg-image");
 
     // Remove invalid video IDs
@@ -294,14 +466,21 @@ function initBackgroundLyricsVideo(videoId) {
     }
 
     // --- CLEANUP: Remove/hide all background elements first ---
-    // Hide and clean up bgDiv, bgIframe, bgImg
+    // Hide and clean up bgDiv, bgImg
     if (bgDiv) {
       bgDiv.style.display = "none";
-      // Remove all children (iframe or img)
       while (bgDiv.firstChild) bgDiv.removeChild(bgDiv.firstChild);
     }
     if (bgImg) {
       bgImg.parentNode && bgImg.parentNode.removeChild(bgImg);
+    }
+    // Remove any fullscreen lyrics-video player if present
+    const oldLyricsDiv = document.getElementById("lyrics-video-fullscreen-container");
+    if (oldLyricsDiv) oldLyricsDiv.parentNode.removeChild(oldLyricsDiv);
+    if (lyricsYTPlayer && typeof lyricsYTPlayer.destroy === "function") {
+      try { lyricsYTPlayer.destroy(); } catch (e) {}
+      lyricsYTPlayer = null;
+      lyricsYTReady = false;
     }
 
     // Show main player by default, will hide if needed below
@@ -318,17 +497,16 @@ function initBackgroundLyricsVideo(videoId) {
 
     // --- BACKGROUND MODES ---
     if (bgType === "lyrics-video") {
-      // Use the helper to create the background lyrics video
-      initBackgroundLyricsVideo(videoId);
-      // Load audio to main hidden player
-      try {
-        player.loadVideoById(videoId);
-        setTimeout(() => player.playVideo(), 200);
-      } catch (e) {
-        console.warn("loadVideoById failed, retrying next.", e);
-        setTimeout(() => playSong(index + 1, list, skipped + 1), 250);
-        return;
-      }
+      // Hide main hidden player
+      if (ytPlayerElem) ytPlayerElem.style.display = "none";
+      // Create fullscreen YT iframe for audio + visual, attach controls
+      initLyricsVideoFullscreen(videoId);
+      // Do not load video to main player
+      // UI updates for queue, title, vinyl, progress bar, etc.:
+      updateSongInfo();
+      resetProgressBar();
+      startVinylAnimation();
+      return; // exit here, do not use main player
     } else if (bgType === "normal-video") {
       // Visual video as muted background (same as legacy useBackgroundVideo)
       if (!bgDiv) {
@@ -349,7 +527,7 @@ function initBackgroundLyricsVideo(videoId) {
       }
       bgDiv.style.display = "block";
       // Create the background iframe
-      bgIframe = document.createElement("iframe");
+      const bgIframe = document.createElement("iframe");
       bgIframe.id = "bg-video-iframe";
       bgIframe.dataset.vid = videoId;
       bgIframe.src =
@@ -520,10 +698,20 @@ function initBackgroundLyricsVideo(videoId) {
 }
 
 function updateTime() {
+    // If lyrics-video player is active, update main UI progress bar using its time
+    const lyricsDiv = document.getElementById("lyrics-video-fullscreen-container");
+    if (lyricsDiv && lyricsYTPlayer && typeof lyricsYTPlayer.getCurrentTime === "function") {
+      const dur = lyricsYTPlayer.getDuration ? lyricsYTPlayer.getDuration() : 0;
+      const cur = lyricsYTPlayer.getCurrentTime ? lyricsYTPlayer.getCurrentTime() : 0;
+      if (dur > 0 && elements.progressBar) {
+        elements.progressBar.style.width = `${(cur / dur) * 100}%`;
+        elements.timeRemaining.textContent = `${formatTime(cur)} / ${formatTime(dur)}`;
+      }
+      return;
+    }
     if (!player?.getDuration()) return;
     const duration = player.getDuration();
     const currentTime = player.getCurrentTime();
-
     elements.progressBar.style.width = `${(currentTime / duration) * 100}%`;
     elements.timeRemaining.textContent = `${formatTime(currentTime)} / ${formatTime(duration)}`;
 }
@@ -643,6 +831,19 @@ if (langContainer) {
 
 
   elements.progressContainer?.addEventListener("click", (event) => {
+      // If lyrics-video player is active, seek using it
+      const lyricsDiv = document.getElementById("lyrics-video-fullscreen-container");
+      if (lyricsDiv && lyricsYTPlayer && typeof lyricsYTPlayer.seekTo === "function") {
+        const barWidth = elements.progressContainer.clientWidth;
+        const clickX = event.offsetX;
+        const dur = lyricsYTPlayer.getDuration();
+        if (dur > 0) {
+          const seekTo = (clickX / barWidth) * dur;
+          lyricsYTPlayer.seekTo(seekTo, true);
+        }
+        updateTime();
+        return;
+      }
       if (!player || typeof player.getDuration !== "function") return;
       const barWidth = elements.progressContainer.clientWidth;
       const clickX = event.offsetX;
@@ -806,6 +1007,9 @@ updateLocalTime();
 setInterval(updateLocalTime, 1000); // Update every second
 
 document.addEventListener("keydown", (event) => {
+    // If lyrics-video player is active and overlay has focus, skip global shortcut
+    const lyricsDiv = document.getElementById("lyrics-video-fullscreen-container");
+    if (lyricsDiv && document.activeElement === lyricsDiv) return;
     if (event.code === "Space" && !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) {
         event.preventDefault();
         isPlaying ? player.pauseVideo() : player.playVideo();
