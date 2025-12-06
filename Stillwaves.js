@@ -131,9 +131,10 @@ let skipLock = false;      // simple lock to prevent rapid double-skips
   let player;
   let notificationTimeout;
 
-let bgYTPlayer = null; // global reference for lyrics-video iframe
+let bgYTPlayer = null; // global reference for lyrics-video iframe YT.Player
+let bgYTPlayerSyncInterval = null; // interval for syncing lyrics video
 
-// Helper to initialize lyrics-video background (as background iframe)
+// Helper to initialize lyrics-video background (as background iframe and YT.Player)
 function initBackgroundLyricsVideo(videoId) {
   let bgDiv = document.getElementById("bg-video-container");
   let bgIframe;
@@ -155,11 +156,8 @@ function initBackgroundLyricsVideo(videoId) {
   }
   bgDiv.style.display = "block";
   // Create the background iframe
-  bgIframe = document.createElement("iframe");
+  bgIframe = document.createElement("div");
   bgIframe.id = "bg-video-iframe";
-  bgIframe.dataset.vid = videoId;
-  bgIframe.src =
-    `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&playsinline=1`;
   Object.assign(bgIframe.style, {
     position: "absolute",
     top: "0",
@@ -170,17 +168,79 @@ function initBackgroundLyricsVideo(videoId) {
     pointerEvents: "none",
     opacity: "0.8",
     objectFit: "cover",
-    border: "none"
+    border: "none",
+    background: "#000"
   });
-  bgIframe.setAttribute("frameborder", "0");
-  bgIframe.setAttribute("allow", "autoplay; encrypted-media");
-  bgIframe.setAttribute("allowfullscreen", "1");
   // Remove any existing children in the container
   while (bgDiv.firstChild) bgDiv.removeChild(bgDiv.firstChild);
   bgDiv.appendChild(bgIframe);
   // Hide main player visually (audio only)
   const ytPlayerElem = document.getElementById("youtube-player");
   if (ytPlayerElem) ytPlayerElem.style.display = "none";
+  // Destroy any previous bgYTPlayer instance
+  if (bgYTPlayer && typeof bgYTPlayer.destroy === "function") {
+    try { bgYTPlayer.destroy(); } catch (e) {}
+    bgYTPlayer = null;
+  }
+  // Create new YT.Player for the background video (visual only)
+  bgYTPlayer = new YT.Player(bgIframe, {
+    height: "100%",
+    width: "100%",
+    videoId: videoId,
+    playerVars: {
+      autoplay: 1,
+      mute: 1,
+      controls: 0,
+      loop: 1,
+      playlist: videoId,
+      modestbranding: 1,
+      showinfo: 0,
+      rel: 0,
+      iv_load_policy: 3,
+      playsinline: 1
+    },
+    events: {
+      onReady: function() {
+        if (typeof bgYTPlayer.setVolume === "function") bgYTPlayer.setVolume(0);
+        bgYTPlayer.playVideo();
+      }
+    }
+  });
+}
+
+// Helper to sync the background lyrics video with the main audio player
+function syncLyricsVideoWithAudio(bgPlayer) {
+  // Clear any previous interval
+  if (bgYTPlayerSyncInterval) clearInterval(bgYTPlayerSyncInterval);
+  if (!bgPlayer || !player) return;
+  // Only sync if both players are ready
+  function doSync() {
+    if (
+      typeof player.getPlayerState !== "function" ||
+      typeof player.getCurrentTime !== "function" ||
+      typeof bgPlayer.getPlayerState !== "function" ||
+      typeof bgPlayer.getCurrentTime !== "function" ||
+      typeof bgPlayer.seekTo !== "function" ||
+      typeof bgPlayer.playVideo !== "function" ||
+      typeof bgPlayer.pauseVideo !== "function"
+    ) return;
+    // Get current time and state
+    let mainState = player.getPlayerState();
+    let mainTime = player.getCurrentTime();
+    let bgState = bgPlayer.getPlayerState();
+    let bgTime = bgPlayer.getCurrentTime();
+    // Sync time if difference > 0.2s
+    if (Math.abs(mainTime - bgTime) > 0.25) {
+      bgPlayer.seekTo(mainTime, true);
+    }
+    // Sync play/pause state
+    if (mainState === YT.PlayerState.PLAYING && bgState !== YT.PlayerState.PLAYING) {
+      bgPlayer.playVideo();
+    } else if ((mainState === YT.PlayerState.PAUSED || mainState === YT.PlayerState.ENDED) && bgState === YT.PlayerState.PLAYING) {
+      bgPlayer.pauseVideo();
+    }
+  }
+  bgYTPlayerSyncInterval = setInterval(doSync, 250);
 }
 
   if ("Notification" in window && Notification.permission === "default") {
@@ -316,20 +376,29 @@ function initBackgroundLyricsVideo(videoId) {
       ytPlayerElem.style.objectFit = "";
     }
 
-    // --- BACKGROUND MODES ---
-    if (bgType === "lyrics-video") {
-      // Use the helper to create the background lyrics video
-      initBackgroundLyricsVideo(videoId);
-      // Load audio to main hidden player
-      try {
-        player.loadVideoById(videoId);
-        setTimeout(() => player.playVideo(), 200);
-      } catch (e) {
-        console.warn("loadVideoById failed, retrying next.", e);
-        setTimeout(() => playSong(index + 1, list, skipped + 1), 250);
-        return;
-      }
-    } else if (bgType === "normal-video") {
+  // --- BACKGROUND MODES ---
+  if (bgType === "lyrics-video") {
+    // Use the helper to create the background lyrics video (YT.Player)
+    initBackgroundLyricsVideo(videoId);
+    // Load audio to main hidden player
+    try {
+      player.loadVideoById(videoId);
+      setTimeout(() => {
+        player.playVideo();
+        // Wait for bgYTPlayer to be ready before syncing
+        let waitForBg = setInterval(() => {
+          if (bgYTPlayer && typeof bgYTPlayer.getPlayerState === "function") {
+            clearInterval(waitForBg);
+            syncLyricsVideoWithAudio(bgYTPlayer);
+          }
+        }, 100);
+      }, 200);
+    } catch (e) {
+      console.warn("loadVideoById failed, retrying next.", e);
+      setTimeout(() => playSong(index + 1, list, skipped + 1), 250);
+      return;
+    }
+  } else if (bgType === "normal-video") {
       // Visual video as muted background (same as legacy useBackgroundVideo)
       if (!bgDiv) {
         bgDiv = document.createElement("div");
@@ -438,6 +507,8 @@ function initBackgroundLyricsVideo(videoId) {
         ytPlayerElem.style.opacity = "";
         ytPlayerElem.style.objectFit = "";
       }
+      // If we had a lyrics-video sync interval, clear it
+      if (bgYTPlayerSyncInterval) clearInterval(bgYTPlayerSyncInterval);
       try {
         player.loadVideoById(videoId);
         setTimeout(() => player.playVideo(), 200);
