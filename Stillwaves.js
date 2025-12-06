@@ -209,12 +209,13 @@ let skipLock = false;      // simple lock to prevent rapid double-skips
   }
 
   // Enhanced playSong to support fullscreen background video for tracks with useBackgroundVideo: true
+  // Ensures that playback (audio) always works for all tracks
   function playSong(index, list = playlist, skipped = 0) {
     // Guard: ensure player API ready
     if (!player || typeof player.loadVideoById !== "function" || typeof player.playVideo !== "function") {
-        console.warn("Player API not ready, retrying...");
-        setTimeout(() => playSong(index, list, skipped), 500);
-        return;
+      console.warn("Player API not ready, retrying...");
+      setTimeout(() => playSong(index, list, skipped), 500);
+      return;
     }
 
     if (index >= list.length) index = 0;
@@ -231,9 +232,13 @@ let skipLock = false;      // simple lock to prevent rapid double-skips
     const useBg = !!song.useBackgroundVideo;
     const ytPlayerElem = document.getElementById("youtube-player");
     let bgDiv = document.getElementById("bg-video-container");
-
-    // Remove any previous background video container if present
+    // Remove any previous background video container if present (if switching to normal audio)
     if (bgDiv && !useBg) {
+      // Move player out of bgDiv if needed
+      if (ytPlayerElem && bgDiv.contains(ytPlayerElem)) {
+        // Move player to body or its original container if you have one
+        document.body.appendChild(ytPlayerElem);
+      }
       bgDiv.parentNode.removeChild(bgDiv);
       // Restore normal player visibility
       if (ytPlayerElem) {
@@ -250,9 +255,9 @@ let skipLock = false;      // simple lock to prevent rapid double-skips
 
     // Skip invalid IDs gracefully
     if (!videoId || videoId.length < 8) {
-        console.warn("Invalid video id, skipping to next.", videoId);
-        playSong(index + 1, list, skipped + 1);
-        return;
+      console.warn("Invalid video id, skipping to next.", videoId);
+      playSong(index + 1, list, skipped + 1);
+      return;
     }
 
     // If useBackgroundVideo, create or update a fullscreen container for the player
@@ -289,7 +294,6 @@ let skipLock = false;      // simple lock to prevent rapid double-skips
         ytPlayerElem.style.pointerEvents = "none";
         ytPlayerElem.style.opacity = "0.8";
         ytPlayerElem.style.objectFit = "cover";
-        // Hide controls and overlays if possible (relies on iframe API)
       }
     } else {
       // For normal tracks, ensure the player is in its normal container (if you have one)
@@ -308,12 +312,17 @@ let skipLock = false;      // simple lock to prevent rapid double-skips
 
     // Load video (use loadVideoById to replace current video). We rely on onStateChange to set actual start time.
     try {
-        player.loadVideoById(videoId);
+      player.loadVideoById(videoId);
+      // For background video tracks, always ensure the video is actually playing (audio+visual)
+      // For normal tracks, same: always start playback
+      if (typeof player.playVideo === "function") {
+        setTimeout(() => player.playVideo(), 200); // slight delay for load
+      }
     } catch (e) {
-        console.warn("loadVideoById failed, retrying next.", e);
-        // If the API throws synchronously, skip to next with a small delay to avoid tight loops
-        setTimeout(() => playSong(index + 1, list, skipped + 1), 250);
-        return;
+      console.warn("loadVideoById failed, retrying next.", e);
+      // If the API throws synchronously, skip to next with a small delay to avoid tight loops
+      setTimeout(() => playSong(index + 1, list, skipped + 1), 250);
+      return;
     }
 
     // Update UI immediately (queue highlight, title, reset progress visuals)
@@ -321,6 +330,22 @@ let skipLock = false;      // simple lock to prevent rapid double-skips
     resetProgressBar();
     startVinylAnimation();
   }
+
+  // Play a song by its YouTube videoId, regardless of current filters
+  function playSongById(videoId) {
+    // Find the song in the full playlist
+    const idx = playlist.findIndex(song => song.id === videoId);
+    if (idx === -1) {
+      alert("Song not found in playlist.");
+      return;
+    }
+    // Set currentPlaylist to all songs so that index is correct
+    currentPlaylist = [...playlist];
+    loadQueue(currentPlaylist);
+    playSong(idx, currentPlaylist);
+  }
+  // Expose for global usage (e.g., from console or elsewhere)
+  window.playSongById = playSongById;
 
   function updateSongInfo() {
       const song = currentPlaylist[currentSongIndex];
@@ -668,9 +693,9 @@ document.addEventListener("keydown", (event) => {
 const playButton = document.getElementById("play");
 
 function togglePlayPause() {
-  const isPlaying = player.getPlayerState && player.getPlayerState() === 1;
-
-  if (isPlaying) {
+  if (!player || typeof player.getPlayerState !== "function") return;
+  const currentlyPlaying = player.getPlayerState() === 1;
+  if (currentlyPlaying) {
     player.pauseVideo();
     playButton.textContent = "▶️ Paused";
     playButton.classList.remove("playing");
@@ -681,7 +706,12 @@ function togglePlayPause() {
   }
 }
 
-playButton.addEventListener("click", togglePlayPause);
+// Remove duplicate playButton event listener (already handled above in elements.playButton?.addEventListener)
+// Only add if not already attached (for compatibility)
+if (playButton && !playButton.hasAttribute("data-play-handler")) {
+  playButton.addEventListener("click", togglePlayPause);
+  playButton.setAttribute("data-play-handler", "true");
+}
 
 function updateLanguageIndicator(language) {
   const langText = language === "all" ? "All" : language.charAt(0).toUpperCase() + language.slice(1);
