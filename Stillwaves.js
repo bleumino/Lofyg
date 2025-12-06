@@ -208,8 +208,7 @@ let skipLock = false;      // simple lock to prevent rapid double-skips
       });
   }
 
-  // Enhanced playSong to support fullscreen background video for tracks with useBackgroundVideo: true
-  // Ensures that playback (audio) always works for all tracks
+  // Refactored playSong: Dedicated iframe for background video, correct video for each song, seamless switching.
   function playSong(index, list = playlist, skipped = 0) {
     // Guard: ensure player API ready
     if (!player || typeof player.loadVideoById !== "function" || typeof player.playVideo !== "function") {
@@ -232,36 +231,22 @@ let skipLock = false;      // simple lock to prevent rapid double-skips
     const useBg = !!song.useBackgroundVideo;
     const ytPlayerElem = document.getElementById("youtube-player");
     let bgDiv = document.getElementById("bg-video-container");
-    // Remove any previous background video container if present (if switching to normal audio)
-    if (bgDiv && !useBg) {
-      // Move player out of bgDiv if needed
-      if (ytPlayerElem && bgDiv.contains(ytPlayerElem)) {
-        // Move player to body or its original container if you have one
-        document.body.appendChild(ytPlayerElem);
-      }
-      bgDiv.parentNode.removeChild(bgDiv);
-      // Restore normal player visibility
-      if (ytPlayerElem) {
-        ytPlayerElem.style.display = "";
-        ytPlayerElem.style.position = "";
-        ytPlayerElem.style.width = "";
-        ytPlayerElem.style.height = "";
-        ytPlayerElem.style.zIndex = "";
-        ytPlayerElem.style.pointerEvents = "";
-        ytPlayerElem.style.opacity = "";
-        ytPlayerElem.style.objectFit = "";
-      }
-    }
+    let bgIframe = document.getElementById("bg-video-iframe");
 
-    // Skip invalid IDs gracefully
+    // Remove invalid video IDs
     if (!videoId || videoId.length < 8) {
       console.warn("Invalid video id, skipping to next.", videoId);
       playSong(index + 1, list, skipped + 1);
       return;
     }
 
-    // If useBackgroundVideo, create or update a fullscreen container for the player
+    // --- BACKGROUND VIDEO MODE ---
     if (useBg) {
+      // Hide the main player (audio only, keep for progress/time/controls)
+      if (ytPlayerElem) {
+        ytPlayerElem.style.display = "none";
+      }
+      // Create bgDiv if needed
       if (!bgDiv) {
         bgDiv = document.createElement("div");
         bgDiv.id = "bg-video-container";
@@ -278,26 +263,61 @@ let skipLock = false;      // simple lock to prevent rapid double-skips
         });
         document.body.appendChild(bgDiv);
       }
-      // Move the youtube-player element into the bgDiv
-      if (ytPlayerElem && ytPlayerElem.parentNode !== bgDiv) {
-        bgDiv.appendChild(ytPlayerElem);
+      // Remove any existing iframe if not matching videoId
+      if (bgIframe && bgIframe.dataset.vid !== videoId) {
+        bgIframe.parentNode.removeChild(bgIframe);
+        bgIframe = null;
       }
-      // Style the player for background effect
-      if (ytPlayerElem) {
-        ytPlayerElem.style.display = "block";
-        ytPlayerElem.style.position = "absolute";
-        ytPlayerElem.style.top = "0";
-        ytPlayerElem.style.left = "0";
-        ytPlayerElem.style.width = "100vw";
-        ytPlayerElem.style.height = "100vh";
-        ytPlayerElem.style.zIndex = "-1";
-        ytPlayerElem.style.pointerEvents = "none";
-        ytPlayerElem.style.opacity = "0.8";
-        ytPlayerElem.style.objectFit = "cover";
+      // Create iframe for background video if not present
+      if (!bgIframe) {
+        bgIframe = document.createElement("iframe");
+        bgIframe.id = "bg-video-iframe";
+        bgIframe.dataset.vid = videoId;
+        bgIframe.src =
+          `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&playsinline=1`;
+        Object.assign(bgIframe.style, {
+          position: "absolute",
+          top: "0",
+          left: "0",
+          width: "100vw",
+          height: "100vh",
+          zIndex: "-1",
+          pointerEvents: "none",
+          opacity: "0.8",
+          objectFit: "cover",
+          border: "none"
+        });
+        bgIframe.setAttribute("frameborder", "0");
+        bgIframe.setAttribute("allow", "autoplay; encrypted-media");
+        bgIframe.setAttribute("allowfullscreen", "1");
+        // Remove any existing iframes in the container
+        while (bgDiv.firstChild) bgDiv.removeChild(bgDiv.firstChild);
+        bgDiv.appendChild(bgIframe);
+      }
+      // Show bgDiv
+      bgDiv.style.display = "block";
+      // Hide main player
+      if (ytPlayerElem) ytPlayerElem.style.display = "none";
+      // Load correct audio in hidden main player for playback, controls, progress, etc.
+      try {
+        player.loadVideoById(videoId);
+        setTimeout(() => player.playVideo(), 200);
+      } catch (e) {
+        console.warn("loadVideoById failed, retrying next.", e);
+        setTimeout(() => playSong(index + 1, list, skipped + 1), 250);
+        return;
       }
     } else {
-      // For normal tracks, ensure the player is in its normal container (if you have one)
-      // If you have a container, put it back. Otherwise, just make sure it's visible.
+      // --- NORMAL SONG MODE ---
+      // Remove/hide background video container and iframe if present
+      if (bgDiv) {
+        bgDiv.style.display = "none";
+        // Remove bg iframe for full cleanup
+        if (bgIframe) {
+          bgIframe.parentNode.removeChild(bgIframe);
+        }
+      }
+      // Show main player
       if (ytPlayerElem) {
         ytPlayerElem.style.display = "";
         ytPlayerElem.style.position = "";
@@ -308,21 +328,15 @@ let skipLock = false;      // simple lock to prevent rapid double-skips
         ytPlayerElem.style.opacity = "";
         ytPlayerElem.style.objectFit = "";
       }
-    }
-
-    // Load video (use loadVideoById to replace current video). We rely on onStateChange to set actual start time.
-    try {
-      player.loadVideoById(videoId);
-      // For background video tracks, always ensure the video is actually playing (audio+visual)
-      // For normal tracks, same: always start playback
-      if (typeof player.playVideo === "function") {
-        setTimeout(() => player.playVideo(), 200); // slight delay for load
+      // Load correct audio/video in main player
+      try {
+        player.loadVideoById(videoId);
+        setTimeout(() => player.playVideo(), 200);
+      } catch (e) {
+        console.warn("loadVideoById failed, retrying next.", e);
+        setTimeout(() => playSong(index + 1, list, skipped + 1), 250);
+        return;
       }
-    } catch (e) {
-      console.warn("loadVideoById failed, retrying next.", e);
-      // If the API throws synchronously, skip to next with a small delay to avoid tight loops
-      setTimeout(() => playSong(index + 1, list, skipped + 1), 250);
-      return;
     }
 
     // Update UI immediately (queue highlight, title, reset progress visuals)
