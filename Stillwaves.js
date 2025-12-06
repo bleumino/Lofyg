@@ -573,32 +573,34 @@ let selectedMood = "all";
 const langDropdown = document.getElementById("language-dropdown");
 const moodButtons = document.querySelectorAll("#mood-selector button");
 
-function filterPlaylist() {
-    currentPlaylist = playlist.filter(track => {
-        // Normalize languages
-        let langs = [];
-        if (typeof track.language === "string") {
-            langs = track.language.split(",").map(l => l.trim().toLowerCase());
-        } else if (Array.isArray(track.language)) {
-            track.language.forEach(l => {
-                langs.push(...l.split(",").map(x => x.trim().toLowerCase()));
-            });
-        }
-        const langMatch = selectedLanguage === "all" || langs.includes(selectedLanguage);
-
-        // Normalize moods
-        let moods = [];
-        if (Array.isArray(track.moods)) {
-            track.moods.forEach(m => {
-                moods.push(...m.split(",").map(x => x.trim().toLowerCase()));
-            });
-        } else if (typeof track.moods === "string") {
-            moods = track.moods.split(",").map(m => m.trim().toLowerCase());
-        }
-        const moodMatch = selectedMood === "all" || moods.includes(selectedMood);
-
-        return langMatch && moodMatch;
-    });
+function filterPlaylist({ filterBy = "language" } = {}) {
+    if (filterBy === "language") {
+        currentPlaylist = playlist.filter(track => {
+            // Normalize languages
+            let langs = [];
+            if (typeof track.language === "string") {
+                langs = track.language.split(",").map(l => l.trim().toLowerCase());
+            } else if (Array.isArray(track.language)) {
+                track.language.forEach(l => {
+                    langs.push(...l.split(",").map(x => x.trim().toLowerCase()));
+                });
+            }
+            return selectedLanguage === "all" || langs.includes(selectedLanguage);
+        });
+    } else if (filterBy === "mood") {
+        currentPlaylist = playlist.filter(track => {
+            // Normalize moods
+            let moods = [];
+            if (Array.isArray(track.moods)) {
+                track.moods.forEach(m => {
+                    moods.push(...m.split(",").map(x => x.trim().toLowerCase()));
+                });
+            } else if (typeof track.moods === "string") {
+                moods = track.moods.split(",").map(m => m.trim().toLowerCase());
+            }
+            return selectedMood === "all" || moods.includes(selectedMood);
+        });
+    }
 
     if (currentPlaylist.length === 0) {
         alert("No tracks match your selection.");
@@ -614,7 +616,7 @@ function filterPlaylist() {
 if (langDropdown) {
     langDropdown.addEventListener("change", () => {
         selectedLanguage = langDropdown.value.toLowerCase();
-        filterPlaylist();
+        filterPlaylist({ filterBy: "language" });
     });
     selectedLanguage = langDropdown.value.toLowerCase();
     updateLanguageIndicator(selectedLanguage);
@@ -627,7 +629,7 @@ if (moodButtons.length > 0) {
             moodButtons.forEach(b => b.classList.remove("active"));
             btn.classList.add("active");
             selectedMood = btn.dataset.mood.toLowerCase();
-            filterPlaylist();
+            filterPlaylist({ filterBy: "mood" });
         });
     });
 }
