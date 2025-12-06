@@ -119,6 +119,11 @@ document.head.appendChild(style);
 
   let currentPlaylist = [...playlist];
   window.currentPlaylist = currentPlaylist;
+
+let pendingSongIndex = null; // index we just requested to play (used to guard fast skips)
+let songStartTime = 0;      // timestamp when playback actually started
+let skipLock = false;      // simple lock to prevent rapid double-skips
+
   let currentSongIndex = 0;
   let isPlaying = false;
   let isLooping = false;
@@ -204,34 +209,46 @@ document.head.appendChild(style);
   }
 
   function playSong(index, list = playlist, skipped = 0) {
-      if (!player || typeof player.loadVideoById !== "function" || typeof player.playVideo !== "function") {
-          console.warn("Player API not ready, retrying...");
-          setTimeout(() => playSong(index, list, skipped), 500);
-          return;
-      }
-      if (index >= list.length) index = 0;
-      if (index < 0) index = list.length - 1;
-      if (skipped >= list.length) return;
+    // Guard: ensure player API ready
+    if (!player || typeof player.loadVideoById !== "function" || typeof player.playVideo !== "function") {
+        console.warn("Player API not ready, retrying...");
+        setTimeout(() => playSong(index, list, skipped), 500);
+        return;
+    }
 
-      currentPlaylist = list;
-      currentSongIndex = index;
-      const videoId = list[index].id;
+    if (index >= list.length) index = 0;
+    if (index < 0) index = list.length - 1;
+    if (skipped >= list.length) return;
 
-      if (!videoId || videoId.length < 10) {
-          playSong(index + 1, list, skipped + 1);
-          return;
-      }
+    // update references
+    currentPlaylist = list;
+    currentSongIndex = index;
+    pendingSongIndex = index; // mark which index we requested
 
-      player.loadVideoById(videoId);
-      setTimeout(() => {
-          if (isPlaying) player.playVideo();
-      }, 600);
+    const videoId = list[index].id;
 
-      updateSongInfo();
-      resetProgressBar();
-      startVinylAnimation();
-  }
-    window.playSong = playSong; // expose globally
+    // Skip invalid IDs gracefully
+    if (!videoId || videoId.length < 8) {
+        console.warn("Invalid video id, skipping to next.", videoId);
+        playSong(index + 1, list, skipped + 1);
+        return;
+    }
+
+    // Load video (use loadVideoById to replace current video). We rely on onStateChange to set actual start time.
+    try {
+        player.loadVideoById(videoId);
+    } catch (e) {
+        console.warn("loadVideoById failed, retrying next.", e);
+        // If the API throws synchronously, skip to next with a small delay to avoid tight loops
+        setTimeout(() => playSong(index + 1, list, skipped + 1), 250);
+        return;
+    }
+
+    // Update UI immediately (queue highlight, title, reset progress visuals)
+    updateSongInfo();
+    resetProgressBar();
+    startVinylAnimation();
+}
 
   function updateSongInfo() {
       const song = currentPlaylist[currentSongIndex];
@@ -342,7 +359,67 @@ function updateTime() {
       elements.loopButton.classList.toggle("active-mode", isLooping);
   });
 
+  elements.moodButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+          elements.moodButtons.forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
 
+          const mood = btn.dataset.mood;
+          currentPlaylist = mood === "all" ? [...playlist] : playlist.filter(track => track.moods.includes(mood));
+
+          if (currentPlaylist.length === 0) {
+              alert("No tracks found for this mood.");
+              return;
+          }
+
+          loadQueue(currentPlaylist);
+          playSong(0, currentPlaylist);
+      });
+  });
+
+
+
+// --- Replace language button row with dropdown ---
+const langContainer = document.getElementById("language-selector");
+if (langContainer) {
+  const dropdown = document.createElement("select");
+  dropdown.id = "language-dropdown";
+  dropdown.style.padding = "6px";
+  dropdown.style.borderRadius = "6px";
+  dropdown.style.fontSize = "14px";
+
+  // Build dropdown options from existing buttons
+  const originalButtons = langContainer.querySelectorAll("button");
+  originalButtons.forEach(btn => {
+    const option = document.createElement("option");
+    option.value = btn.dataset.language;
+    option.textContent = btn.textContent.trim();
+    dropdown.appendChild(option);
+  });
+
+  // Replace old buttons with dropdown
+  langContainer.innerHTML = "";
+  langContainer.appendChild(dropdown);
+
+  // Hook into your existing language filter logic
+  dropdown.addEventListener("change", () => {
+    const selectedLang = dropdown.value;
+
+    currentPlaylist = selectedLang === "all"
+      ? [...playlist]
+      : playlist.filter(track => track.language === selectedLang);
+
+    if (currentPlaylist.length === 0) {
+      alert("No tracks found for that language.");
+      return;
+    }
+
+    loadQueue(currentPlaylist);
+    playSong(0, currentPlaylist);
+
+    updateLanguageIndicator(selectedLang);
+  });
+}
 
 
   elements.progressContainer?.addEventListener("click", (event) => {
@@ -540,63 +617,16 @@ function updateLanguageIndicator(language) {
 }
 
 
-// Mood and Language filter state
-let selectedMood = "all";
-let selectedLanguage = "all";
-
 document.addEventListener("DOMContentLoaded", () => {
-  // Surprise shuffle
   document.getElementById("shuffle-surprise")?.addEventListener("click", () => {
     const randomIndex = Math.floor(Math.random() * currentPlaylist.length);
     playSong(randomIndex, currentPlaylist);
+
+    // Optional visual feedback
     const btn = document.getElementById("shuffle-surprise");
     btn.textContent = "✨ Shuffling...";
     setTimeout(() => {
       btn.textContent = "🎲 Surprise Me";
     }, 1000);
   });
-
-  // Mood buttons listener for filtering
-  const moodButtons = document.querySelectorAll("#mood-selector button");
-  moodButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-      // Remove active class from all buttons
-      moodButtons.forEach(b => b.classList.remove("active"));
-      // Add active class to clicked button
-      btn.classList.add("active");
-      // Set selected mood
-      selectedMood = btn.dataset.mood.toLowerCase();
-      // Filter playlist by mood and language
-      filterAndUpdatePlaylist();
-    });
-  });
-
-  // Language dropdown listener for filtering
-  const langDropdown = document.getElementById("language-dropdown");
-  langDropdown.addEventListener("change", () => {
-    selectedLanguage = langDropdown.value.toLowerCase();
-    filterAndUpdatePlaylist();
-    updateLanguageIndicator(selectedLanguage);
-  });
-
-  // Helper to filter playlist by both mood and language
-  function filterAndUpdatePlaylist() {
-    let filtered = playlist.filter(track => {
-      // Mood filter
-      let moods = [];
-      if (Array.isArray(track.moods)) {
-        track.moods.forEach(m => moods.push(...m.split(",").map(x => x.trim().toLowerCase())));
-      } else if (typeof track.moods === "string") {
-        moods = track.moods.split(",").map(m => m.trim().toLowerCase());
-      }
-      const moodMatch = selectedMood === "all" || moods.includes(selectedMood);
-      // Language filter
-      const langMatch = selectedLanguage === "all" ||
-        (track.language && track.language.toLowerCase() === selectedLanguage);
-      return moodMatch && langMatch;
-    });
-    currentPlaylist = filtered.length > 0 ? filtered : [...playlist];
-    loadQueue(currentPlaylist);
-    playSong(0, currentPlaylist);
-  }
 });
