@@ -566,22 +566,20 @@ function updateLanguageIndicator(language) {
 
 // Language button event listeners replaced by dropdown. (See above.)
 
+// --- Language and Mood Filter Logic (Fixed Version) ---
 document.addEventListener("DOMContentLoaded", () => {
+  // Surprise shuffle
   document.getElementById("shuffle-surprise")?.addEventListener("click", () => {
     const randomIndex = Math.floor(Math.random() * currentPlaylist.length);
     playSong(randomIndex, currentPlaylist);
-
-    // Optional visual feedback
     const btn = document.getElementById("shuffle-surprise");
     btn.textContent = "✨ Shuffling...";
     setTimeout(() => {
       btn.textContent = "🎲 Surprise Me";
     }, 1000);
   });
-});
 
-// --- Language and Mood Filter Logic (Fixed Version) ---
-document.addEventListener("DOMContentLoaded", () => {
+  // --- Language and Mood Filter Logic ---
   let selectedLanguage = "all";
   let selectedMood = "all";
 
@@ -595,21 +593,34 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function filterAndLoad() {
+    // Filtering logic supporting multi-language and multi-mood
     currentPlaylist = playlist.filter(track => {
-      // Handle bilingual/multi-language songs
-      const languages = track.language.split(",").map(l => l.trim().toLowerCase());
-      const matchesLang = selectedLanguage === "all" || languages.includes(selectedLanguage.toLowerCase());
+      // Multi-language: allow comma-separated or array
+      let languages = [];
+      if (typeof track.language === "string") {
+        languages = track.language.split(",").map(l => l.trim().toLowerCase());
+      } else if (Array.isArray(track.language)) {
+        languages = track.language.map(l => l.trim().toLowerCase());
+      }
+      const matchesLang = selectedLanguage === "all" ||
+        languages.includes(selectedLanguage.toLowerCase());
 
-      // Handle moods (array or comma-separated string)
+      // Multi-mood: moods can be array of strings or comma-separated inside array
       let moods = [];
       if (Array.isArray(track.moods)) {
         track.moods.forEach(m => {
-          if (typeof m === "string") m.split(",").forEach(part => moods.push(part.trim().toLowerCase()));
+          if (typeof m === "string") {
+            m.split(",").forEach(part => {
+              const mood = part.trim().toLowerCase();
+              if (mood) moods.push(mood);
+            });
+          }
         });
       } else if (typeof track.moods === "string") {
         moods = track.moods.split(",").map(m => m.trim().toLowerCase());
       }
-      const matchesMood = selectedMood === "all" || moods.includes(selectedMood.toLowerCase());
+      const matchesMood = selectedMood === "all" ||
+        moods.includes(selectedMood.toLowerCase());
 
       return matchesLang && matchesMood;
     });
@@ -618,9 +629,15 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("No tracks match your selection.");
       return;
     }
-
     loadQueue(currentPlaylist);
-    playSong(0, currentPlaylist);
+    // If current song in old playlist is present in new filtered playlist, keep it playing; else play first
+    const currentId = window.player && currentPlaylist.length > 0 ? player.getVideoData()?.video_id : null;
+    let playIdx = 0;
+    if (currentId) {
+      const idx = currentPlaylist.findIndex(song => song.id === currentId);
+      if (idx !== -1) playIdx = idx;
+    }
+    playSong(playIdx, currentPlaylist);
     updateLanguageIndicator(selectedLanguage);
   }
 
@@ -639,7 +656,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Set default active mood if any button has 'active'
     const activeBtn = Array.from(moodButtons).find(btn => btn.classList.contains("active"));
     if (activeBtn) selectedMood = activeBtn.dataset.mood.toLowerCase();
-
     moodButtons.forEach(btn => {
       btn.addEventListener("click", () => {
         moodButtons.forEach(b => b.classList.remove("active"));
