@@ -133,11 +133,13 @@ let skipLock = false;      // simple lock to prevent rapid double-skips
 
 let bgYTPlayer = null; // global reference for lyrics-video iframe YT.Player
 let bgYTPlayerSyncInterval = null; // interval for syncing lyrics video
+let bgYTPlayerReady = false; // track bgYTPlayer readiness
 
 // Helper to initialize lyrics-video background (as background iframe and YT.Player)
 function initBackgroundLyricsVideo(videoId) {
   let bgDiv = document.getElementById("bg-video-container");
   let bgIframe;
+  bgYTPlayerReady = false;
   if (!bgDiv) {
     bgDiv = document.createElement("div");
     bgDiv.id = "bg-video-container";
@@ -201,8 +203,15 @@ function initBackgroundLyricsVideo(videoId) {
     },
     events: {
       onReady: function() {
+        bgYTPlayerReady = true;
         if (typeof bgYTPlayer.setVolume === "function") bgYTPlayer.setVolume(0);
-        bgYTPlayer.playVideo();
+        // Autoplay handling for background video (autoplay/mute policy)
+        try {
+          bgYTPlayer.playVideo();
+        } catch (e) {
+          // If autoplay fails, try muted play
+          try { bgYTPlayer.mute(); bgYTPlayer.playVideo(); } catch (e2) {}
+        }
       }
     }
   });
@@ -235,9 +244,9 @@ function syncLyricsVideoWithAudio(bgPlayer) {
     }
     // Sync play/pause state
     if (mainState === YT.PlayerState.PLAYING && bgState !== YT.PlayerState.PLAYING) {
-      bgPlayer.playVideo();
+      try { bgPlayer.playVideo(); } catch (e) {}
     } else if ((mainState === YT.PlayerState.PAUSED || mainState === YT.PlayerState.ENDED) && bgState === YT.PlayerState.PLAYING) {
-      bgPlayer.pauseVideo();
+      try { bgPlayer.pauseVideo(); } catch (e) {}
     }
   }
   bgYTPlayerSyncInterval = setInterval(doSync, 250);
@@ -376,29 +385,35 @@ function syncLyricsVideoWithAudio(bgPlayer) {
       ytPlayerElem.style.objectFit = "";
     }
 
-  // --- BACKGROUND MODES ---
-  if (bgType === "lyrics-video") {
-    // Use the helper to create the background lyrics video (YT.Player)
-    initBackgroundLyricsVideo(videoId);
-    // Load audio to main hidden player
-    try {
-      player.loadVideoById(videoId);
-      setTimeout(() => {
-        player.playVideo();
-        // Wait for bgYTPlayer to be ready before syncing
-        let waitForBg = setInterval(() => {
-          if (bgYTPlayer && typeof bgYTPlayer.getPlayerState === "function") {
-            clearInterval(waitForBg);
-            syncLyricsVideoWithAudio(bgYTPlayer);
-          }
-        }, 100);
-      }, 200);
-    } catch (e) {
-      console.warn("loadVideoById failed, retrying next.", e);
-      setTimeout(() => playSong(index + 1, list, skipped + 1), 250);
-      return;
-    }
-  } else if (bgType === "normal-video") {
+    // --- BACKGROUND MODES ---
+    if (bgType === "lyrics-video") {
+      // Ensure no duplicate sync intervals
+      if (bgYTPlayerSyncInterval) clearInterval(bgYTPlayerSyncInterval);
+      // Use the helper to create the background lyrics video (YT.Player)
+      initBackgroundLyricsVideo(videoId);
+      // Load audio to main hidden player
+      try {
+        player.loadVideoById(videoId);
+        setTimeout(() => {
+          player.playVideo();
+          // Wait for bgYTPlayer to be fully ready before syncing
+          let waitForBg = setInterval(() => {
+            if (bgYTPlayer && bgYTPlayerReady && typeof bgYTPlayer.getPlayerState === "function") {
+              clearInterval(waitForBg);
+              // Clear any previous sync interval
+              if (bgYTPlayerSyncInterval) clearInterval(bgYTPlayerSyncInterval);
+              syncLyricsVideoWithAudio(bgYTPlayer);
+              // Set up event listeners for play/pause/seek sync
+              setupLyricsVideoPlayerSyncHandlers();
+            }
+          }, 100);
+        }, 200);
+      } catch (e) {
+        console.warn("loadVideoById failed, retrying next.", e);
+        setTimeout(() => playSong(index + 1, list, skipped + 1), 250);
+        return;
+      }
+    } else if (bgType === "normal-video") {
       // Visual video as muted background (same as legacy useBackgroundVideo)
       if (!bgDiv) {
         bgDiv = document.createElement("div");
@@ -441,6 +456,8 @@ function syncLyricsVideoWithAudio(bgPlayer) {
       while (bgDiv.firstChild) bgDiv.removeChild(bgDiv.firstChild);
       bgDiv.appendChild(bgIframe);
       if (ytPlayerElem) ytPlayerElem.style.display = "none";
+      // Clear lyrics sync if switching away from lyrics-video
+      if (bgYTPlayerSyncInterval) clearInterval(bgYTPlayerSyncInterval);
       try {
         player.loadVideoById(videoId);
         setTimeout(() => player.playVideo(), 200);
@@ -486,6 +503,8 @@ function syncLyricsVideoWithAudio(bgPlayer) {
       while (bgDiv.firstChild) bgDiv.removeChild(bgDiv.firstChild);
       bgDiv.appendChild(bgImg);
       if (ytPlayerElem) ytPlayerElem.style.display = "none";
+      // Clear lyrics sync if switching away from lyrics-video
+      if (bgYTPlayerSyncInterval) clearInterval(bgYTPlayerSyncInterval);
       try {
         player.loadVideoById(videoId);
         setTimeout(() => player.playVideo(), 200);
@@ -523,6 +542,73 @@ function syncLyricsVideoWithAudio(bgPlayer) {
     updateSongInfo();
     resetProgressBar();
     startVinylAnimation();
+  }
+
+  // Keep track of event handlers for syncing bgYTPlayer with main audio player
+  let lyricsSyncHandlers = {};
+
+  function setupLyricsVideoPlayerSyncHandlers() {
+    // Remove previous handlers if any
+    if (lyricsSyncHandlers.remove) lyricsSyncHandlers.remove();
+    if (!bgYTPlayer || !player) return;
+    // --- Play/Pause sync ---
+    // Listen for main player state change and propagate to bgYTPlayer
+    function mainStateListener(event) {
+      if (!bgYTPlayer || typeof bgYTPlayer.getPlayerState !== "function") return;
+      // Only respond if lyrics-video is active
+      const song = currentPlaylist[currentSongIndex];
+      if (!song || (song.backgroundType !== "lyrics-video" && !song.useBackgroundLyricsVideo)) return;
+      const mainState = player.getPlayerState();
+      const bgState = bgYTPlayer.getPlayerState();
+      if (mainState === YT.PlayerState.PLAYING && bgState !== YT.PlayerState.PLAYING) {
+        try { bgYTPlayer.playVideo(); } catch (e) {}
+      } else if ((mainState === YT.PlayerState.PAUSED || mainState === YT.PlayerState.ENDED) && bgState === YT.PlayerState.PLAYING) {
+        try { bgYTPlayer.pauseVideo(); } catch (e) {}
+      }
+    }
+    // --- Seek sync ---
+    // Listen for seek events on main player and sync bgYTPlayer
+    function mainSeekListener() {
+      if (!bgYTPlayer || typeof bgYTPlayer.seekTo !== "function") return;
+      // Only respond if lyrics-video is active
+      const song = currentPlaylist[currentSongIndex];
+      if (!song || (song.backgroundType !== "lyrics-video" && !song.useBackgroundLyricsVideo)) return;
+      const mainTime = player.getCurrentTime();
+      const bgTime = bgYTPlayer.getCurrentTime();
+      if (Math.abs(mainTime - bgTime) > 0.2) {
+        try { bgYTPlayer.seekTo(mainTime, true); } catch (e) {}
+      }
+    }
+    // --- Attach event listeners ---
+    // YouTube IFrame API does not have a native "seek" event, so we hook into progressBar and progress clicks
+    // and also listen for timeupdate polling
+    // Listen for state changes
+    player.addEventListener && player.addEventListener("onStateChange", mainStateListener);
+    // Listen for progress bar clicks (already handled in progressContainer click, so wrap it)
+    const origProgressClick = elements.progressContainer?.onclick;
+    function progressClickWrapper(e) {
+      if (origProgressClick) origProgressClick.call(this, e);
+      setTimeout(mainSeekListener, 100);
+    }
+    if (elements.progressContainer) {
+      elements.progressContainer.addEventListener("click", mainSeekListener);
+    }
+    // Listen for arrow key skips or programmatic seek
+    let lastSeekTime = 0;
+    let seekPoller = setInterval(() => {
+      if (!player || !bgYTPlayer) return;
+      if (Math.abs(player.getCurrentTime() - bgYTPlayer.getCurrentTime()) > 0.3) {
+        mainSeekListener();
+      }
+    }, 300);
+    // Remove handler function
+    lyricsSyncHandlers.remove = function() {
+      player.removeEventListener && player.removeEventListener("onStateChange", mainStateListener);
+      if (elements.progressContainer) {
+        elements.progressContainer.removeEventListener("click", mainSeekListener);
+      }
+      clearInterval(seekPoller);
+    };
   }
 
   // Play a song by its YouTube videoId, regardless of current filters
@@ -720,6 +806,13 @@ if (langContainer) {
       const seekTo = (clickX / barWidth) * player.getDuration();
       player.seekTo(seekTo, true);
       updateTime();
+      // If lyrics-video, also seek background video
+      const song = currentPlaylist[currentSongIndex];
+      if (song && song.backgroundType === "lyrics-video" && bgYTPlayer && typeof bgYTPlayer.seekTo === "function") {
+        setTimeout(() => {
+          try { bgYTPlayer.seekTo(seekTo, true); } catch (e) {}
+        }, 120);
+      }
   });
 
   // Load YouTube API and initialize player
@@ -882,6 +975,14 @@ document.addEventListener("keydown", (event) => {
         isPlaying ? player.pauseVideo() : player.playVideo();
         isPlaying = !isPlaying;
         startVinylAnimation();
+        // Lyrics-video: sync play/pause
+        const song = currentPlaylist[currentSongIndex];
+        if (song && song.backgroundType === "lyrics-video" && bgYTPlayer) {
+          try {
+            if (isPlaying && typeof bgYTPlayer.playVideo === "function") bgYTPlayer.playVideo();
+            else if (!isPlaying && typeof bgYTPlayer.pauseVideo === "function") bgYTPlayer.pauseVideo();
+          } catch (e) {}
+        }
     }
 });
 const playButton = document.getElementById("play");
@@ -893,10 +994,20 @@ function togglePlayPause() {
     player.pauseVideo();
     playButton.textContent = "▶️ Paused";
     playButton.classList.remove("playing");
+    // Lyrics-video: pause bgYTPlayer
+    const song = currentPlaylist[currentSongIndex];
+    if (song && song.backgroundType === "lyrics-video" && bgYTPlayer && typeof bgYTPlayer.pauseVideo === "function") {
+      try { bgYTPlayer.pauseVideo(); } catch (e) {}
+    }
   } else {
     player.playVideo();
     playButton.textContent = "⏸️ Playing...";
     playButton.classList.add("playing");
+    // Lyrics-video: play bgYTPlayer
+    const song = currentPlaylist[currentSongIndex];
+    if (song && song.backgroundType === "lyrics-video" && bgYTPlayer && typeof bgYTPlayer.playVideo === "function") {
+      try { bgYTPlayer.playVideo(); } catch (e) {}
+    }
   }
 }
 
