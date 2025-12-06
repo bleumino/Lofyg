@@ -131,6 +131,58 @@ let skipLock = false;      // simple lock to prevent rapid double-skips
   let player;
   let notificationTimeout;
 
+let bgYTPlayer = null; // global reference for lyrics-video iframe
+
+// Helper to initialize lyrics-video background (as background iframe)
+function initBackgroundLyricsVideo(videoId) {
+  let bgDiv = document.getElementById("bg-video-container");
+  let bgIframe;
+  if (!bgDiv) {
+    bgDiv = document.createElement("div");
+    bgDiv.id = "bg-video-container";
+    Object.assign(bgDiv.style, {
+      position: "fixed",
+      top: "0",
+      left: "0",
+      width: "100vw",
+      height: "100vh",
+      zIndex: "-1",
+      overflow: "hidden",
+      pointerEvents: "none",
+      background: "#000"
+    });
+    document.body.appendChild(bgDiv);
+  }
+  bgDiv.style.display = "block";
+  // Create the background iframe
+  bgIframe = document.createElement("iframe");
+  bgIframe.id = "bg-video-iframe";
+  bgIframe.dataset.vid = videoId;
+  bgIframe.src =
+    `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&playsinline=1`;
+  Object.assign(bgIframe.style, {
+    position: "absolute",
+    top: "0",
+    left: "0",
+    width: "100vw",
+    height: "100vh",
+    zIndex: "-1",
+    pointerEvents: "none",
+    opacity: "0.8",
+    objectFit: "cover",
+    border: "none"
+  });
+  bgIframe.setAttribute("frameborder", "0");
+  bgIframe.setAttribute("allow", "autoplay; encrypted-media");
+  bgIframe.setAttribute("allowfullscreen", "1");
+  // Remove any existing children in the container
+  while (bgDiv.firstChild) bgDiv.removeChild(bgDiv.firstChild);
+  bgDiv.appendChild(bgIframe);
+  // Hide main player visually (audio only)
+  const ytPlayerElem = document.getElementById("youtube-player");
+  if (ytPlayerElem) ytPlayerElem.style.display = "none";
+}
+
   if ("Notification" in window && Notification.permission === "default") {
       Notification.requestPermission();
   }
@@ -266,50 +318,8 @@ let skipLock = false;      // simple lock to prevent rapid double-skips
 
     // --- BACKGROUND MODES ---
     if (bgType === "lyrics-video") {
-      // Fullscreen YouTube iframe as background (muted, looping)
-      if (!bgDiv) {
-        bgDiv = document.createElement("div");
-        bgDiv.id = "bg-video-container";
-        Object.assign(bgDiv.style, {
-          position: "fixed",
-          top: "0",
-          left: "0",
-          width: "100vw",
-          height: "100vh",
-          zIndex: "-1",
-          overflow: "hidden",
-          pointerEvents: "none",
-          background: "#000"
-        });
-        document.body.appendChild(bgDiv);
-      }
-      bgDiv.style.display = "block";
-      // Create the background iframe
-      bgIframe = document.createElement("iframe");
-      bgIframe.id = "bg-video-iframe";
-      bgIframe.dataset.vid = videoId;
-      bgIframe.src =
-        `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3&playsinline=1`;
-      Object.assign(bgIframe.style, {
-        position: "absolute",
-        top: "0",
-        left: "0",
-        width: "100vw",
-        height: "100vh",
-        zIndex: "-1",
-        pointerEvents: "none",
-        opacity: "0.8",
-        objectFit: "cover",
-        border: "none"
-      });
-      bgIframe.setAttribute("frameborder", "0");
-      bgIframe.setAttribute("allow", "autoplay; encrypted-media");
-      bgIframe.setAttribute("allowfullscreen", "1");
-      // Remove any existing children in the container
-      while (bgDiv.firstChild) bgDiv.removeChild(bgDiv.firstChild);
-      bgDiv.appendChild(bgIframe);
-      // Hide main player visually (audio only)
-      if (ytPlayerElem) ytPlayerElem.style.display = "none";
+      // Use the helper to create the background lyrics video
+      initBackgroundLyricsVideo(videoId);
       // Load audio to main hidden player
       try {
         player.loadVideoById(videoId);
