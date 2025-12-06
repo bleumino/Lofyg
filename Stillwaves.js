@@ -79,7 +79,7 @@ document.head.appendChild(style);
       {id: "6ITUy1T3hd8", title: "si no estás ‐ Iñigo Quintero (cover)", moods:["calm", "relax", "slow-day"], language: "spanish"},
       {id: "Q1brFg4E-3c", title: "Tate McRae - r u ok (Lyrics)", moods:["slow-day", "sad"], language: "english"},
       {id: "hsaRX6lvEAI", title: "Tate McRae - feel like shit (Lyrics)", moods:["slow-day", "sad"], language: "english"},
-      {id: "hsaRX6lvEAI", title: "Tate McRae - happy face (Lyrics)", moods:["slow-day", "sad"], language: "english"},
+      {id: "IGCUmv0dtNE", title: "Tate McRae - happy face (Lyrics)", moods:["slow-day", "sad"], language: "english"},
       {id: "HJTBOse9dw4", title: "Tate McRae - run for the hills (Lyrics)", moods:["slow-day", "sad"], language: "english"},
       {id: "tIgwFHV78jg", title: "saudade, saudade", moods:["slow-day", "sad"], language: "portuguese"},
       {id: "LnxVONZ55nQ", title: "Clean Bandit - Rather Be (Audio)", moods:["slow-day", "relax"], language: "english"},
