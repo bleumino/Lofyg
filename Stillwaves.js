@@ -573,27 +573,27 @@ let selectedMood = "all";
 const langDropdown = document.getElementById("language-dropdown");
 const moodButtons = document.querySelectorAll("#mood-selector button");
 
-function filterAndLoad() {
+function filterPlaylist() {
     currentPlaylist = playlist.filter(track => {
-        // Handle multi-language
+        // Multi-language support
         let languages = [];
         if (typeof track.language === "string") {
             languages = track.language.split(",").map(l => l.trim().toLowerCase());
         } else if (Array.isArray(track.language)) {
             languages = track.language.map(l => l.trim().toLowerCase());
         }
-        const matchesLang = selectedLanguage === "all" || languages.includes(selectedLanguage);
+        const langMatch = selectedLanguage === "all" || languages.includes(selectedLanguage);
 
-        // Handle multi-mood
+        // Multi-mood support
         let moods = [];
         if (Array.isArray(track.moods)) {
             track.moods.forEach(m => m.split(",").forEach(p => moods.push(p.trim().toLowerCase())));
         } else if (typeof track.moods === "string") {
             moods = track.moods.split(",").map(m => m.trim().toLowerCase());
         }
-        const matchesMood = selectedMood === "all" || moods.includes(selectedMood);
+        const moodMatch = selectedMood === "all" || moods.includes(selectedMood);
 
-        return matchesLang && matchesMood;
+        return langMatch && moodMatch;
     });
 
     if (currentPlaylist.length === 0) {
@@ -608,11 +608,11 @@ function filterAndLoad() {
 
 // Language dropdown listener
 if (langDropdown) {
-    selectedLanguage = langDropdown.value.toLowerCase();
     langDropdown.addEventListener("change", () => {
         selectedLanguage = langDropdown.value.toLowerCase();
-        filterAndLoad();
+        filterPlaylist();
     });
+    selectedLanguage = langDropdown.value.toLowerCase();
     updateLanguageIndicator(selectedLanguage);
 }
 
@@ -623,7 +623,7 @@ if (moodButtons.length > 0) {
             moodButtons.forEach(b => b.classList.remove("active"));
             btn.classList.add("active");
             selectedMood = btn.dataset.mood.toLowerCase();
-            filterAndLoad();
+            filterPlaylist();
         });
     });
 }
