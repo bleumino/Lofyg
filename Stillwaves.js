@@ -135,6 +135,51 @@ let lyricsYTPlayer = null; // global reference for lyrics-video fullscreen playe
 let lyricsYTReady = false;
 let lyricsYTPlayerId = "lyrics-video-player-iframe";
 
+// --- SYNC LYRICS-VIDEO BACKGROUND TO HIDDEN AUDIO ---
+function syncBackgroundLyricsVideoToAudio(bgPlayer) {
+  // Syncs the lyrics video (bgPlayer) to the main hidden YouTube audio player
+  // - Keep playback state (play/pause) matched
+  // - Seek if out of sync by >0.2s
+  // - Use a timer to check every 250ms
+  if (!bgPlayer || typeof bgPlayer.getCurrentTime !== "function") return;
+  let syncInterval = null;
+  let lastAudioTime = 0;
+  let lastVideoTime = 0;
+  function doSync() {
+    if (!player || !bgPlayer) return;
+    if (
+      typeof player.getCurrentTime !== "function" ||
+      typeof bgPlayer.getCurrentTime !== "function"
+    )
+      return;
+    let audioTime = 0, videoTime = 0, audioState = 2, videoState = 2;
+    try {
+      audioTime = player.getCurrentTime();
+      videoTime = bgPlayer.getCurrentTime();
+      audioState = player.getPlayerState();
+      videoState = bgPlayer.getPlayerState();
+    } catch (e) {
+      return;
+    }
+    // Sync play/pause state
+    if (audioState === 1 && videoState !== 1) {
+      try { bgPlayer.playVideo(); } catch (e) {}
+    } else if (audioState !== 1 && videoState === 1) {
+      try { bgPlayer.pauseVideo(); } catch (e) {}
+    }
+    // Sync time if off by >0.2s
+    if (Math.abs(audioTime - videoTime) > 0.22) {
+      try { bgPlayer.seekTo(audioTime, true); } catch (e) {}
+    }
+    lastAudioTime = audioTime;
+    lastVideoTime = videoTime;
+  }
+  // Start interval
+  syncInterval = setInterval(doSync, 250);
+  // Cleanup function: return a function to clear this interval
+  return () => { clearInterval(syncInterval); };
+}
+
 // Helper to initialize fullscreen lyrics-video YouTube iframe and attach controls
 function initLyricsVideoFullscreen(videoId, onReadyCallback) {
   // Remove any previous lyricsYTPlayer and DOM
@@ -241,6 +286,7 @@ function initLyricsVideoFullscreen(videoId, onReadyCallback) {
   document.body.appendChild(container);
 
   // Load the YT IFrame API if needed
+  let lyricsSyncCleanup = null; // for syncBackgroundLyricsVideoToAudio
   function startYTPlayer() {
     lyricsYTPlayer = new YT.Player(lyricsYTPlayerId, {
       width: "100%",
@@ -261,6 +307,9 @@ function initLyricsVideoFullscreen(videoId, onReadyCallback) {
           lyricsYTReady = true;
           e.target.playVideo();
           playPauseBtn.textContent = "⏸️";
+          // --- SYNC LYRICS VIDEO TO HIDDEN AUDIO ---
+          if (lyricsSyncCleanup) lyricsSyncCleanup();
+          lyricsSyncCleanup = syncBackgroundLyricsVideoToAudio(lyricsYTPlayer);
           if (typeof onReadyCallback === "function") onReadyCallback();
         },
         onStateChange: function(e) {
@@ -279,6 +328,7 @@ function initLyricsVideoFullscreen(videoId, onReadyCallback) {
             lyricsYTPlayer && lyricsYTPlayer.destroy && lyricsYTPlayer.destroy();
             lyricsYTPlayer = null;
             lyricsYTReady = false;
+            if (lyricsSyncCleanup) lyricsSyncCleanup();
             playSong(currentSongIndex + 1, currentPlaylist);
           }
         }
@@ -335,6 +385,7 @@ function initLyricsVideoFullscreen(videoId, onReadyCallback) {
     lyricsYTPlayer && lyricsYTPlayer.destroy && lyricsYTPlayer.destroy();
     lyricsYTPlayer = null;
     lyricsYTReady = false;
+    if (lyricsSyncCleanup) lyricsSyncCleanup();
     // Resume normal player (if needed)
     playSong(currentSongIndex, currentPlaylist);
   };
@@ -495,19 +546,19 @@ function initLyricsVideoFullscreen(videoId, onReadyCallback) {
       ytPlayerElem.style.objectFit = "";
     }
 
-    // --- BACKGROUND MODES ---
-    if (bgType === "lyrics-video") {
-      // Hide main hidden player
-      if (ytPlayerElem) ytPlayerElem.style.display = "none";
-      // Create fullscreen YT iframe for audio + visual, attach controls
-      initLyricsVideoFullscreen(videoId);
-      // Do not load video to main player
-      // UI updates for queue, title, vinyl, progress bar, etc.:
-      updateSongInfo();
-      resetProgressBar();
-      startVinylAnimation();
-      return; // exit here, do not use main player
-    } else if (bgType === "normal-video") {
+  // --- BACKGROUND MODES ---
+  if (bgType === "lyrics-video") {
+    // Hide main hidden player
+    if (ytPlayerElem) ytPlayerElem.style.display = "none";
+    // Create fullscreen YT iframe for lyrics video background
+    // The main audio continues to use the hidden player (player), unchanged
+    initLyricsVideoFullscreen(videoId);
+    // UI updates for queue, title, vinyl, progress bar, etc.:
+    updateSongInfo();
+    resetProgressBar();
+    startVinylAnimation();
+    return; // exit here, do not use main player for visual
+  } else if (bgType === "normal-video") {
       // Visual video as muted background (same as legacy useBackgroundVideo)
       if (!bgDiv) {
         bgDiv = document.createElement("div");
