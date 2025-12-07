@@ -19,7 +19,7 @@ document.head.appendChild(style);
       { id: "t0NWBw00e1M", title: "Ai Tomioka-Good bye bye (eye to eye)", moods: ["chill", "relax"], languages: ["japanese"]},
       { id: "N85aAdWecPk", title: "冨岡 愛 - New Style (Lyric Video)", moods: ["chill", "relax"], languages: ["english"]},
       { id: "mAyyBp6gmnw", title: "愛 need your love", moods: ["calm", "relax"], languages: ["english"]},
-      { id: "deE5ak0Atxw", title: "missing you", moods: ["calm", "relax"], languages: ["japanese"]},
+      { id: "deE5ak0Atxw", title: "missing you", moods: ["calm", "relax"], languages: ["japanese", "english"]},
       { id: "CO7cE_SOibA", title: "グッバイバイ (Korean Ver.)", moods: ["calm", "relax"], languages: ["korean"]},
       { id: "wjj2upnfBI0", title: "Billie Eilish, Khalid - lovely", moods: ["chill", "relax", "calm", "slow-day", "study"], languages: ["english"]},
       { id: "d5gf9dXbPi0", title: "Billie Eilish - BIRDS OF A FEATHER (Official Lyric Video)", moods: ["relax", "calm", "chill"], languages: ["english"]},
@@ -1025,19 +1025,22 @@ function updateLanguageIndicator(language) {
 
 
 // --- Reliable Shuffle Button Handler ---
-function attachShuffleSurpriseHandler() {
+// Always attach the shuffle handler to the current #shuffle-surprise button, even if re-rendered.
+function reliableShuffleSurpriseHandler() {
+  // Remove any previous handler by replacing the element (no reliance on data-shuffle-handler)
   let shuffleBtn = document.getElementById("shuffle-surprise");
   if (!shuffleBtn) return false;
-  if (shuffleBtn.hasAttribute("data-shuffle-handler")) return true;
-  shuffleBtn.setAttribute("data-shuffle-handler", "true");
-  shuffleBtn.addEventListener("click", () => {
-    // Use the currentPlaylist, which is always up to date with filters
-    // Defensive: filter out any undefined/null entries, just in case
-    const filtered = (Array.isArray(currentPlaylist) ? currentPlaylist : []).filter(Boolean);
+  // Remove all existing click listeners by cloning and replacing (safest way)
+  const newBtn = shuffleBtn.cloneNode(true);
+  shuffleBtn.parentNode.replaceChild(newBtn, shuffleBtn);
+  newBtn.addEventListener("click", () => {
+    // Always get the current playlist and index dynamically
+    const filtered = (Array.isArray(window.currentPlaylist) ? window.currentPlaylist : []).filter(Boolean);
+    const curIdx = typeof window.currentSongIndex === "number" ? window.currentSongIndex : 0;
     if (!filtered.length) {
-      shuffleBtn.textContent = "🚫 No Songs!";
+      newBtn.textContent = "🚫 No Songs!";
       setTimeout(() => {
-        shuffleBtn.textContent = "🎲 Surprise Me";
+        newBtn.textContent = "🎲 Surprise Me";
       }, 1200);
       return;
     }
@@ -1048,26 +1051,53 @@ function attachShuffleSurpriseHandler() {
     } else {
       do {
         randomIndex = Math.floor(Math.random() * filtered.length);
-      } while (filtered.length > 1 && randomIndex === currentSongIndex);
+      } while (filtered.length > 1 && randomIndex === curIdx);
     }
     // Visual feedback
-    shuffleBtn.textContent = "✨ Shuffling...";
-    // Play the song
+    newBtn.textContent = "✨ Shuffling...";
     setTimeout(() => {
-      playSong(randomIndex, filtered);
-      shuffleBtn.textContent = "🎲 Surprise Me";
-    }, 300); // Fast feedback, but allow animation
+      // Use latest playlist and index again, in case something changed during animation
+      const refreshed = (Array.isArray(window.currentPlaylist) ? window.currentPlaylist : []).filter(Boolean);
+      const idx = typeof window.currentSongIndex === "number" ? window.currentSongIndex : 0;
+      // Defensive: check again for empty
+      if (!refreshed.length) {
+        newBtn.textContent = "🚫 No Songs!";
+        setTimeout(() => {
+          newBtn.textContent = "🎲 Surprise Me";
+        }, 1200);
+        return;
+      }
+      // Pick a random index again, in case playlist changed
+      let randIdx;
+      if (refreshed.length === 1) {
+        randIdx = 0;
+      } else {
+        do {
+          randIdx = Math.floor(Math.random() * refreshed.length);
+        } while (refreshed.length > 1 && randIdx === idx);
+      }
+      playSong(randIdx, refreshed);
+      newBtn.textContent = "🎲 Surprise Me";
+    }, 300);
   });
   return true;
 }
-
-// Try to attach immediately, and observe DOM for late insertion
-if (!attachShuffleSurpriseHandler()) {
-  // If not present, use MutationObserver to wait for it
+// Observe DOM for shuffle button insertion or replacement
+function observeShuffleButton() {
+  // Initial attach if possible
+  reliableShuffleSurpriseHandler();
+  // Use MutationObserver to always reattach handler if the button is replaced
   const observer = new MutationObserver(() => {
-    if (attachShuffleSurpriseHandler()) {
-      observer.disconnect();
-    }
+    reliableShuffleSurpriseHandler();
   });
   observer.observe(document.body || document.documentElement, {childList: true, subtree: true});
 }
+observeShuffleButton();
+
+// After loadQueue, reattach shuffle handler in case playlist UI was re-rendered
+const origLoadQueue = loadQueue;
+loadQueue = function(...args) {
+  origLoadQueue.apply(this, args);
+  // After rendering the queue, reattach the shuffle button handler
+  setTimeout(reliableShuffleSurpriseHandler, 10);
+};
