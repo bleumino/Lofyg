@@ -1,14 +1,150 @@
-/* 🎀 Sakura Pink Vinyl Aesthetic */
+/*use this instead of the one in app.css*/
+/* 🎀 Soft Sakura pink Vinyl Aesthetic */
 body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;   /* centers children horizontally */
-    justify-content: flex-start; /* keeps content at top */
-    min-height: 100vh;
     font-family: 'Poppins', cherry bomb one, sans-serif;
+    background-color: #B0C4DE; /* Soft Powder Blue */
+    color: #2E4A66; /* Deep Muted Blue for contrast */
+    text-align: center;
     margin: 0;
     padding: 0;
-    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* 💿 Music Player Styling */
+#music-player {
+    border-radius: 20px;
+    padding: 20px;
+    display: inline-block;
+}
+
+/* 💿 Vinyl Record */
+#vinyl-container {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    position: relative;
+    margin: 20px auto;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#vinyl {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    animation: spin 5s linear infinite;
+}
+
+/* 🔥 Remove unwanted "Spinning Vinyl" text */
+#vinyl-container::before {
+    content: none !important;
+    display: none;
+}
+
+/* 🌀 Vinyl Spin Animation */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* 🎵 Cute Buttons */
+button {
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* 📊 Progress Bar */
+#progress-container {
+    width: 80%;
+    height: 8px;
+    background: #ff99cc;
+    margin: 10px auto;
+    border-radius: 10px;
+}
+
+#progress-bar {
+    height: 100%;
+    background: #ff007f;
+    border-radius: 10px;
+}
+
+/* 🌀 Loop Mode Buttons */
+button.active-mode {
+    background: #ff007f;
+    color: white;
+}
+
+#loop-playlist.active-mode {
+    background: #ac095a;
+}
+
+/* 📀 Center Buttons Container */
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    height: 100px;
+    margin: 20px 0;
+}
+
+/* 🎶 Ensure Buttons Look Nice */
+button {
+    padding: 12px 24px;
+    font-size: 18px;
+    background-color: #9BB8D3;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #7A9BBE;
+}
+
+/* 🎼 Hide YouTube Player Initially */
+#youtube-player {
+    display: none;
+}
+
+/* 🎵 Playlist Styling */
+#queue {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    list-style: none;
+}
+
+/* 🎀 Logo */
+.logo {
+    width: 60px;
+    height: 60px;
+    margin: auto;
+    display: flex;
+}
+
+/* 🎼 Footer Styling */
+footer {
+    margin-top: 50px;
+    padding-top: 20px;
+    border-top: 1px solid #ccc;
+    text-align: center;
+}
+
+.pulsing {
+    animation: pulse 1.5s infinite ease-in-out;
+    filter: drop-shadow(0 0 10px rgba(0, 162, 255, 0.8)); /* Extra Glow */
 }
 
 /* 🌸 Light Theme */
@@ -23,14 +159,307 @@ body.dark-theme {
     color: #ffccf9;             /* Light pink text */
 }
 
+
+* ✨ Theme Toggle Button */
+#theme-toggle {
+   position: fixed;
+   top: 20px;
+   left: 20px;
+   z-index: 1000;
+   width: 50px;
+   height: 50px;
+   font-size: 24px;
+   background-color: #fff0f5;
+   color: #d63384;
+   border: none;
+   border-radius: 50%;
+   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+   cursor: pointer;
+   transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+
+#theme-toggle:hover {
+   background-color: #ff99cc;
+   transform: scale(1.1);
+}
+
+/* Smooth transition for theme change */
+body {
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Active Button (for loop modes) */
+button.active-mode {
+    background: #2E4A66; /* Deep Muted Blue for active state */
+    color: white;
+}
+
+#loop-single.active-mode, #loop-playlist.active-mode {
+    background: #2E4A66;  /* Deep Blue for Loop buttons */
+}
+
+/* LIGHT THEME (Default) */
+body.light-theme {
+    background-color: #B0C4DE; /* Soft Powder Blue */
+    color: #2E4A66; /* Deep Muted Blue */
+}
+
+/* DARK THEME */
+body.dark-theme {
+    background-color: #1c1c1c; /* Dark background */
+    color: #9BB8D3; /* Light blue text */
+}
+
+/* Smooth theme switching */
+body {
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.particle {
+  position: fixed;
+  background: #B0C4DE;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: flyAway 600ms ease-out forwards;
+  width: 6px;
+  height: 6px;
+  opacity: 1;
+  mix-blend-mode: screen;
+}
+
+@keyframes flyAway {
+  to {
+    transform: translate(var(--x), var(--y)) scale(0);
+    opacity: 0;
+  }
+
+}
+/* Glow effect for the active song */
+.active-song {
+  box-shadow: 0 0 12px 3px #B0C4DE; /* blueish glow, you can change color */
+  background-color: #8a9cb3;
+  border-radius: 8px;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+#volume-control {
+  margin-top: 15px;
+  text-align: center;
+  font-family: 'Cherry Bomb One', sans-serif;
+  color: var(--accent-color, #4A90E2); /* Matches your theme */
+}
+
+#volume-slider {
+  width: 60%;
+  margin-top: 5px;
+  appearance: none;
+  height: 5px;
+  background: #4A90E2;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+#volume-slider::-webkit-slider-thumb {
+  appearance: none;
+  height: 16px;
+  width: 16px;
+  background: white;
+  border: 2px solid #4A90E2;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+#clock-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #fff0f6;
+  color: #d63384;
+  font-family: 'Cherry Bomb One', cursive;
+  font-size: 18px;
+  padding: 10px 15px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 1000;
+}
+
+#google_translate_element {
+  position: fixed;
+  top: 90px; /* pushes it below the clock */
+  right: 20px; /* aligns with clock's right */
+  z-index: 10000;
+  background-color: white;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+button:active {
+  transform: scale(0.95);
+  transition: transform 0.1s ease;
+}
+
+button:hover {
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+  transform: scale(1.03);
+}
+
+
+#volume-slider {
+  -webkit-appearance: none;
+  width: 150px;
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(to right, #6e7fd1, #a678e2);
+  outline: none;
+  transition: box-shadow 0.3s ease;
+}
+
+#volume-slider:hover,
+#volume-slider:focus {
+  box-shadow: 0 0 8px #a678e2;
+}
+
+.vinyl.spinning {
+  animation: spin 3s linear infinite;
+}
+
+.vinyl.pulsing {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+#play {
+  font-size: 1rem;
+  padding: 0.6rem 1.2rem;
+  background-color: #222;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 0 transparent;
+}
+
+#play.playing {
+  background-color: #444;
+  color: #ffcc70;
+  box-shadow: 0 0 10px rgba(255, 204, 112, 0.6);
+  animation: pulseGlow 1.5s infinite;
+}
+
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 8px rgba(255, 204, 112, 0.5); }
+  50% { box-shadow: 0 0 16px rgba(255, 204, 112, 0.8); }
+  100% { box-shadow: 0 0 8px rgba(255, 204, 112, 0.5); }
+}
+
+#song-title {
+  animation: bounce 2.5s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes pulse-shadow {
+  0%, 100% {
+    box-shadow: 0 0 15px #ff69b4aa;
+  }
+  50% {
+    box-shadow: 0 0 25px #ff1493cc;
+  }
+}
+
+#vinyl.playing {
+  animation: spin 5s linear infinite, pulse-shadow 2s ease-in-out infinite;
+}
+
+body {
+  cursor: url('Sakura Petal.png') 16 16, auto;
+}
+
+button:active {
+  animation: clickBounce 0.2s ease forwards;
+}
+
+@keyframes clickBounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.elin-socials {
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  color: #d63384;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.elin-socials a {
+  color: #d63384;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.elin-socials a:hover {
+  text-decoration: underline;
+  color: #ff66a3;
+  cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="%23000" stroke-width="2" stroke-linecap="round" d="M9.5 7H8c-3.31 0-6 1.69-6 5s2.69 5 6 5h1.5M14.5 17H16c3.31 0 6-1.69 6-5s-2.69-5-6-5h-1.5M7 12h10"></path></svg>'),auto;
+}
+
+.elin-socials:hover {
+  opacity: 1;
+}
+
+
+/* Default light mode */
+body {
+    background: #B0C4DE; /* normal blue */
+    transition: background-color 0.5s ease;
+}
+
+/* Dark mode for normal tracks */
+body.dark-mode {
+    background: #1a1a1a; /* dark background for normal tracks */
+}
+
+/* Easter egg light mode */
+body.easter-egg {
+    background: #ffccf9; /* pink */
+}
+
+/* Easter egg dark mode */
+body.dark-mode.easter-egg {
+    background: #331133; /* darker pink-ish for dark mode */
+}
+
 /* 💿 Music Player Styling */
 #music-player {
     border-radius: 20px;
     padding: 20px;
-    display: block;
-    margin: 40px auto; /* centers horizontally */
+    display: inline-block;
+    transition: background-color 0.5s ease;
 }
-
 
 /* Music Player - theme support */
 #music-player.light-theme {
@@ -531,39 +960,4 @@ body.theme-february {
   --accent-color: #dd235e;
   background-color: #ff6f9c;
   color: #1a1a1a; /* dark text for readability */
-}
-/* Center song time text */
-#current-time, #time-left, #progress-time {
-    text-align: center;
-    width: 100%;
-    display: block;
-    margin: 5px 0;
-    font-family: 'Cherry Bomb One', cursive;
-    color: inherit; /* matches current theme text color */
-    font-size: 14px;
-}
-# Go to Current Song Button */
-#goto-current-song {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: #ff66a3;
-    color: white;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    z-index: 1000;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.3s, transform 0.2s;
-}
-
-#goto-current-song:hover {
-    background-color: #ff4c91;
-    transform: scale(1.1);
 }
