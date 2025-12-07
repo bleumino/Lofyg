@@ -1,7 +1,11 @@
-But not this /* 🎀 Sakura Pink Vinyl Aesthetic */
+/* 🎀 Sakura Pink Vinyl Aesthetic */
 body {
-    font-family: 'Poppins', sans-serif;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;   /* centers children horizontally */
+    justify-content: flex-start; /* keeps content at top */
+    min-height: 100vh;
+    font-family: 'Poppins', cherry bomb one, sans-serif;
     margin: 0;
     padding: 0;
     transition: background-color 0.5s ease, color 0.5s ease;
@@ -23,9 +27,10 @@ body.dark-theme {
 #music-player {
     border-radius: 20px;
     padding: 20px;
-    display: inline-block;
-    transition: background-color 0.5s ease;
+    display: block;
+    margin: 40px auto; /* centers horizontally */
 }
+
 
 /* Music Player - theme support */
 #music-player.light-theme {
