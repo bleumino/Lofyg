@@ -331,3 +331,24 @@ function togglePlayPause() {
 playButton.addEventListener("click", togglePlayPause);
 
 
+
+//copy song title and link button
+const copyBtn = document.getElementById("copy-song-btn");
+
+copyBtn?.addEventListener("click", () => {
+    if (!currentPlaylist || !currentPlaylist[currentSongIndex]) return;
+
+    const song = currentPlaylist[currentSongIndex];
+    const textToCopy = `${song.title} - https://www.youtube.com/watch?v=${song.id}`;
+
+    navigator.clipboard.writeText(textToCopy)
+        .then(() => {
+            copyBtn.textContent = "✅ Copied!";
+            setTimeout(() => copyBtn.textContent = "📋 Copy", 1500);
+        })
+        .catch(err => {
+            console.error("Failed to copy: ", err);
+            copyBtn.textContent = "❌ Error";
+            setTimeout(() => copyBtn.textContent = "📋 Copy", 1500);
+        });
+});
