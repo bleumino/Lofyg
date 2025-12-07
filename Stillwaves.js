@@ -865,17 +865,6 @@ function updateTime() {
       playSong(currentSongIndex + 1, currentPlaylist);
   }
 
-  elements.playButton?.addEventListener("click", () => {
-      if (!player) return;
-      if (isPlaying && typeof player.pauseVideo === "function") {
-          player.pauseVideo();
-      } else if (typeof player.playVideo === "function") {
-          player.playVideo();
-      }
-      isPlaying = !isPlaying;
-      startVinylAnimation();
-  });
-
   elements.nextButton?.addEventListener("click", () => {
       playSong(currentSongIndex + 1, currentPlaylist);
   });
@@ -1121,19 +1110,10 @@ setInterval(updateLocalTime, 1000); // Update every second
 document.addEventListener("keydown", (event) => {
     if (event.code === "Space" && !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) {
         event.preventDefault();
-        isPlaying ? player.pauseVideo() : player.playVideo();
-        isPlaying = !isPlaying;
-        startVinylAnimation();
-        // Lyrics-video: sync play/pause
-        const song = currentPlaylist[currentSongIndex];
-        if (song && song.backgroundType === "lyrics-video" && bgYTPlayer) {
-          try {
-            if (isPlaying && typeof bgYTPlayer.playVideo === "function") bgYTPlayer.playVideo();
-            else if (!isPlaying && typeof bgYTPlayer.pauseVideo === "function") bgYTPlayer.pauseVideo();
-          } catch (e) {}
-        }
+        togglePlayPause();
     }
 });
+
 const playButton = document.getElementById("play");
 
 function togglePlayPause() {
