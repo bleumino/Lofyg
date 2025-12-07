@@ -88,7 +88,14 @@
       { id: "DZ8xDLCy9pI", title: "LoFi Beats for Studying & Work | Chill Focus Music 🎧📚", moods: ["relax","chill", "calm","study"]},
       { id: "jgtdqwhO7Rw", title: "Focus Music for Studying 2025 | Best Chill Lofi Beats", moods: ["relax","chill", "calm","study"]},
       { id: "JLzH9Q0zPow", title: "Morning Slow 🌤 | Lofi Beat for Studying, Energy, and Coffee Vibes", moods: ["relax","chill", "calm","study"]},
-      
+      { id: "", title: "", moods: ["relax","chill", "calm",]},
+      { id: "", title: "", moods: ["chill", "calm","study"]},
+      { id: "", title: "", moods: ["relax","study"]},
+      { id: "", title: "", moods: ["relax","chill", "calm","study"]},
+      { id: "", title: "", moods: ["relax","chill", "calm","study"]},
+      { id: "", title: "", moods: ["study"]},
+      { id: "", title: "", moods: ["calm","study"]},
+      { id: "", title: "", moods: ["relax","chill"]},
   ];
 
   let currentPlaylist = [...playlist];

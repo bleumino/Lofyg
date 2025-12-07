@@ -510,3 +510,18 @@ a:hover {
     margin-left: 10px;
     font-size: 24px;
 }
+
+.theme-december {
+  --accent-color: #bde0ff;
+  background-image: url("/assets/winter-bg.jpg");
+}
+
+.theme-halloween {
+  --accent-color: #ff7a00;
+  background-image: url("/assets/halloween-bg.jpg");
+}
+
+.theme-february {
+  --accent-color: #ff6f9c;
+  background-image: url("/assets/valentine-bg.jpg");
+}
