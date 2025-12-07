@@ -111,6 +111,13 @@ document.head.appendChild(style);
       {id: "NJpwaUnClx0", title: "Oscar Anton & Clementine - reflet", moods:["slow-day", "sad"], languages: ["french", "english"], backgroundType: "lyrics-video"},
       {id: "NGAW-DGkXuM", title: "Tate McRae - run for the hills", moods:["slow-day", "sad"], languages: ["english"], backgroundType: "normal-video"},
       {id: "KrMx32Q8Q0o", title: "SEZIN - Can't Take It (Lyric Video)", moods:["slow-day", "study"], languages: ["english", "turkish"], backgroundType: "lyrics-video"},
+      {id: "fWbDZUBuCbo", title: "Pomme - Je sais pas danser", moods:["slow-day", "study"], languages: ["french"]},
+      {id: "jabih9mV6RQ", title: "Pomme - On brûlera", moods:["slow-day", "study"], languages: ["french"]},
+      {id: "wMBNpVQ0k_k", title: "Dua Lipa & Angèle – Fever (Official Audio)", moods:["slow-day", "study"], languages: ["french", "english"], backgroundType: "normal-video"},
+      {id: "zJwXRlvvP9A", title: "Benson Boone & Philippine Lavrey – In The Stars (French Version) [Official Lyric Video]", moods:["slow-day", "study"], languages: ["french", "english"], backgroundType: "lyrics-video"},
+      {id: "VNE0mvsERqI", title: "Pomme - soleil soleil", moods:["slow-day", "study"], languages: ["french"]},
+      {id: "-_eEoJUqW5o", title: "Pomme - les oiseaux", moods:["slow-day", "study"], languages: ["french"]},
+             
     
       
       
