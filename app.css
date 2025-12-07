@@ -513,14 +513,17 @@ a:hover {
 body.theme-december {
   --accent-color: #2d87d6;
   background-color: #bde0ff;
+  color: #1a1a1a; /* dark text for readability */
 }
 
 body.theme-halloween {
   --accent-color: #ff7a00;
   background-color: #e6a970;
+  color: #1a1a1a; /* dark text for readability */
 }
 
 body.theme-february {
   --accent-color: #dd235e;
   background-color: #ff6f9c;
+  color: #1a1a1a; /* dark text for readability */
 }
