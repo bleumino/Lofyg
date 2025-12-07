@@ -108,8 +108,9 @@ document.head.appendChild(style);
       {id: "CjmSXgNjjwY", title: "Cat Burns - go (Higher & Faster)", moods:["slow-day", "sad"], languages: ["english"]},
       {id: "4sKNt6gbohQ", title: "sophiemarie.b - hey little girl (live) [official lyric video]", moods:["slow-day", "sad"], language: ["english"]},
       {id: "Wgspd3PrNiQ", title: "nuits d'été (acoustic)", moods:["slow-day", "sad"], languages: "french"},
-      {id: "NJpwaUnClx0", title: "Oscar Anton & Clementine - reflet", moods:["slow-day", "sad"], languages: ["french", "english"], backgroundType: "normal-video"},
+      {id: "NJpwaUnClx0", title: "Oscar Anton & Clementine - reflet", moods:["slow-day", "sad"], languages: ["french", "english"], backgroundType: "lyrics-video"},
       {id: "NGAW-DGkXuM", title: "Tate McRae - run for the hills", moods:["slow-day", "sad"], languages: ["english"], backgroundType: "normal-video"},
+      {id: "KrMx32Q8Q0o", title: "SEZIN - Can't Take It (Lyric Video)", moods:["slow-day", "study"], languages: ["english", "turkish"], backgroundType: "lyrics-video"},
 
     
       
@@ -1023,16 +1024,50 @@ function updateLanguageIndicator(language) {
 }
 
 
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("shuffle-surprise")?.addEventListener("click", () => {
-    const randomIndex = Math.floor(Math.random() * currentPlaylist.length);
-    playSong(randomIndex, currentPlaylist);
-
-    // Optional visual feedback
-    const btn = document.getElementById("shuffle-surprise");
-    btn.textContent = "✨ Shuffling...";
+// --- Reliable Shuffle Button Handler ---
+function attachShuffleSurpriseHandler() {
+  let shuffleBtn = document.getElementById("shuffle-surprise");
+  if (!shuffleBtn) return false;
+  if (shuffleBtn.hasAttribute("data-shuffle-handler")) return true;
+  shuffleBtn.setAttribute("data-shuffle-handler", "true");
+  shuffleBtn.addEventListener("click", () => {
+    // Use the currentPlaylist, which is always up to date with filters
+    // Defensive: filter out any undefined/null entries, just in case
+    const filtered = (Array.isArray(currentPlaylist) ? currentPlaylist : []).filter(Boolean);
+    if (!filtered.length) {
+      shuffleBtn.textContent = "🚫 No Songs!";
+      setTimeout(() => {
+        shuffleBtn.textContent = "🎲 Surprise Me";
+      }, 1200);
+      return;
+    }
+    // Pick a random index different from the current song, if possible
+    let randomIndex;
+    if (filtered.length === 1) {
+      randomIndex = 0;
+    } else {
+      do {
+        randomIndex = Math.floor(Math.random() * filtered.length);
+      } while (filtered.length > 1 && randomIndex === currentSongIndex);
+    }
+    // Visual feedback
+    shuffleBtn.textContent = "✨ Shuffling...";
+    // Play the song
     setTimeout(() => {
-      btn.textContent = "🎲 Surprise Me";
-    }, 1000);
+      playSong(randomIndex, filtered);
+      shuffleBtn.textContent = "🎲 Surprise Me";
+    }, 300); // Fast feedback, but allow animation
   });
-});
+  return true;
+}
+
+// Try to attach immediately, and observe DOM for late insertion
+if (!attachShuffleSurpriseHandler()) {
+  // If not present, use MutationObserver to wait for it
+  const observer = new MutationObserver(() => {
+    if (attachShuffleSurpriseHandler()) {
+      observer.disconnect();
+    }
+  });
+  observer.observe(document.body || document.documentElement, {childList: true, subtree: true});
+}
