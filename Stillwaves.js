@@ -21,7 +21,7 @@ document.head.appendChild(style);
       { id: "mAyyBp6gmnw", title: "愛 need your love", moods: ["calm", "relax"], languages: ["english"]},
       { id: "deE5ak0Atxw", title: "missing you", moods: ["calm", "relax"], languages: ["japanese", "english"]},
       { id: "CO7cE_SOibA", title: "グッバイバイ (Korean Ver.)", moods: ["calm", "relax"], languages: ["korean"]},
-      { id: "wjj2upnfBI0", title: "Billie Eilish, Khalid - lovely", moods: ["chill", "relax", "calm", "slow-day", "study"], languages: ["english"]},
+      { id: "wjj2upnfBI0", title: "Billie Eilish, Khalid - lovely", moods: ["chill", "relax", "calm", "slow-day", "study"], languages: ["english"], backgroundType: "image"},
       { id: "d5gf9dXbPi0", title: "Billie Eilish - BIRDS OF A FEATHER (Official Lyric Video)", moods: ["relax", "calm", "chill"], languages: ["english"]},
       { id: "o_1aF54DO60", title: "Lana Del Rey - Young and Beautiful", moods: ["chill", "relax", "slow-day"], languages: ["english"]},
       { id: "qWUs35V3UMA", title: "B Jyun - Breeze (lyric video) [han/rom]", moods: ["chill", "relax", "slow-day", "study"], languages: ["korean"]},
@@ -313,18 +313,7 @@ function syncLyricsVideoWithAudio(bgPlayer) {
   (function() {
     const colorStyle = document.createElement('style');
     colorStyle.textContent = `
-      .queue-bg-lyrics-video {
-        background: #e6d7ff !important;
-        border-left: 4px solid #c4a3ff;
-      }
-      .queue-bg-normal-video {
-        background: #d7f0ff !important;
-        border-left: 4px solid #6ec3e9;
-      }
-      .queue-bg-image, .queue-bg-default {
-        background: #f0f0f0 !important;
-        border-left: 4px solid #cccccc;
-      }
+      /* Remove old queue-bg-* background styles; now using dot indicators */
       .queue-bg-legend {
         display: flex;
         gap: 16px;
@@ -333,20 +322,38 @@ function syncLyricsVideoWithAudio(bgPlayer) {
         margin-bottom: 8px;
         margin-top: 8px;
       }
-      .queue-bg-legend-box {
-        width: 16px;
-        height: 16px;
+      .queue-dot {
         display: inline-block;
-        border-radius: 3px;
-        margin-right: 4px;
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        margin-right: 8px;
         vertical-align: middle;
-        border: 1px solid #bbb;
+        margin-bottom: 1px;
+      }
+      .queue-dot-lyrics-video {
+        background: #c4a3ff;
+      }
+      .queue-dot-normal-video {
+        background: #6ec3e9;
+      }
+      .queue-dot-image, .queue-dot-default {
+        background: #cccccc;
+      }
+      .queue-bg-legend-dot {
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        margin-right: 5px;
+        vertical-align: middle;
+        border: 1.5px solid #bbb;
       }
     `;
     document.head.appendChild(colorStyle);
   })();
 
-  // --- Insert legend above queue ---
+  // --- Insert legend above queue (now using dots instead of swatches) ---
   (function() {
     const queueElem = document.getElementById("queue");
     if (!queueElem) return;
@@ -356,9 +363,9 @@ function syncLyricsVideoWithAudio(bgPlayer) {
       legend.className = "queue-bg-legend";
       legend.id = "queue-bg-legend";
       legend.innerHTML = `
-        <span><span class="queue-bg-legend-box" style="background:#e6d7ff; border-color:#c4a3ff"></span>Lyrics Video</span>
-        <span><span class="queue-bg-legend-box" style="background:#d7f0ff; border-color:#6ec3e9"></span>Background Video</span>
-        <span><span class="queue-bg-legend-box" style="background:#f0f0f0; border-color:#cccccc"></span>Image/Default</span>
+        <span><span class="queue-bg-legend-dot" style="background:#c4a3ff; border-color:#c4a3ff"></span>Lyrics Video</span>
+        <span><span class="queue-bg-legend-dot" style="background:#6ec3e9; border-color:#6ec3e9"></span>Background Video</span>
+        <span><span class="queue-bg-legend-dot" style="background:#cccccc; border-color:#cccccc"></span>Image/Default</span>
       `;
       queueElem.parentNode.insertBefore(legend, queueElem);
     }
@@ -436,20 +443,27 @@ function syncLyricsVideoWithAudio(bgPlayer) {
       elements.queueList.innerHTML = "";
       list.forEach((song, index) => {
           const li = document.createElement("li");
-          li.textContent = song.title;
+          // Determine background type for color dot
+          let bgType = song.backgroundType || (song.useBackgroundVideo ? "normal-video" : (song.backgroundSrc ? "image" : "default"));
+          // Remove old background color classes, use dot instead
+          // Create dot element
+          const dot = document.createElement("span");
+          dot.classList.add("queue-dot");
+          if (bgType === "lyrics-video") {
+            dot.classList.add("queue-dot-lyrics-video");
+          } else if (bgType === "normal-video") {
+            dot.classList.add("queue-dot-normal-video");
+          } else if (bgType === "image") {
+            dot.classList.add("queue-dot-image");
+          } else {
+            dot.classList.add("queue-dot-default");
+          }
+          // Compose li content: dot + title
+          li.appendChild(dot);
+          // Song title text node
+          li.appendChild(document.createTextNode(song.title));
           li.dataset.index = index;
           li.style.cursor = "pointer";
-          // Determine background type for color coding
-          let bgType = song.backgroundType || (song.useBackgroundVideo ? "normal-video" : (song.backgroundSrc ? "image" : "default"));
-          if (bgType === "lyrics-video") {
-            li.classList.add("queue-bg-lyrics-video");
-          } else if (bgType === "normal-video") {
-            li.classList.add("queue-bg-normal-video");
-          } else if (bgType === "image") {
-            li.classList.add("queue-bg-image");
-          } else {
-            li.classList.add("queue-bg-default");
-          }
           // Highlight Tate McRae songs
           if (song.title.toLowerCase().includes("tate mcrae")) {
               li.classList.add("tate-song");
