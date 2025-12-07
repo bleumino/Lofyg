@@ -21,5 +21,3 @@ const seasonalThemes = {
   document.body.classList.add(theme.className);
 })();
 
-
-if (theme.className === "theme-december") startSnowParticles();

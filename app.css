@@ -513,15 +513,15 @@ a:hover {
 
 .theme-december {
   --accent-color: #bde0ff;
-  background-image: url("/assets/winter-bg.jpg");
+  background-color: #bde0ff; /* Solid color for December theme */
 }
 
 .theme-halloween {
   --accent-color: #ff7a00;
-  background-image: url("/assets/halloween-bg.jpg");
+  background-color: #ff7a00; /* Solid color for Halloween/October */
 }
 
 .theme-february {
   --accent-color: #ff6f9c;
-  background-image: url("/assets/valentine-bg.jpg");
+  background-color: #ff6f9c; /* Solid color for February theme */
 }
