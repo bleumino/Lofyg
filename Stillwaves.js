@@ -309,6 +309,128 @@ function syncLyricsVideoWithAudio(bgPlayer) {
    * CSS style for Tate McRae songs:
    * .tate-song { background: #f6e6ff; color: #a94ac7; font-weight: bold; }
    */
+  // --- Add styles for color coding the queue ---
+  (function() {
+    const colorStyle = document.createElement('style');
+    colorStyle.textContent = `
+      .queue-bg-lyrics-video {
+        background: #e6d7ff !important;
+        border-left: 4px solid #c4a3ff;
+      }
+      .queue-bg-normal-video {
+        background: #d7f0ff !important;
+        border-left: 4px solid #6ec3e9;
+      }
+      .queue-bg-image, .queue-bg-default {
+        background: #f0f0f0 !important;
+        border-left: 4px solid #cccccc;
+      }
+      .queue-bg-legend {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        font-size: 12px;
+        margin-bottom: 8px;
+        margin-top: 8px;
+      }
+      .queue-bg-legend-box {
+        width: 16px;
+        height: 16px;
+        display: inline-block;
+        border-radius: 3px;
+        margin-right: 4px;
+        vertical-align: middle;
+        border: 1px solid #bbb;
+      }
+    `;
+    document.head.appendChild(colorStyle);
+  })();
+
+  // --- Insert legend above queue ---
+  (function() {
+    const queueElem = document.getElementById("queue");
+    if (!queueElem) return;
+    // Only insert if not already present
+    if (!document.getElementById("queue-bg-legend")) {
+      const legend = document.createElement("div");
+      legend.className = "queue-bg-legend";
+      legend.id = "queue-bg-legend";
+      legend.innerHTML = `
+        <span><span class="queue-bg-legend-box" style="background:#e6d7ff; border-color:#c4a3ff"></span>Lyrics Video</span>
+        <span><span class="queue-bg-legend-box" style="background:#d7f0ff; border-color:#6ec3e9"></span>Background Video</span>
+        <span><span class="queue-bg-legend-box" style="background:#f0f0f0; border-color:#cccccc"></span>Image/Default</span>
+      `;
+      queueElem.parentNode.insertBefore(legend, queueElem);
+    }
+  })();
+
+  // --- Queue Auto-Scroll and "Go to Current Song" Button ---
+  // Helper to scroll the queue to the current song
+  function scrollQueueToCurrent(options = {behavior: "smooth", force: false}) {
+    const queueElem = elements.queueList;
+    if (!queueElem) return;
+    const active = queueElem.querySelector("li.active-song");
+    if (!active) return;
+    // Only scroll if user hasn't scrolled manually, or if force is true
+    // We'll track user interaction below
+    if (options.force || !queueElem.dataset.userScrolled) {
+      active.scrollIntoView({block: "nearest", behavior: options.behavior || "smooth"});
+    }
+  }
+
+  // Insert "Go to Current Song" button above the queue (and below legend)
+  (function() {
+    const queueElem = document.getElementById("queue");
+    if (!queueElem) return;
+    if (!document.getElementById("go-to-current-song-btn")) {
+      const btn = document.createElement("button");
+      btn.id = "go-to-current-song-btn";
+      btn.textContent = "Go to Current Song";
+      btn.style.marginBottom = "8px";
+      btn.style.marginTop = "6px";
+      btn.style.padding = "6px 12px";
+      btn.style.borderRadius = "6px";
+      btn.style.background = "#e6e6ff";
+      btn.style.color = "#7a3ea6";
+      btn.style.fontWeight = "bold";
+      btn.style.border = "1px solid #c4a3ff";
+      btn.style.cursor = "pointer";
+      btn.addEventListener("click", function() {
+        scrollQueueToCurrent({behavior: "smooth", force: true});
+      });
+      // Insert after the legend if present, else above the queue
+      const legend = document.getElementById("queue-bg-legend");
+      if (legend && legend.nextSibling) {
+        legend.parentNode.insertBefore(btn, legend.nextSibling);
+      } else {
+        queueElem.parentNode.insertBefore(btn, queueElem);
+      }
+    }
+  })();
+
+  // Track user scroll interaction on the queue element
+  (function() {
+    const queueElem = document.getElementById("queue");
+    if (!queueElem) return;
+    // Mark as user-scrolled if user scrolls or uses wheel
+    function onUserScroll() {
+      queueElem.dataset.userScrolled = "true";
+      // Optionally, clear the flag after some idle time
+      clearTimeout(queueElem._userScrollTimeout);
+      queueElem._userScrollTimeout = setTimeout(() => {
+        queueElem.dataset.userScrolled = "";
+      }, 5000);
+    }
+    queueElem.addEventListener("wheel", onUserScroll, {passive:true});
+    queueElem.addEventListener("scroll", onUserScroll, {passive:true});
+    // On mouseup after drag scroll
+    queueElem.addEventListener("mouseup", onUserScroll, {passive:true});
+    // On mouseenter, if mouse is down (dragging)
+    queueElem.addEventListener("mouseenter", e => {
+      if (e.buttons) onUserScroll();
+    });
+  })();
+
   function loadQueue(list = playlist) {
       if (!elements.queueList) return;
       elements.queueList.innerHTML = "";
@@ -317,6 +439,17 @@ function syncLyricsVideoWithAudio(bgPlayer) {
           li.textContent = song.title;
           li.dataset.index = index;
           li.style.cursor = "pointer";
+          // Determine background type for color coding
+          let bgType = song.backgroundType || (song.useBackgroundVideo ? "normal-video" : (song.backgroundSrc ? "image" : "default"));
+          if (bgType === "lyrics-video") {
+            li.classList.add("queue-bg-lyrics-video");
+          } else if (bgType === "normal-video") {
+            li.classList.add("queue-bg-normal-video");
+          } else if (bgType === "image") {
+            li.classList.add("queue-bg-image");
+          } else {
+            li.classList.add("queue-bg-default");
+          }
           // Highlight Tate McRae songs
           if (song.title.toLowerCase().includes("tate mcrae")) {
               li.classList.add("tate-song");
@@ -326,6 +459,8 @@ function syncLyricsVideoWithAudio(bgPlayer) {
           li.addEventListener("click", () => playSong(index, list));
           elements.queueList.appendChild(li);
       });
+      // After reloading queue, scroll to current song unless user has scrolled recently
+      setTimeout(() => scrollQueueToCurrent({behavior: "auto"}), 50);
   }
 
   // Flexible background support: lyrics-video, normal-video, image, default.
@@ -630,7 +765,8 @@ function syncLyricsVideoWithAudio(bgPlayer) {
       const song = currentPlaylist[currentSongIndex];
       if (elements.songTitle) elements.songTitle.textContent = `Now Playing: ${song.title}`;
       loadQueue(currentPlaylist);
-
+      // After updating queue, always scroll to current (unless user is actively scrolling)
+      setTimeout(() => scrollQueueToCurrent({behavior: "smooth"}), 100);
       if (Notification.permission === "granted") {
           clearTimeout(notificationTimeout);
           notificationTimeout = setTimeout(() => {
