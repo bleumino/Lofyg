@@ -1022,3 +1022,17 @@ function updateLanguageIndicator(language) {
   document.getElementById("current-language").textContent = langText;
 }
 
+const searchInput = document.getElementById('song-search');
+searchInput.addEventListener('input', () => {
+    const query = searchInput.value.toLowerCase();
+    const queueItems = document.querySelectorAll('#queue li');
+
+    queueItems.forEach(item => {
+        const title = item.textContent.toLowerCase();
+        if (title.includes(query)) {
+            item.style.display = 'list-item';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+});
