@@ -18,6 +18,10 @@ const seasonalThemes = {
   const theme = seasonalThemes[month];
   if (!theme) return;
 
-  document.body.classList.add(theme.className);
+  const container = document.getElementById('music-player');
+  if (container) {
+    container.classList.add(theme.className);
+  } else {
+    document.body.classList.add(theme.className);
+  }
 })();
-
