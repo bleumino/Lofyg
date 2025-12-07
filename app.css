@@ -1,27 +1,10 @@
-/* Play/Pause Button Styling */
-#play {
-  font-size: 1rem;
-  padding: 0.6rem 1.2rem;
-  background-color: #222;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 0 transparent;
-}
-
-#play.playing {
-  background-color: #444;
-  color: #ffcc70;
-  box-shadow: 0 0 10px rgba(255, 204, 112, 0.6);
-  animation: pulseGlow 1.5s infinite;
-}
-
-@keyframes pulseGlow {
-  0% { box-shadow: 0 0 8px rgba(255, 204, 112, 0.5); }
-  50% { box-shadow: 0 0 16px rgba(255, 204, 112, 0.8); }
-  100% { box-shadow: 0 0 8px rgba(255, 204, 112, 0.5); }
+/* 🎀 Sakura Pink Vinyl Aesthetic */
+body {
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 /* 🌸 Light Theme */
@@ -388,9 +371,39 @@ button:hover {
   animation: pulse 1.5s ease-in-out infinite;
 }
 
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 @keyframes pulse {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.05); }
+}
+
+#play {
+  font-size: 1rem;
+  padding: 0.6rem 1.2rem;
+  background-color: #222;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 0 transparent;
+}
+
+#play.playing {
+  background-color: #444;
+  color: #ffcc70;
+  box-shadow: 0 0 10px rgba(255, 204, 112, 0.6);
+  animation: pulseGlow 1.5s infinite;
+}
+
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 8px rgba(255, 204, 112, 0.5); }
+  50% { box-shadow: 0 0 16px rgba(255, 204, 112, 0.8); }
+  100% { box-shadow: 0 0 8px rgba(255, 204, 112, 0.5); }
 }
 
 #song-title {
@@ -500,17 +513,14 @@ a:hover {
 body.theme-december {
   --accent-color: #2d87d6;
   background-color: #bde0ff;
-  color: #1a1a1a; /* dark text for readability */
 }
 
 body.theme-halloween {
   --accent-color: #ff7a00;
   background-color: #e6a970;
-  color: #1a1a1a; /* dark text for readability */
 }
 
 body.theme-february {
   --accent-color: #dd235e;
   background-color: #ff6f9c;
-  color: #1a1a1a; /* dark text for readability */
 }
