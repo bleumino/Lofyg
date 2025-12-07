@@ -12,7 +12,6 @@ body {
 #music-player {
     border-radius: 20px;
     padding: 20px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     display: inline-block;
 }
 
