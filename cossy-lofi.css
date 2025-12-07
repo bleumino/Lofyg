@@ -470,27 +470,6 @@ body.dark-mode.easter-egg {
     background: #331133; /* darker pink-ish for dark mode */
 }
 
-/* 🎀 Sakura Pink Vinyl Aesthetic */
-.body {
-    font-family: 'Poppins', sans-serif;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    transition: background-color 0.5s ease, color 0.5s ease;
-}
-
-/* 🌸 Light Theme */
-body.light-theme {
-    background-color: #ffe6f2;  /* Soft pale rose pink */
-    color: #d63384;            /* Deep pink text */
-}
-
-/* 🌙 Dark Theme */
-body.dark-theme {
-    background-color: #1c1c1c;  /* Midnight background */
-    color: #ffccf9;             /* Light pink text */
-}
-
 /* 💿 Music Player Styling */
 #music-player {
     border-radius: 20px;
@@ -983,17 +962,17 @@ a:hover {
     font-size: 24px;
 }
 
-.theme-december {
-  --accent-color: #bde0ff;
-  background-color: #bde0ff; /* Solid color for December theme */
+body.theme-december {
+  --accent-color: #2d87d6;
+  background-color: #bde0ff;
 }
 
-.theme-halloween {
+body.theme-halloween {
   --accent-color: #ff7a00;
-  background-color: #ff7a00; /* Solid color for Halloween/October */
+  background-color: #e6a970;
 }
 
-.theme-february {
-  --accent-color: #ff6f9c;
-  background-color: #ff6f9c; /* Solid color for February theme */
+body.theme-february {
+  --accent-color: #dd235e;
+  background-color: #ff6f9c;
 }

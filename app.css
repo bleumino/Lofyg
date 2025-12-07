@@ -510,18 +510,17 @@ a:hover {
     margin-left: 10px;
     font-size: 24px;
 }
-
-.theme-december {
-  --accent-color: #bde0ff;
-  background-color: #bde0ff; /* Solid color for December theme */
+body.theme-december {
+  --accent-color: #2d87d6;
+  background-color: #bde0ff;
 }
 
-.theme-halloween {
+body.theme-halloween {
   --accent-color: #ff7a00;
-  background-color: #ff7a00; /* Solid color for Halloween/October */
+  background-color: #e6a970;
 }
 
-.theme-february {
-  --accent-color: #ff6f9c;
-  background-color: #ff6f9c; /* Solid color for February theme */
+body.theme-february {
+  --accent-color: #dd235e;
+  background-color: #ff6f9c;
 }

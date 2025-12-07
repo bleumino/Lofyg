@@ -12,16 +12,10 @@ const seasonalThemes = {
     className: "theme-february",
   }
 };
-
 (function applySeasonalTheme() {
   const month = new Date().getMonth() + 1;
   const theme = seasonalThemes[month];
   if (!theme) return;
 
-  const container = document.getElementById('music-player');
-  if (container) {
-    container.classList.add(theme.className);
-  } else {
-    document.body.classList.add(theme.className);
-  }
+  document.body.classList.add(theme.className); // <-- apply to body
 })();
