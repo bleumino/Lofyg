@@ -1025,22 +1025,19 @@ function updateLanguageIndicator(language) {
 
 
 // --- Reliable Shuffle Button Handler ---
-// Always attach the shuffle handler to the current #shuffle-surprise button, even if re-rendered.
-function reliableShuffleSurpriseHandler() {
-  // Remove any previous handler by replacing the element (no reliance on data-shuffle-handler)
+function attachShuffleSurpriseHandler() {
   let shuffleBtn = document.getElementById("shuffle-surprise");
   if (!shuffleBtn) return false;
-  // Remove all existing click listeners by cloning and replacing (safest way)
-  const newBtn = shuffleBtn.cloneNode(true);
-  shuffleBtn.parentNode.replaceChild(newBtn, shuffleBtn);
-  newBtn.addEventListener("click", () => {
-    // Always get the current playlist and index dynamically
-    const filtered = (Array.isArray(window.currentPlaylist) ? window.currentPlaylist : []).filter(Boolean);
-    const curIdx = typeof window.currentSongIndex === "number" ? window.currentSongIndex : 0;
+  if (shuffleBtn.hasAttribute("data-shuffle-handler")) return true;
+  shuffleBtn.setAttribute("data-shuffle-handler", "true");
+  shuffleBtn.addEventListener("click", () => {
+    // Use the currentPlaylist, which is always up to date with filters
+    // Defensive: filter out any undefined/null entries, just in case
+    const filtered = (Array.isArray(currentPlaylist) ? currentPlaylist : []).filter(Boolean);
     if (!filtered.length) {
-      newBtn.textContent = "🚫 No Songs!";
+      shuffleBtn.textContent = "🚫 No Songs!";
       setTimeout(() => {
-        newBtn.textContent = "🎲 Surprise Me";
+        shuffleBtn.textContent = "🎲 Surprise Me";
       }, 1200);
       return;
     }
@@ -1051,53 +1048,26 @@ function reliableShuffleSurpriseHandler() {
     } else {
       do {
         randomIndex = Math.floor(Math.random() * filtered.length);
-      } while (filtered.length > 1 && randomIndex === curIdx);
+      } while (filtered.length > 1 && randomIndex === currentSongIndex);
     }
     // Visual feedback
-    newBtn.textContent = "✨ Shuffling...";
+    shuffleBtn.textContent = "✨ Shuffling...";
+    // Play the song
     setTimeout(() => {
-      // Use latest playlist and index again, in case something changed during animation
-      const refreshed = (Array.isArray(window.currentPlaylist) ? window.currentPlaylist : []).filter(Boolean);
-      const idx = typeof window.currentSongIndex === "number" ? window.currentSongIndex : 0;
-      // Defensive: check again for empty
-      if (!refreshed.length) {
-        newBtn.textContent = "🚫 No Songs!";
-        setTimeout(() => {
-          newBtn.textContent = "🎲 Surprise Me";
-        }, 1200);
-        return;
-      }
-      // Pick a random index again, in case playlist changed
-      let randIdx;
-      if (refreshed.length === 1) {
-        randIdx = 0;
-      } else {
-        do {
-          randIdx = Math.floor(Math.random() * refreshed.length);
-        } while (refreshed.length > 1 && randIdx === idx);
-      }
-      playSong(randIdx, refreshed);
-      newBtn.textContent = "🎲 Surprise Me";
-    }, 300);
+      playSong(randomIndex, filtered);
+      shuffleBtn.textContent = "🎲 Surprise Me";
+    }, 300); // Fast feedback, but allow animation
   });
   return true;
 }
-// Observe DOM for shuffle button insertion or replacement
-function observeShuffleButton() {
-  // Initial attach if possible
-  reliableShuffleSurpriseHandler();
-  // Use MutationObserver to always reattach handler if the button is replaced
+
+// Try to attach immediately, and observe DOM for late insertion
+if (!attachShuffleSurpriseHandler()) {
+  // If not present, use MutationObserver to wait for it
   const observer = new MutationObserver(() => {
-    reliableShuffleSurpriseHandler();
+    if (attachShuffleSurpriseHandler()) {
+      observer.disconnect();
+    }
   });
   observer.observe(document.body || document.documentElement, {childList: true, subtree: true});
 }
-observeShuffleButton();
-
-// After loadQueue, reattach shuffle handler in case playlist UI was re-rendered
-const origLoadQueue = loadQueue;
-loadQueue = function(...args) {
-  origLoadQueue.apply(this, args);
-  // After rendering the queue, reattach the shuffle button handler
-  setTimeout(reliableShuffleSurpriseHandler, 10);
-};
