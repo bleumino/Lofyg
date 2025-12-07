@@ -100,7 +100,7 @@ button.active-mode {
 button {
     padding: 12px 24px;
     font-size: 18px;
-    background-color: #9BB8D3;
+    background-color: #ff99cc;
     color: white;
     border: none;
     border-radius: 25px;
@@ -109,7 +109,7 @@ button {
 }
 
 button:hover {
-    background-color: #7A9BBE;
+    background-color: #ff66a3; /* Darker pink on hover */
 }
 
 /* 🎼 Hide YouTube Player Initially */
