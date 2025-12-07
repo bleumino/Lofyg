@@ -108,7 +108,7 @@ document.head.appendChild(style);
       {id: "CjmSXgNjjwY", title: "Cat Burns - go (Higher & Faster)", moods:["slow-day", "sad"], languages: ["english"]},
       {id: "4sKNt6gbohQ", title: "sophiemarie.b - hey little girl (live) [official lyric video]", moods:["slow-day", "sad"], language: ["english"]},
       {id: "Wgspd3PrNiQ", title: "nuits d'été (acoustic)", moods:["slow-day", "sad"], languages: "french"},
-      {id: "NJpwaUnClx0", title: "Oscar Anton & Clementine - reflet", moods:["slow-day", "sad"], languages: ["french, english"], backgroundType: "normal-video"},
+      {id: "NJpwaUnClx0", title: "Oscar Anton & Clementine - reflet", moods:["slow-day", "sad"], languages: ["french", "english"], backgroundType: "normal-video"},
       {id: "NGAW-DGkXuM", title: "Tate McRae - run for the hills", moods:["slow-day", "sad"], languages: ["english"], backgroundType: "normal-video"},
 
     
