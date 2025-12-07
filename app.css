@@ -532,3 +532,13 @@ body.theme-february {
   background-color: #ff6f9c;
   color: #1a1a1a; /* dark text for readability */
 }
+/* Center song time text */
+#current-time, #time-left, #progress-time {
+    text-align: center;
+    width: 100%;
+    display: block;
+    margin: 5px 0;
+    font-family: 'Cherry Bomb One', cursive;
+    color: inherit; /* matches current theme text color */
+    font-size: 14px;
+}
