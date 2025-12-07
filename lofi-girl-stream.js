@@ -339,22 +339,23 @@ function togglePlayPause() {
 
 playButton.addEventListener("click", togglePlayPause);
 
-const listenerCountSpan = document.getElementById("listener-count");
+//copy song title and link button
+const copyBtn = document.getElementById("copy-song-btn");
 
-function fetchListenerCount(videoId) {
-  if (!videoId || !listenerCountSpan) return;
+copyBtn?.addEventListener("click", () => {
+    if (!currentPlaylist || !currentPlaylist[currentSongIndex]) return;
 
-  fetch(`https://www.googleapis.com/youtube/v3/videos?part=liveStreamingDetails&id=${videoId}&key=AIzaSyD1uj92u2HMWDm9RDyLrWyPyfPa2kZN_k0`)
-    .then(response => response.json())
-    .then(data => {
-      console.log("📡 YouTube API response:", data);
-      const count = data.items?.[0]?.liveStreamingDetails?.concurrentViewers;
-      listenerCountSpan.textContent = count
-        ? `👀 ${count} listeners`
-        : `👀 Live info not available`;
-    })
-    .catch(err => {
-      console.error("❌ Fetch error", err);
-      listenerCountSpan.textContent = '👀 Error loading listeners';
-    });
-}
+    const song = currentPlaylist[currentSongIndex];
+    const textToCopy = `${song.title} - https://www.youtube.com/watch?v=${song.id}`;
+
+    navigator.clipboard.writeText(textToCopy)
+        .then(() => {
+            copyBtn.textContent = "✅ Copied!";
+            setTimeout(() => copyBtn.textContent = "📋 Copy", 1500);
+        })
+        .catch(err => {
+            console.error("Failed to copy: ", err);
+            copyBtn.textContent = "❌ Error";
+            setTimeout(() => copyBtn.textContent = "📋 Copy", 1500);
+        });
+});

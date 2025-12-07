@@ -88,14 +88,15 @@
       { id: "DZ8xDLCy9pI", title: "LoFi Beats for Studying & Work | Chill Focus Music 🎧📚", moods: ["relax","chill", "calm","study"]},
       { id: "jgtdqwhO7Rw", title: "Focus Music for Studying 2025 | Best Chill Lofi Beats", moods: ["relax","chill", "calm","study"]},
       { id: "JLzH9Q0zPow", title: "Morning Slow 🌤 | Lofi Beat for Studying, Energy, and Coffee Vibes", moods: ["relax","chill", "calm","study"]},
-      { id: "", title: "", moods: ["relax","chill", "calm",]},
-      { id: "", title: "", moods: ["chill", "calm","study"]},
-      { id: "", title: "", moods: ["relax","study"]},
-      { id: "", title: "", moods: ["relax","chill", "calm","study"]},
-      { id: "", title: "", moods: ["relax","chill", "calm","study"]},
-      { id: "", title: "", moods: ["study"]},
-      { id: "", title: "", moods: ["calm","study"]},
-      { id: "", title: "", moods: ["relax","chill"]},
+      { id: "3rDr_jJs8n0", title: "Waiting", moods: ["relax","chill", "calm",]},
+      { id: "yyCKg_xW8Mo", title: "gift", moods: ["chill", "calm","study"]},
+      { id: "hjVaS8xmWIs", title: "massobeats - lavender (royalty free lofi music)", moods: ["relax","study"]},
+      { id: "LLllcpz78GI", title: "Sora", moods: ["relax","chill", "calm","study"]},
+      { id: "vwqrW-pCMMM", title: "Masked Man - n64", moods: ["relax","chill", "calm","study"]},
+      { id: "6zgGdUZV3OQ", title: "Ward Wills - rain world", moods: ["study"]},
+      { id: "mwNt4sJilo0", title: "Ward Wills - north", moods: ["calm","study"]},
+      { id: "CdAWHPMOVTY", title: "Philanthrope - Beavis pt.1", moods: ["relax","chill"]},
+      { id: "NCKhZr8KrmE", title: "Philanthrope - Beavis pt.2", moods: ["relax","chill"]},
   ];
 
   let currentPlaylist = [...playlist];
@@ -554,4 +555,26 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.textContent = "🎲 Surprise Me";
     }, 1000);
   });
+});
+
+
+//copy song title and link button
+const copyBtn = document.getElementById("copy-song-btn");
+
+copyBtn?.addEventListener("click", () => {
+    if (!currentPlaylist || !currentPlaylist[currentSongIndex]) return;
+
+    const song = currentPlaylist[currentSongIndex];
+    const textToCopy = `${song.title} - https://www.youtube.com/watch?v=${song.id}`;
+
+    navigator.clipboard.writeText(textToCopy)
+        .then(() => {
+            copyBtn.textContent = "✅ Copied!";
+            setTimeout(() => copyBtn.textContent = "📋 Copy", 1500);
+        })
+        .catch(err => {
+            console.error("Failed to copy: ", err);
+            copyBtn.textContent = "❌ Error";
+            setTimeout(() => copyBtn.textContent = "📋 Copy", 1500);
+        });
 });
