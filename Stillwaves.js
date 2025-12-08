@@ -17,7 +17,7 @@ document.head.appendChild(style);
   let playlist = [
       { id: "OCFy3wWDkWM", title: "Ai Tomioka - Good bye bye（English Ver.）（Official Audio）", moods: ["chill", "relax", "calm"], languages: ["english"]},
       { id: "t0NWBw00e1M", title: "Ai Tomioka-Good bye bye (eye to eye)", moods: ["chill", "relax"], languages: ["japanese"]},
-      { id: "N85aAdWecPk", title: "冨岡 愛 - New Style (Lyric Video)", moods: ["chill", "relax"], languages: ["english"]},
+      { id: "N85aAdWecPk", title: "冨岡 愛 - New Style (Lyric Video)", moods: ["chill", "relax"], languages: ["english"], backgroundType: "lyrics-video"},
       { id: "mAyyBp6gmnw", title: "愛 need your love", moods: ["calm", "relax"], languages: ["english"]},
       { id: "deE5ak0Atxw", title: "missing you", moods: ["calm", "relax"], languages: ["japanese", "english"]},
       { id: "CO7cE_SOibA", title: "グッバイバイ (Korean Ver.)", moods: ["calm", "relax"], languages: ["korean"]},
@@ -34,7 +34,7 @@ document.head.appendChild(style);
       { id: "GK96bciRXiY", title: "Louane - On était beau (Version Acoustique)", moods: ["calm", "relax", "slow-day"], languages: ["french"], backgroundType: "normal-video"},
       { id: "X5EYfMermFo", title: "Louane - Les excuses (Lyrics Video)", moods: ["chill", "relax", "calm"], languages: ["french"], backgroundType: "lyrics-video"},
       { id: "Qzc_aX8c8g4", title: "Sasha Alex Sloan - Dancing With Your Ghost (Lyric Video)", moods: ["chill", "relax", "slow-day"], languages: ["english"], backgroundType: "lyrics-video"},
-      { id: "SOxmA-nKfbU", title: "Lizzy McAlpine - ceilings (Official Audio)", moods: ["chill", "relax", "slow-day"], languages: ["english"]},
+      { id: "SOxmA-nKfbU", title: "Lizzy McAlpine - ceilings (Official Audio)", moods: ["chill", "relax", "slow-day"], languages: ["english"], backgroundType: "normal-video"},
       { id: "Q2WcdaF8uL8", title: "Billie Eilish - Bored (Official Audio)", moods: ["calm", "relax",], languages: ["english"]},
       { id: "pbMwTqkKSps", title: "Billie Eilish - when the party's over", moods: ["calm", "relax", "slow-day"], languages: ["english"]},
       { id: "C6CeA6vRtW4", title: "Beabadoobee - Coffee", moods: ["chill", "relax", "calm"], languages: ["english"]},
@@ -117,6 +117,7 @@ document.head.appendChild(style);
       {id: "zJwXRlvvP9A", title: "Benson Boone & Philippine Lavrey – In The Stars (French Version) [Official Lyric Video]", moods:["slow-day", "study"], languages: ["french", "english"], backgroundType: "lyrics-video"},
       {id: "VNE0mvsERqI", title: "Pomme - soleil soleil", moods:["slow-day", "study"], languages: ["french"]},
       {id: "-_eEoJUqW5o", title: "Pomme - les oiseaux", moods:["slow-day", "study"], languages: ["french"]},
+      {id: "a5RQ0z29XoU", title: "Sasha Alex Sloan - Dancing With Your Ghost (Acoustic Video)", moods:["slow-day", "study"], languages: ["english"]} 
              
     
       
