@@ -132,6 +132,19 @@ button:hover {
     list-style: none;
 }
 
+/* Playlist item hover animation */
+#queue li {
+  padding: 8px 10px;
+  border-radius: 6px;
+  transition: transform 0.25s ease, background-color 0.25s ease;
+}
+
+#queue li:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+  transform: translateX(6px);
+}
+
+
 /* 🎀 Logo */
 .logo {
     width: 60px;
@@ -976,3 +989,4 @@ body.theme-february {
   background-color: #ff6f9c;
   color: #1a1a1a; /* dark text for readability */
 }
+
