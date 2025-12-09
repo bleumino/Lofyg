@@ -127,7 +127,6 @@ document.head.appendChild(style);
       {id: "o0riYsrmm24", title: "Meraih Bintang (Arab Version) | الحلم حان - The Official Asian Games 2018 Theme Song", moods:["slow-day", "study"], languages: ["arabic"]}, 
       {id: "py6GDNgye6k", title: "Armada - Asal Kau Bahagia (Official Lyric Video)", moods:["slow-day", "study"], languages: ["indonesian"]}, 
       {id: "1UovLrPGUqY", title: "Blinding Lights - The Weeknd (French Version by Chloé Stafler)", moods:["slow-day", "study"], languages: ["french"]}, 
-      {id: "FKG0sNFWvw4", title: "Chloé Stafler - Mon Cœur (Visualiser)", moods:["slow-day", "study"], languages: ["french"], backgroundType: "normal-video"}, 
       {id: "YnEXJAmD96U", title: "Chloé Stafler - Mémoires d'une autre vie (Lyric Video)", moods:["slow-day", "study"], languages: ["french"], backgroundType: "lyrics-video"}, 
       {id: "iaGjz4dtr3o", title: "Bakermat - Baianá (Official Video)", moods:["slow-day", "study"], languages: ["portuguese"], backgroundType: "normal-video"}, 
       {id: "LlMj3id3-Ss", title: "Nininho Vaz Maia - E Agora", moods:["slow-day", "study"], languages: ["portuguese"]}, 
@@ -962,7 +961,13 @@ if (langContainer) {
 
     currentPlaylist = selectedLang === "all"
       ? [...playlist]
-      : playlist.filter(track => track.languages && track.languages.includes(selectedLang));
+      : playlist.filter(track => {
+          // Normalize the language field
+          const langs = Array.isArray(track.languages)
+            ? track.languages
+            : (Array.isArray(track.language) ? track.language : (typeof track.language === "string" ? [track.language] : []));
+          return langs.includes(selectedLang);
+      });
 
     if (currentPlaylist.length === 0) {
       alert("No tracks found for that language.");
