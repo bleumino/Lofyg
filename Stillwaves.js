@@ -506,6 +506,7 @@ function syncLyricsVideoWithAudio(bgPlayer) {
     const song = list[index];
     const videoId = song.id;
     const bgType = song.backgroundType || (song.useBackgroundVideo ? "normal-video" : "default");
+    updateTextColorForBackground(bgType);
     const ytPlayerElem = document.getElementById("youtube-player");
     let bgDiv = document.getElementById("bg-video-container");
     let bgIframe = document.getElementById("bg-video-iframe");
@@ -1205,3 +1206,36 @@ vinyl.addEventListener('click', () => {
         vinyl.classList.remove('clicked');
     }, 400); // match the animation duration
 });
+
+// Update text color for queue and song title based on background type
+function updateTextColorForBackground(bgType) {
+    const title = document.getElementById('song-title');
+    const queueItems = document.querySelectorAll('#queue li');
+
+    if (!title) return;
+
+    queueItems.forEach(item => {
+        if (bgType === 'normal-video' || bgType === 'image') {
+            // Dark background → light text
+            if (item.classList.contains('tate-song')) {
+                item.style.color = '#d4b3ff'; // adjust purple for readability
+            } else {
+                item.style.color = '#ffffff';
+            }
+        } else {
+            // Light background → default text
+            if (item.classList.contains('tate-song')) {
+                item.style.color = '#a94ac7';
+            } else {
+                item.style.color = '#2E4A66';
+            }
+        }
+    });
+
+    // Update song title separately
+    if (bgType === 'normal-video' || bgType === 'image') {
+        title.style.color = '#ffffff';
+    } else {
+        title.style.color = '#2E4A66';
+    }
+}
