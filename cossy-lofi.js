@@ -330,3 +330,13 @@ function togglePlayPause() {
 
 playButton.addEventListener("click", togglePlayPause);
 
+const vinyl = document.getElementById('vinyl');
+
+vinyl.addEventListener('click', () => {
+    vinyl.classList.add('clicked');
+
+    // Remove the class after animation so it can repeat
+    setTimeout(() => {
+        vinyl.classList.remove('clicked');
+    }, 400); // match the animation duration
+});
