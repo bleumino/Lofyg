@@ -109,7 +109,7 @@ document.head.appendChild(style);
       {id: "Wgspd3PrNiQ", title: "nuits d'été (acoustic)", moods:["slow-day", "sad"], languages: "french"},
       {id: "NJpwaUnClx0", title: "Oscar Anton & Clementine - reflet", moods:["slow-day", "sad"], languages: ["french", "english"], backgroundType: "lyrics-video"},
       {id: "NGAW-DGkXuM", title: "Tate McRae - run for the hills", moods:["slow-day", "sad"], languages: ["english"], backgroundType: "normal-video"},
-      {id: "KrMx32Q8Q0o", title: "SEZIN - Can't Take It (Lyric Video)", moods:["slow-day", "study"], languages: ["english", "turkish"], backgroundType: "lyrics-video"},
+      {id: "KrMx32Q8Q0o", title: "SEZIN - Can't Take It (Lyric Video)", moods:["chill"], languages: ["english", "turkish"], backgroundType: "lyrics-video"},
       {id: "fWbDZUBuCbo", title: "Pomme - Je sais pas danser", moods:["slow-day", "study"], languages: ["french"]},
       {id: "jabih9mV6RQ", title: "Pomme - On brûlera", moods:["slow-day", "study"], languages: ["french"]},
       {id: "wMBNpVQ0k_k", title: "Dua Lipa & Angèle – Fever (Official Audio)", moods:["slow-day", "study"], languages: ["french", "english"], backgroundType: "normal-video"},
@@ -132,10 +132,20 @@ document.head.appendChild(style);
       {id: "LlMj3id3-Ss", title: "Nininho Vaz Maia - E Agora", moods:["slow-day", "study"], languages: ["portuguese"]}, 
       {id: "m88mXYPfkQg", title: "Annalisa - Il mondo prima di te (feat. Michele Bravi) [Official Visual Art Video]", moods:["slow-day", "study"], languages: ["italian"]}, 
       {id: "AFiHqTCHJfM", title: "Annalisa – Tsunami (Official Visual Art Video)", moods:["slow-day", "study"], languages: ["italian"], backgroundType: "normal-video"},
-      {id: "-4ocBnW6RFs", title: "Iliona - Si tu m'aimes demain | PAROLES / LYRICS", moods:["slow-day", "study"], languages: ["french"], backgroundType: "lyrics-video"},
+      {id: "-4ocBnW6RFs", title: "Iliona - Si tu m'aimes demain | PAROLES / LYRICS", moods:["slow-day"], languages: ["french"], backgroundType: "lyrics-video"},
       {id: "bNGMvC42I4k", title: "Michele Bravi - Maneggiami con cura (Visual)", moods:["slow-day", "study"], languages: ["italian"]},  
-      {id: "4lKb4vj07dk", title: "Michele Bravi - Un secondo prima (Visual) ft. Federica Abbate", moods:["slow-day", "study"], languages: ["italian"]}, 
-      {id: "9YmJaDOSlRo", title: "Michele Bravi - Tutte le poesie sono d’amore (Visual)", moods:["slow-day", "study"], languages: ["italian"]}, 
+      {id: "4lKb4vj07dk", title: "Michele Bravi - Un secondo prima (Visual) ft. Federica Abbate", moods:["slow-day"], languages: ["italian"]}, 
+      {id: "9YmJaDOSlRo", title: "Michele Bravi - Tutte le poesie sono d’amore (Visual)", moods:["slow-day"], languages: ["italian"]},
+      {id: "AG-erEMhumc", title: "Tate McRae - you broke me first (Official Video)", moods:["slow-day"], languages: ["english"], backgroundType: "lyrics-video"}, 
+      {id: "4juPE9oCuyQ", title: "Tate McRae - stupid (Official Video)", moods:["slow-day"], languages: ["english"], backgroundType: "normal-video"}, 
+      {id: "vDTx6dSZl74", title: "Tate McRae - tear myself apart (Official Video)", moods:["slow-day"], languages: ["english"]}, 
+      {id: "dVgCHqXJB8s", title: "Tate McRae - vicious", moods:["slow-day"], languages: ["english"]}, 
+      {id: "ZYp9cYX_Ins", title: "na cama - ângela ro ro (cover)", moods:["slow-day"], languages: ["portuguese"]}, 
+      {id: "zlbVXi3o-2Y", title: "Vianney - Je m'en vais (Piano Reprise/Cover) - Chloé", moods:["slow-day","study"], languages: ["french"]}, 
+      {id: "ezZtQlIbALc", title: "Mennel - Ca Va (Acoustic Version)", moods:["slow-day", "sad"], languages: ["french"]}, 
+      {id: "IOhURVQMebY", title: "Let me love you - Justin Bieber ft. DJ Snake (French Version | Version Française) Cover - Chloé", moods:["slow-day"], languages: ["french"]}, 
+      {id: "BRS1SrMc7MM", title: "7 Years - Lukas Graham (French Version | Version Française) Cover - Chloé", moods:["slow-day"], languages: ["french"]}, 
+
 
              
     

@@ -1,7 +1,7 @@
 (function() {
   // --- Playlist and Initial Variables ---
   let playlist = [
-      { id: "xakBzg5atsM", title: "massobeats - rose water", moods: ["chill", "relax"] },
+      { id: "xakBzg5atsM", title: "massobeats - rose water", moods: ["chill", "relax"]},
       { id: "HGMQbVfYVmI", title: "massobeats - honey jam", moods: ["study", "focus", "chill"] },
       { id: "6eWIffP2M3Y", title: "Jazz Type Beat - Bread", moods: ["study", "calm"] },
       { id: "KGQNrzqrGqw", title: "Lofi Type Beat - Onion", moods: ["chill", "relax"] },
@@ -75,7 +75,6 @@
       { id: "8K875HrgVVQ", title: "Cry Me A River", moods: ["relax","chill", "calm"]},
       { id: "QZ1Udpcu9tg", title: "massobeats - bloom (royalty free lofi music)", moods: ["relax","chill", "calm"]},
       { id: "feubxN_OwMA", title: '[COPYRIGHT FREE] LO-FI BACKGROUND MUSIC "DREAMLAND" // BLUE', moods: ["relax","chill", "calm"]},
-      { id: "Wxnpe8GjH5w", title: "Soft Lo-fi 💤 Calm & Relaxing Background Music (No Copyright)", moods: ["relax","chill", "calm"]},
       { id: "NLyS4naMtOc", title: "Nights on Loop - LOV-Fi Beats", moods: ["relax","chill", "calm"]},
       { id: "QpXq0E_ZnP4", title: "spirited away made lofi", moods: ["relax","chill", "calm"]},
       { id: "qvSPt6a2wTQ?", title: "Lunar Eclipse", moods: ["relax","chill", "calm"]},
@@ -94,9 +93,17 @@
       { id: "LLllcpz78GI", title: "Sora", moods: ["relax","chill", "calm","study"]},
       { id: "vwqrW-pCMMM", title: "Masked Man - n64", moods: ["relax","chill", "calm","study"]},
       { id: "6zgGdUZV3OQ", title: "Ward Wills - rain world", moods: ["study"]},
-      { id: "mwNt4sJilo0", title: "Ward Wills - north", moods: ["calm","study"]},
-      { id: "CdAWHPMOVTY", title: "Philanthrope - Beavis pt.1", moods: ["relax","chill"]},
-      { id: "NCKhZr8KrmE", title: "Philanthrope - Beavis pt.2", moods: ["relax","chill"]},
+      { id: "mwNt4sJilo0", title: "Ward Wills - north", moods: ["calm","study", "focus"]},
+      { id: "a57-KveTE84", title: "lit (var)", moods: ["relax","chill"]},
+      { id: "K2a0UXuw4bk", title: "O Christmas Tree", moods: ["relax","chill"]},
+      { id: "S57cwvjFRdM", title: "Jingle Bells", moods: ["relax","chill", "slow-day"]},
+      { id: "4QDLEXxBXZ8", title: "O Holy Night", moods: ["relax","chill", "calm"]},
+      { id: "hV5X3sMdoOY", title: "It Came Upon A Midnight Clear", moods: ["relax","chill"]},
+      { id: "5zuzIcdt2QI", title: "Away in a Manger", moods: ["relax","chill", "study"]},
+      { id: "YlZVTr8f0ow", title: "O Little Town Of Bethlehem", moods: ["relax","chill"]},
+      { id: "E4D5cP_BSU4", title: "Silent Night", moods: ["relax"]},
+      { id: "kF0A89rHby4", title: "Somewhere Else", moods: ["relax","chill", "calm", "study", "focus", "slow-day"]},
+
   ];
 
   let currentPlaylist = [...playlist];
