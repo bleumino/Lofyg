@@ -40,7 +40,6 @@ document.head.appendChild(style);
       { id: "C6CeA6vRtW4", title: "Beabadoobee - Coffee", moods: ["chill", "relax", "calm"], languages: ["english"]},
       { id: "iEobEDPcouI", title: "Cả Một Trời Thương Nhớ - Hồ Ngọc Hà (Official Lyrics Video)", moods: ["chill", "relax", "slow-day"], languages: ["vietnamese"]},
       { id: "F5tS5m86bOI", title: "Vũ. – Lạ LùngLẠ LÙNG (Strange) / Vũ. (Original)", moods: ["chill", "relax", "slow-day"], language: ["vietnamese"]},
-      { id: "e89-sUH-_Is", title: "Nàng Thơ - Hoàng Dũng / OFFICIAL", moods: ["calm", "relax",], languages: ["vietnamese"]},
       { id: "ZyowJ5GB2Dk", title: "CUCO - Amor de Siempre (Official Audio)", moods: ["calm", "relax", "slow-day"], languages: ["spanish"]},
       { id: "kWUOPns_UJc", title: "Mi Tierra Veracruzana (En Manos de Los Macorinos) (Cover Audio)", moods: ["calm", "relax",], languages: ["spanish"]},
       { id: "Pttkm7nCuAU", title: "BRATTY - friend (Lyric Video)", moods: ["calm", "relax", "slow-day"], languages: ["spanish"]},
@@ -117,7 +116,28 @@ document.head.appendChild(style);
       {id: "zJwXRlvvP9A", title: "Benson Boone & Philippine Lavrey – In The Stars (French Version) [Official Lyric Video]", moods:["slow-day", "study"], languages: ["french", "english"], backgroundType: "lyrics-video"},
       {id: "VNE0mvsERqI", title: "Pomme - soleil soleil", moods:["slow-day", "study"], languages: ["french"]},
       {id: "-_eEoJUqW5o", title: "Pomme - les oiseaux", moods:["slow-day", "study"], languages: ["french"]},
-      {id: "a5RQ0z29XoU", title: "Sasha Alex Sloan - Dancing With Your Ghost (Acoustic Video)", moods:["slow-day", "study"], languages: ["english"]} 
+      {id: "a5RQ0z29XoU", title: "Sasha Alex Sloan - Dancing With Your Ghost (Acoustic Video)", moods:["slow-day", "study"], languages: ["english"]},
+      {id: "wzzbm87pQ-8?", title: "Evrencan Gündüz - Sen Beni Yine (Lyric Video)", moods:["slow-day", "study"], languages: ["turkish"]},
+      {id: "Q1zDD3K7Jpc", title: "Ah Yoluna!", moods:["slow-day", "study"], languages: ["turkish"]}, 
+      {id: "X9pjweU2ocY", title: "Bul Beni", moods:["slow-day", "study"], languages: ["turkish"], backgroundType: "normal-video"}, 
+      {id: "uw9KEin6_2o", title: "MIN - phải viết bao nhiêu bản tình ca (Official Audio)", moods:["slow-day", "study"], languages: ["vietnamese"], backgroundType: "normal-video"}, 
+      {id: "SZPOXsT3mgM", title: "mer / tâm (orchestra version)", moods:["slow-day", "study"], languages: ["vietnamese"]}, 
+      {id: "_nCzgvdkHl8?", title: "Soudeni - Aya Moghraman (Official Lyrics Video) / سوداني- أيا مُغْرما", moods:["slow-day", "calm"], languages: ["arabic"]}, 
+      {id: "zkESy5a99hA?", title: "Just the two of us (French Version - Chloé Stafler)", moods:["slow-day", "study"], languages: ["french"]}, 
+      {id: "o0riYsrmm24", title: "Meraih Bintang (Arab Version) | الحلم حان - The Official Asian Games 2018 Theme Song", moods:["slow-day", "study"], languages: ["arabic"]}, 
+      {id: "py6GDNgye6k", title: "Armada - Asal Kau Bahagia (Official Lyric Video)", moods:["slow-day", "study"], languages: ["indonesian"]}, 
+      {id: "1UovLrPGUqY", title: "Blinding Lights - The Weeknd (French Version by Chloé Stafler)", moods:["slow-day", "study"], languages: ["french"]}, 
+      {id: "FKG0sNFWvw4", title: "Chloé Stafler - Mon Cœur (Visualiser)", moods:["slow-day", "study"], languages: ["french"], backgroundType: "normal-video"}, 
+      {id: "YnEXJAmD96U", title: "Chloé Stafler - Mémoires d'une autre vie (Lyric Video)", moods:["slow-day", "study"], languages: ["french"], backgroundType: "lyrics-video"}, 
+      {id: "iaGjz4dtr3o", title: "Bakermat - Baianá (Official Video)", moods:["slow-day", "study"], languages: ["portuguese"], backgroundType: "normal-video"}, 
+      {id: "LlMj3id3-Ss", title: "Nininho Vaz Maia - E Agora", moods:["slow-day", "study"], languages: ["portuguese"]}, 
+      {id: "m88mXYPfkQg", title: "Annalisa - Il mondo prima di te (feat. Michele Bravi) [Official Visual Art Video]", moods:["slow-day", "study"], languages: ["italian"]}, 
+      {id: "AFiHqTCHJfM", title: "Annalisa – Tsunami (Official Visual Art Video)", moods:["slow-day", "study"], languages: ["italian"], backgroundType: "normal-video"},
+      {id: "-4ocBnW6RFs", title: "Iliona - Si tu m'aimes demain | PAROLES / LYRICS", moods:["slow-day", "study"], languages: ["french"], backgroundType: "lyrics-video"},
+      {id: "bNGMvC42I4k", title: "Michele Bravi - Maneggiami con cura (Visual)", moods:["slow-day", "study"], languages: ["italian"]},  
+      {id: "4lKb4vj07dk", title: "Michele Bravi - Un secondo prima (Visual) ft. Federica Abbate", moods:["slow-day", "study"], languages: ["italian"]}, 
+      {id: "9YmJaDOSlRo", title: "Michele Bravi - Tutte le poesie sono d’amore (Visual)", moods:["slow-day", "study"], languages: ["italian"]}, 
+
              
     
       
