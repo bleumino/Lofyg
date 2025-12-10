@@ -809,6 +809,7 @@ function syncLyricsVideoWithAudio(bgPlayer) {
     currentPlaylist = [...playlist];
     loadQueue(currentPlaylist);
     playSong(idx, currentPlaylist);
+    updateSongCount();
   }
   // Expose for global usage (e.g., from console or elsewhere)
   window.playSongById = playSongById;
@@ -1273,4 +1274,18 @@ function updateTextColorForBackground(bgType) {
     } else {
         title.style.color = '#2E4A66';
     }
+}
+
+function updateSongCount() {
+  const total = playlist.length;  // full library
+  const shown = currentPlaylist.length; // after filters
+  
+  const el = document.getElementById("song-count");
+  if (!el) return;
+
+  if (shown === total) {
+    el.textContent = `Total songs: ${total}`;
+  } else {
+    el.textContent = `Filtered: ${shown} / ${total}`;
+  }
 }
