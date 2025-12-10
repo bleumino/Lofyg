@@ -812,7 +812,6 @@ function syncLyricsVideoWithAudio(bgPlayer) {
     currentPlaylist = [...playlist];
     loadQueue(currentPlaylist);
     playSong(idx, currentPlaylist);
-    updateSongCount();
   }
   // Expose for global usage (e.g., from console or elsewhere)
   window.playSongById = playSongById;
@@ -927,75 +926,57 @@ function updateTime() {
       elements.loopButton.classList.toggle("active-mode", isLooping);
   });
 
-  elements.moodButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-          elements.moodButtons.forEach(b => b.classList.remove("active"));
-          btn.classList.add("active");
+  let activeMood = "all";
+let activeLang = "all";
 
-          const mood = btn.dataset.mood;
-          currentPlaylist = mood === "all" ? [...playlist] : playlist.filter(track => track.moods.includes(mood));
-
-          if (currentPlaylist.length === 0) {
-              alert("No tracks found for this mood.");
-              return;
-          }
-
-          loadQueue(currentPlaylist);
-          playSong(0, currentPlaylist);
-          updateSongCount();
-      });
-  });
-
-
-
-// --- Replace language button row with dropdown ---
-const langContainer = document.getElementById("language-selector");
-if (langContainer) {
-  const dropdown = document.createElement("select");
-  dropdown.id = "language-dropdown";
-  dropdown.style.padding = "6px";
-  dropdown.style.borderRadius = "6px";
-  dropdown.style.fontSize = "14px";
-
-  // Build dropdown options from existing buttons
-  const originalButtons = langContainer.querySelectorAll("button");
-  originalButtons.forEach(btn => {
-    const option = document.createElement("option");
-    option.value = btn.dataset.language;
-    option.textContent = btn.textContent.trim();
-    dropdown.appendChild(option);
-  });
-
-  // Replace old buttons with dropdown
-  langContainer.innerHTML = "";
-  langContainer.appendChild(dropdown);
-
-  // Hook into your existing language filter logic
-  dropdown.addEventListener("change", () => {
-    const selectedLang = dropdown.value;
-
-    currentPlaylist = selectedLang === "all"
-      ? [...playlist]
-      : playlist.filter(track => {
-          // Normalize the language field
-          const langs = Array.isArray(track.languages)
+function applyFilters() {
+    currentPlaylist = playlist.filter(track => {
+        const moodMatch = activeMood === "all" || track.moods.includes(activeMood);
+        const langs = Array.isArray(track.languages)
             ? track.languages
             : (Array.isArray(track.language) ? track.language : (typeof track.language === "string" ? [track.language] : []));
-          return langs.includes(selectedLang);
-      });
-
-    if (currentPlaylist.length === 0) {
-      alert("No tracks found for that language.");
-      return;
-    }
+        const langMatch = activeLang === "all" || langs.includes(activeLang);
+        return moodMatch && langMatch;
+    });
 
     loadQueue(currentPlaylist);
     playSong(0, currentPlaylist);
     updateSongCount();
-
-    updateLanguageIndicator(selectedLang);
-  });
 }
+
+// Update song count
+function updateSongCount() {
+    const el = document.getElementById("song-count");
+    if (!el) return;
+    const total = playlist.length;
+    const shown = currentPlaylist.length;
+    el.textContent = shown === total ? `Total songs: ${total}` : `Filtered: ${shown} / ${total}`;
+}
+
+// Mood buttons
+elements.moodButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+        elements.moodButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        activeMood = btn.dataset.mood;
+        applyFilters();
+    });
+});
+
+// Language dropdown
+const dropdown = document.getElementById("language-dropdown");
+if (dropdown) {
+    dropdown.addEventListener("change", () => {
+        activeLang = dropdown.value;
+        applyFilters();
+        updateLanguageIndicator(activeLang);
+    });
+}
+
+// On page load
+activeMood = "all";
+activeLang = "all";
+applyFilters();
 
 
   elements.progressContainer?.addEventListener("click", (event) => {
