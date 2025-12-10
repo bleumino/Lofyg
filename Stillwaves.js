@@ -939,6 +939,7 @@ function updateTime() {
 
           loadQueue(currentPlaylist);
           playSong(0, currentPlaylist);
+          updateSongCount();
       });
   });
 
@@ -987,6 +988,7 @@ if (langContainer) {
 
     loadQueue(currentPlaylist);
     playSong(0, currentPlaylist);
+    updateSongCount();
 
     updateLanguageIndicator(selectedLang);
   });
@@ -1279,10 +1281,8 @@ function updateTextColorForBackground(bgType) {
 function updateSongCount() {
   const total = playlist.length;  // full library
   const shown = currentPlaylist.length; // after filters
-  
   const el = document.getElementById("song-count");
   if (!el) return;
-
   if (shown === total) {
     el.textContent = `Total songs: ${total}`;
   } else {
@@ -1290,8 +1290,8 @@ function updateSongCount() {
   }
 }
 
-
-currentPlaylist = playlist.filter(track => track.moods.includes(mood));
+// Initialize currentPlaylist with full library and update count on load
+let currentPlaylist = [...playlist];
 loadQueue(currentPlaylist);
 playSong(0, currentPlaylist);
-updateSongCount(); // This makes the song count update
+updateSongCount();
