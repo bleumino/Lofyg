@@ -926,7 +926,7 @@ function updateTime() {
       elements.loopButton.classList.toggle("active-mode", isLooping);
   });
 
-  let activeMood = "all";
+let activeMood = "all";
 let activeLang = "all";
 
 function applyFilters() {
@@ -963,20 +963,56 @@ elements.moodButtons.forEach(btn => {
     });
 });
 
-// Language dropdown
-const dropdown = document.getElementById("language-dropdown");
-if (dropdown) {
-    dropdown.addEventListener("change", () => {
-        activeLang = dropdown.value;
-        applyFilters();
-        updateLanguageIndicator(activeLang);
-    });
-}
 
-// On page load
-activeMood = "all";
-activeLang = "all";
-applyFilters();
+
+// --- Replace language button row with dropdown ---
+const langContainer = document.getElementById("language-selector");
+if (langContainer) {
+  const dropdown = document.createElement("select");
+  dropdown.id = "language-dropdown";
+  dropdown.style.padding = "6px";
+  dropdown.style.borderRadius = "6px";
+  dropdown.style.fontSize = "14px";
+
+  // Build dropdown options from existing buttons
+  const originalButtons = langContainer.querySelectorAll("button");
+  originalButtons.forEach(btn => {
+    const option = document.createElement("option");
+    option.value = btn.dataset.language;
+    option.textContent = btn.textContent.trim();
+    dropdown.appendChild(option);
+  });
+
+  // Replace old buttons with dropdown
+  langContainer.innerHTML = "";
+  langContainer.appendChild(dropdown);
+
+  // Hook into your existing language filter logic
+  dropdown.addEventListener("change", () => {
+    const selectedLang = dropdown.value;
+
+    currentPlaylist = selectedLang === "all"
+      ? [...playlist]
+      : playlist.filter(track => {
+          // Normalize the language field
+          const langs = Array.isArray(track.languages)
+            ? track.languages
+            : (Array.isArray(track.language) ? track.language : (typeof track.language === "string" ? [track.language] : []));
+          return langs.includes(selectedLang);
+      });
+
+    if (currentPlaylist.length === 0) {
+      alert("No tracks found for that language.");
+      return;
+    }
+
+    loadQueue(currentPlaylist);
+    playSong(0, currentPlaylist);
+    updateSongCount();
+
+    updateLanguageIndicator(selectedLang);
+  });
+}
 
 
   elements.progressContainer?.addEventListener("click", (event) => {
