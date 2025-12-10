@@ -153,7 +153,9 @@ document.head.appendChild(style);
   ];
 let currentPlaylist = [...playlist];
 window.currentPlaylist = currentPlaylist;
-window.playlist = playlist; // <- add this
+window.playlist = playlist; 
+window.loadQueue = loadQueue;
+window.updateSongCount = updateSongCount;
   
 
 let pendingSongIndex = null; // index we just requested to play (used to guard fast skips)
