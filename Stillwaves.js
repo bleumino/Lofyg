@@ -151,9 +151,10 @@ document.head.appendChild(style);
       
       
   ];
-
-  let currentPlaylist = [...playlist];
-  window.currentPlaylist = currentPlaylist;
+let currentPlaylist = [...playlist];
+window.currentPlaylist = currentPlaylist;
+window.playlist = playlist; // <- add this
+  
 
 let pendingSongIndex = null; // index we just requested to play (used to guard fast skips)
 let songStartTime = 0;      // timestamp when playback actually started
@@ -1288,6 +1289,7 @@ function updateSongCount() {
     el.textContent = `Filtered: ${shown} / ${total}`;
   }
 }
+
 
 currentPlaylist = playlist.filter(track => track.moods.includes(mood));
 loadQueue(currentPlaylist);
