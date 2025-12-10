@@ -156,6 +156,7 @@ window.currentPlaylist = currentPlaylist;
 window.playlist = playlist; 
 window.loadQueue = loadQueue;
 window.updateSongCount = updateSongCount;
+window.playsong = playSong;
   
 
 let pendingSongIndex = null; // index we just requested to play (used to guard fast skips)
