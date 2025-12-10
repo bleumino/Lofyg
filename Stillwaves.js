@@ -123,7 +123,6 @@ document.head.appendChild(style);
       {id: "uw9KEin6_2o", title: "MIN - phải viết bao nhiêu bản tình ca (Official Audio)", moods:["slow-day", "study"], languages: ["vietnamese"], backgroundType: "normal-video"}, 
       {id: "SZPOXsT3mgM", title: "mer / tâm (orchestra version)", moods:["slow-day", "study"], languages: ["vietnamese"]}, 
       {id: "_nCzgvdkHl8?", title: "Soudeni - Aya Moghraman (Official Lyrics Video) / سوداني- أيا مُغْرما", moods:["slow-day", "calm"], languages: ["arabic"]}, 
-      {id: "zkESy5a99hA?", title: "Just the two of us (French Version - Chloé Stafler)", moods:["slow-day", "study"], languages: ["french"]}, 
       {id: "o0riYsrmm24", title: "Meraih Bintang (Arab Version) | الحلم حان - The Official Asian Games 2018 Theme Song", moods:["slow-day", "study"], languages: ["arabic"]}, 
       {id: "py6GDNgye6k", title: "Armada - Asal Kau Bahagia (Official Lyric Video)", moods:["slow-day", "study"], languages: ["indonesian"]}, 
       {id: "1UovLrPGUqY", title: "Blinding Lights - The Weeknd (French Version by Chloé Stafler)", moods:["slow-day", "study"], languages: ["french"]}, 
@@ -1289,3 +1288,8 @@ function updateSongCount() {
     el.textContent = `Filtered: ${shown} / ${total}`;
   }
 }
+
+currentPlaylist = playlist.filter(track => track.moods.includes(mood));
+loadQueue(currentPlaylist);
+playSong(0, currentPlaylist);
+updateSongCount(); // This makes the song count update
