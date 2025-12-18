@@ -144,9 +144,18 @@ document.head.appendChild(style);
       {id: "ezZtQlIbALc", title: "Mennel - Ca Va (Acoustic Version)", moods:["slow-day", "sad"], languages: ["french"]}, 
       {id: "IOhURVQMebY", title: "Let me love you - Justin Bieber ft. DJ Snake (French Version | Version Française) Cover - Chloé", moods:["slow-day"], languages: ["french"]}, 
       {id: "BRS1SrMc7MM", title: "7 Years - Lukas Graham (French Version | Version Française) Cover - Chloé", moods:["slow-day"], languages: ["french"]}, 
+      {id: "KovHzLY5Kf0", title: "fenekot - Love the Way You Lie", moods:["slow-day"], languages: ["English"]}, 
+      {id: "D0rDhgKKP2g", title: "fenekot - Death Bed", moods:["slow-day"], languages: ["English"]}, 
+      {id: "GNVzKGKA4sA", title: "fenekot - Little do you know", moods:["slow-day"], languages: ["English"]}, 
+      {id: "Juucj-CfX7Y", title: "fenekot - Good 4 U", moods:["slow-day"], languages: ["English"]}, 
+      {id: "YTQolECCl0I", title: "fenekot - Just The Two of Us", moods:["slow-day"], languages: ["English"]}, 
+      {id: "V9B7sFsLxG8", title: "fenekot - Treat You Better", moods:["slow-day"], languages: ["English"]},
+      {id: "10VIPmqTD50", title: "fenekot - Lemon Tree", moods:["slow-day"], languages: ["English"]}, 
+      {id: "gnQk0GexUd4", title: "fenekot - Let Her Go", moods:["slow-day"], languages: ["English"]},  
 
 
-             
+
+            
     
       
       
