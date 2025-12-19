@@ -47,7 +47,12 @@ let playlist = [
           {id:"yeY6KYjjh_0", title: "chill café - video game music to relax/study/vibe ☕"},
           {id:"0DrlYGIoesQ", title: "Support Human Made lofi 🌿 Deep Focus & Study Music Playlist (No AI)"},
           {id:"cTYYfW5MLXQ", title: "🍂 Chillhop Essentials · Fall 2025 [chill lofi beats / jazzy hiphop mix]"},
-     
+          {id:"Xkg8yotH510", title: "Energetic Uplifting House Music Mix - Morning Living Room Set"}, 
+          {id:"zicMpTMRD5E", title: "Melodic Groovy Deep House Music Mix - Chill Mt. Fuji Set in Japan"},
+          {id:"qwdzIECTqn8", title: "Christmas Lofi 🎄 8 hours of cozy music for the holiday season"},
+          {id:"nIOMj54oHjc", title: "Snoopy’s Cozy Christmas Jazz 🎄🔥 | Fireplace Ambience & Holiday Music to Relax"}, 
+         
+
 
           
 ];
