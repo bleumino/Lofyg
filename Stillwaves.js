@@ -153,7 +153,7 @@ document.head.appendChild(style);
       {id: "10VIPmqTD50", title: "fenekot - Lemon Tree", moods:["slow-day"], languages: ["English"]}, 
       {id: "gnQk0GexUd4", title: "fenekot - Let Her Go", moods:["slow-day"], languages: ["English"]},  
       {id: "39xGflo5kTs", title: "Hailee Steinfeld - Wrong Direction (Official Lyric Video)", moods:["slow-day"], languages: ["English"], backgroundType: "lyrics-video"},  
-      {id: "D5drYkLiLI8?", title: "Kygo & Selena Gomez - It Ain't Me (Audio)", moods:["slow-day"], languages: ["English"]},  
+      {id: "D5drYkLiLI8", title: "Kygo & Selena Gomez - It Ain't Me (Audio)", moods:["slow-day"], languages: ["English"]},  
       {id: "W_YOJWZIjxo", title: "That’s So True", moods:["slow-day"], languages: ["English"]},  
       {id: "ALRxqOpMewE", title: "Michel Teló - Ai Se Eu Te Pego (Letra/Lyrics)", moods:["slow-day"], languages: ["Portuguese"]},  
       {id: "Sk1sWV0QwkI", title: "Rather Be - Clean Bandit (Cover) | Mar Rendón", moods:["slow-day", "chill"], languages: ["English"]},  
