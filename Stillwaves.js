@@ -10,12 +10,18 @@ style.textContent = `
   transition: background 0.3s, color 0.3s;
 }
 .chrissy-song.active-song {
-  background: linear-gradient(90deg, #ff0000 70%, #ebebeb 100%);
-  color: #b81c1c !important;
+  background: linear-gradient(
+    90deg,
+    #fff0f2 0%,
+    #ffb3ba 60%,
+    #ff8a95 100%
+  );
+  color: #9e1b32 !important;
   font-weight: bold;
-  border-left: 4px solid #b81c1c ;
-  box-shadow: 0 2px 8px 0 rgba(169,74,199,0.08);
-  transition: background 0.3s, color 0.3s;
+  border-left: 4px solid #c21f3a;
+  box-shadow: 0 3px 10px rgba(194, 31, 58, 0.18);
+  transition: background 0.3s ease, color 0.3s ease;
+}
 }
 `;
 document.head.appendChild(style);
