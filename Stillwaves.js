@@ -1,4 +1,4 @@
-// --- Tate McRae Song Highlight Styles ---
+// --- Tate McRae and Chrissy Costanza Song Highlight Styles ---
 const style = document.createElement('style');
 style.textContent = `
 .tate-song.active-song {
@@ -8,9 +8,9 @@ style.textContent = `
   border-left: 4px solid #a94ac7;
   box-shadow: 0 2px 8px 0 rgba(169,74,199,0.08);
   transition: background 0.3s, color 0.3s;
-
+}
 .chrissy-song.active-song {
-  background: linear-gradient(90deg, #f6e6ff 70%, #9e3838 100%);
+  background: linear-gradient(90deg, #ff0000 70%, #ebebeb 100%);
   color: #b81c1c !important;
   font-weight: bold;
   border-left: 4px solid #b81c1c ;
@@ -218,8 +218,11 @@ document.head.appendChild(style);
       {id: "Nih83oJBCzg", title: "ทน", moods:["slow-day", "chill"], languages: ["thai"]},  
       {id: "03ff2YLtyNw", title: "บังอร", moods:["vibes"], languages: ["thai"]},  
       {id: "34_XFmKSu3A", title: "จีบได้บ่", moods:["vibes"], languages: ["thai"]}, 
-      {id: "i1IKnWDecwA", title: "Phoenix (avec Cailin Russo et Chrissy Costanza) | Mondial 2019 - League of Legends", moods:["slow-day", "chill"], languages: ["english"], backgroundType: "normal-video"},  
-      {id: "R1J8X1Q5K3Q", title: "I Tried to Act Your Age - Chrissy Costanza", moods:["slow-day", "chill"], languages: ["english"]}, 
+      {id: "i1IKnWDecwA", title: "Phoenix (avec Cailin Russo et Chrissy Costanza) | Mondial 2019 - League of Legends", moods:["vibes"], languages: ["english"], backgroundType: "normal-video"},  
+      {id: "R1J8X1Q5K3Q", title: "I Tried to Act Your Age - Chrissy Costanza", moods:["vibes"], languages: ["english"]}, 
+      {id: "YiWVNMn9Cyo", title: "Chrissy Costanza - Some Like It Hot (Official Lyric Video)", moods:["slow-day", "chill"], languages: ["english"], backgroundType: "lyrics-video"}, 
+      {id: "KDgaLhIOtSg", title: "Chrissy Costanza - Perfect Crime (Official Lyric Video)", moods:["slow-day", "chill"], languages: ["english"], backgroundType: "lyrics-video"}, 
+      {id: "eLkdOA0qKQE", title: "Chrissy Costanza - Pick Your Poison (Official Visualizer)", moods:["slow-day", "chill"], languages: ["english"]}, 
 
 
             
@@ -584,6 +587,11 @@ function syncLyricsVideoWithAudio(bgPlayer) {
           if (song.title.toLowerCase().includes("tate mcrae")) {
               li.classList.add("tate-song");
           }
+
+          if (song.title.toLowerCase().includes("chrissy costanza")) {
+            li.classList.add("chrissy-song");
+          }
+
           // Highlight currently playing song
           if (index === currentSongIndex) li.classList.add("active-song");
           li.addEventListener("click", () => playSong(index, list));
