@@ -1,8 +1,33 @@
 let playlist = [
-    { id: "ITxr30JqOGk", title: "Elin John Svensson - Blue Rainbow (official audio)" },
-    { id: "3s7_IVSAn0Y", title: "Elin John Svensson - Blue silence night (official audio)" },
-    { id: "CkMDYBZj9Tc", title: "Elin John Svensson - Blue Ocean Skies (official audio)" },
-    { id: "WdbPKuC2T3Y", title: "Elin John Svensson - Blue juice orange (official audio)" },
+    { id: "bGMTieguNiE", title: "The Outskirts of Luncheon",  artist: "Lena Raine" },
+    { id: "FdJqlxkZhwo", title: "Tsukuyomi (D'Anthoni Wooten Remix)" , artist: "Lena Raine"},
+    { id: "4NsUq_Wr_Gs", title: "A Chance to Rest (Yamaneko Remix)", artist: "Lena Raine" },
+    { id: "cBhWqm4tL0A", title: "Aurora (Ziúr Remix)", artist: "Lena Raine" },
+    { id: "qHDuedbZYbc", title: "Chrysopoeia", artist: "Lena Raine" },
+    { id: "HcvKHX6kK6M", title: "Rubedo", artist: "Lena Raine" },
+    { id: "DoUW5ZkblTs", title: "Firebugs", artist: "Lena Raine" },
+    { id: "-WeMXNXCtos", title: "The Ninth Realm" },
+    { id: "U-tWqEod9Ig", title: "Ori, Lost In the Storm (feat. Aeralie Brighton)" },
+    { id: "oHesRe0uD9Q", title: "Nascence" },
+    { id: "FSVHx23ByhM", title: "Assassin's Creed 2 OST / Jesper Kyd - Ezio's Family (Track 03)" },
+    { id: "9WxlHh-4Dpo", title: "AC Syndicate OST / Austin Wintory - Danza alla Daggers" },
+    { id: "AXZmKwfUlKg", title: "Ninja Gaiden Sigma Soundtrack [01] - Encirclement" },
+    { id: "TwbNmdNnKVg", title: "Ninja Gaiden Sigma Soundtrack [02] - Bullet" },
+    { id: "0etenwnI1wo", title: "[Official] Celeste Original Soundtrack - 08 - Scattered and Lost", artist: "Lena Raine" },
+    { id: "kK81m-A3qpU", title: "otherside", artist: "Lena Raine" },
+    { id: "BTthtlT80Rc", title: "Pigstep (Stereo Mix)", artist: "Lena Raine" },
+    { id: "I8By1PMcYY8", title: "Madeline and Theo",artist: "Lena Raine" },
+    { id: "NSWUjFjvER8", title: "of the Devil ~ Zero Summary [Official]" ,artist: "Lena Raine"},
+    { id: "QBHceASYr0s", title: "10 A.M. - Animal Crossing: New Leaf" },
+    { id: "rJ6eGtsgbfM", title: "Animal Crossing Gamecube Full Theme Song (High Quality)" },
+    { id: "lI_C1Bjdqn4", title: "Animal Crossing New Horizons - Main Theme Song" },
+    { id: "243Uguc-6mQ", title: "Hollow Knight OST - Enter Hallownest" },
+    { id: "lkgHqBl12Cg", title: "ollow Knight OST - Dung Defender" },
+    { id: "fhUqu-g0pVY", title: "Hollow Knight OST - Fungal Wastes" },
+    { id: "r7hCJIC_y6Q", title: "Hollow Knight OST - Decisive Battle" },
+    { id: "w5jR7WRsvZo", title: "“VORTEX” (NINJA GAIDEN 4 Soundtrack)" },
+    { id: "u7l9MGREXjY", title: "“Raven” (NINJA GAIDEN 4 Soundtrack)" },
+    { id: "5XBmBuNC40o", title: "in Sakai | Ghost of Tsushima OST" },
 ];
 
 // DOM Elements
@@ -16,6 +41,10 @@ const elements = {
     progressBar: document.getElementById("progress-bar"),
     progressContainer: document.getElementById("progress-bar")?.parentElement,
     timeRemaining: document.getElementById("time-remaining"),
+};
+
+const cosyArtistGlows = {
+    "Lena Raine": "#FFF176"  // Light yellow
 };
 
 let player;
@@ -76,6 +105,16 @@ function loadQueue() {
         li.dataset.index = index;
         li.style.cursor = "pointer";
         li.classList.toggle("active-song", index === currentSongIndex);
+        if(index === currentSongIndex){
+    li.classList.add("active-song");
+
+    // Check if this song is by a special artist
+    const glowColor = cosyArtistGlows[song.artist];
+    if(glowColor){
+        li.style.boxShadow = `0 0 12px 3px ${glowColor}`;
+        li.style.backgroundColor = `${glowColor}33`; // semi-transparent
+    }
+}
         li.addEventListener("click", () => playSong(index));
         elements.queueList.appendChild(li);
     });

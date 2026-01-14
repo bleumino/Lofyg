@@ -8,6 +8,14 @@ style.textContent = `
   border-left: 4px solid #a94ac7;
   box-shadow: 0 2px 8px 0 rgba(169,74,199,0.08);
   transition: background 0.3s, color 0.3s;
+
+.chrissy-song.active-song {
+  background: linear-gradient(90deg, #f6e6ff 70%, #9e3838 100%);
+  color: #b81c1c !important;
+  font-weight: bold;
+  border-left: 4px solid #b81c1c ;
+  box-shadow: 0 2px 8px 0 rgba(169,74,199,0.08);
+  transition: background 0.3s, color 0.3s;
 }
 `;
 document.head.appendChild(style);
@@ -156,8 +164,62 @@ document.head.appendChild(style);
       {id: "D5drYkLiLI8", title: "Kygo & Selena Gomez - It Ain't Me (Audio)", moods:["slow-day"], languages: ["English"]},  
       {id: "W_YOJWZIjxo", title: "That’s So True", moods:["slow-day"], languages: ["English"]},  
       {id: "ALRxqOpMewE", title: "Michel Teló - Ai Se Eu Te Pego (Letra/Lyrics)", moods:["slow-day"], languages: ["Portuguese"]},  
-      {id: "Sk1sWV0QwkI", title: "Rather Be - Clean Bandit (Cover) | Mar Rendón", moods:["slow-day", "chill"], languages: ["English"]},  
-
+      {id: "Sk1sWV0QwkI", title: "Rather Be - Clean Bandit (Cover) | Mar Rendón", moods:["vibes"], languages: ["English"]},  
+      {id: "XZt4XVkNiQg", title: "Angelina Mango - gioielli di famiglia (Visual Video)", moods:["vibes"], languages: ["italian"],backgroundType: "normal-video"},  
+      {id: "kSxg5xw30zA", title: "Angelina Mango - uguale a me feat. Marco Mengoni (Visual Video)", moods:["chill"], languages: ["italian"],  backgroundType: "normal-video"},  
+      {id: "vJVGUGNAc88", title: "Lo ricordo io per te", moods:["vibes"], languages: ["italian"]},  
+      {id: "ZcjnFRWNrJw", title: "Popolare", moods:["vibes"], languages: ["italian"]},  
+      {id: "JWFEzlxQ2iw", title: "Mani vuote", moods:["vibes"], languages: ["italian"]}, 
+      {id: "wQSbE7ZHixs", title: "Voglia di vivere", moods:["vibes"], languages: ["italian"]},  
+      {id: "p-PU5BvSLAU", title: "Eccetera", moods:["vibes"], languages: ["italian"]},  
+      {id: "PBEJz-ooXdA", title: "Fila Indiana", moods:["slow-day", "chill"], languages: ["italian"]},  
+      {id: "tRQqQOuELiY", title: "Angelina Mango - la noia (Hypaton Remix)", moods:["vibes"], languages: ["italian"], backgroundType: "normal-video"},  
+      {id: "pekV-goXG-8", title: "Plus de sens - Angèle", moods:["vibes"], languages: ["french"]},  
+      {id: "iQQ-0MEChmU", title: "Taxi - Angèle", moods:["slow-day", "chill"], languages: ["french"]},  
+      {id: "r9Ck4Jy8mAc", title: "Zaz - Je veux (Audio)", moods:["slow-day", "chill"], languages: ["french"]},  
+      {id: "5ZlOn0aG_p0", title: "Terjaaele", moods:["vibes"], languages: ["arabic"]},  
+      {id: "MQ_edgGVn3A", title: "Ttzakari", moods:["vibes"], languages: ["arabic"]},  
+      {id: "cmHm8zju41E", title: "Dana Salah - Ya Tal3een (full version) يا طالعين", moods:["vibes"], languages: ["arabic"], backgroundType: "lyrics-video"}, 
+      {id: "cfl56NPDcmU", title: "Sherine - Lawany | شيرين - لواني", moods:["vibes"], languages: ["arabic"]},  
+      {id: "EX70vKkBqVU", title: "Dana Salah - Bent Bladak | Live From Vevo Studios", moods:["vibes"], languages: ["arabic"]},  
+      {id: "xYsUSIuRhr0", title: "Btmanna Ansak", moods:["vibes"], languages: ["arabic"]},  
+      {id: "yxhWq316AlE", title: "Sherine - Daafy | شيرين - ضعفي", moods:["vibes"], languages: ["arabic"]},  
+      {id: "IylmY_H-qDQ", title: "Sherine - Zaman | شيرين - زمان", moods:["slow-day", "chill"], languages: ["arabic"]},  
+      {id: "s_VLY6Syct8", title: "Sherine - Tayba We Gad'a | شيرين - طيبة وجدعة", moods:["slow-day", "chill"], languages: ["arabic"], backgroundType: "lyrics-video"},  
+      {id: "iAAWG86NxvQ", title: "BRATTY - … Un Nuevo Disco (Lyric Video)", moods:["slow-day", "chill"], languages: ["spanish"], backgroundType: "lyrics-video"},  
+      {id: "s39d4WLOcb0", title: "BRATTY - lejos (Lyric Video)", moods:["slow-day", "chill"], languages: ["spanish"], backgroundType: "lyrics-video"},  
+      {id: "51nMU4cx51Y", title: "BRATTY - virgo (Lyric Video)", moods:["slow-day", "chill"], languages: ["spanish"], backgroundType: "lyrics-video"},  
+      {id: "vF2TXi5_RxI", title: "Camila Orantes - si te esperas [Tradução // Letras]", moods:["slow-day", "chill"], languages: ["spanish"]}, 
+      {id: "3Z_bUjdKKQU", title: "KAROL G, Peso Pluma - QLONA (Letra/Lyrics)", moods:["slow-day", "chill"], languages: ["spanish"], backgroundType: "lyrics-video"},  
+      {id: "eQMaLcweWq0", title: "AROL G - BICHOTAG (Visualizer)", moods:["vibes"], languages: ["spanish"], backgroundType: "normal-video"},  
+      {id: "NUTL6WAQ6a8", title: "MIN - ANH QUA ĐÂY ĐI (OFFICIAL AUDIO)", moods:["vibes"], languages: ["vietnamese"]},  
+      {id: "3A3MbMoEE9Q", title: "MIN - PHẢI LÒNG ANH (OFFICIAL AUDIO)", moods:["vibes"], languages: ["vietnamese"]},  
+      {id: "eqeLyUpUknU", title: "MIN - PHẢI LÒNG ANH DREAM VER (OFFICIAL AUDIO)", moods:["vibes"], languages: ["vietnamese"]},  
+      {id: "0K7ZuZbWXhQ", title: "PHẢI CHĂNG EM ĐÃ YÊU - JUKY SAN ft. REDT | OFFICIAL LYRICS VIDEO", moods:["vibes"], languages: ["vietnamese"], backgroundType: "lyrics-video"},  
+      {id: "XscE-F5poAE", title: "JUKY SAN - LẠI ĐỘNG LÒNG | ALBUM ĐẪM TÌNH", moods:["vibes"], languages: ["vietnamese"]},  
+      {id: "WMunxo_QNKQ", title: "JUKY SAN - TRAO VỀ ANH | OFFICIAL VISUALIZER", moods:["vibes"], languages: ["vietnamese"], backgroundType: "normal-video"},  
+      {id: "VAESWiHA0tk", title: "JUKY SAN - TÌNH YÊU | ALBUM ĐẪM TÌNH", moods:["vibes"], languages: ["vietnamese"]},  
+      {id: "VollcciTb3s", title: "JUKY SAN ft. LIU GRACE - TA CÙNG NHAU QUÊN NIỀM ĐAU | OFFICIAL MV | ALBUM ĐẪM TÌNH", moods:["vibes"], languages: ["vietnamese"], backgroundType: "normal-video"}, 
+      {id: "hSEqTDCtwfo", title: "Eda Baba - Her Şey Seninle Güzel", moods:["slow-day", "chill", "study"], languages: ["turkish"]},  
+      {id: "EJkBJ7mgSt4", title: "TUANA - yoramam kendimi (Visualizer)", moods:["vibes"], languages: ["turkish"]},  
+      {id: "CzI693W3YMs", title: "Zeynep Bastık - Ara", moods:["vibes"], languages: ["turkish"]},  
+      {id: "X9ZhRJb5K3o", title: "FARKINDA DEĞİLDİN", moods:["vibes"], languages: ["turkish"]},  
+      {id: "B5hxuBypdBo", title: "yok bi çare", moods:["vibes"], languages: ["turkish"]},  
+      {id: "ib9kgiB6OYM", title: "Zeynep Bastık - Boş Yapma", moods:["vibes"], languages: ["turkish"], backgroundType: "lyrics-video"},  
+      {id: "NRNwBWeii50", title: "Denedim (Akustik) - Zeynep Bastık,Tepki", moods:["vibes"], languages: ["turkish"]}, 
+      {id: "h5mxJsbgNKM", title: "KAROL G, Tiësto - CONTIGO (Lyric Video)", moods:["vibes"], languages: ["spanish"], backgroundType: "lyrics-video"},  
+      {id: "QCZZwZQ4qNs", title: "KAROL G - Si Antes Te Hubiera Conocido | Coke Studio", moods:["vibes"], languages: ["spanish"]},  
+      {id: "fss1gPMW1Wo", title: "Ivonny Bonita", moods:["vibes"], languages: ["spanish"]},  
+      {id: "vb8wloc4Xpw", title: "Becky G, KAROL G - MAMIII (Audio)", moods:["vibes"], languages: ["spanish"], backgroundType: "normal-video"},  
+      {id: "w2Ro8cgsmss", title: "Becky G - MALA SANTA (Álbum Visual)", moods:["vibes"], languages: ["spanish"], backgroundType: "normal-video"}, 
+      {id: "ibza0IwiiNc", title: "Becky G - SI SI (Álbum Visual)", moods:["vibes"], languages: ["spanish"], backgroundType: "normal-video"}, 
+      {id: "XF2udqMRvAM", title: "Chrissy Costanza - But, What If I Fly? (Official Lyric Video)", moods:["vibes"], languages: ["english"], backgroundType: "lyrics-video"},  
+      {id: "2FS-wdAvjAU", title: "Chrissy Costanza - You'd Be Right (Official Visualizer)", moods:["slow-day", "chill"], languages: ["english"], backgroundType: "normal-video"},  
+      {id: "Nih83oJBCzg", title: "ทน", moods:["slow-day", "chill"], languages: ["thai"]},  
+      {id: "03ff2YLtyNw", title: "บังอร", moods:["vibes"], languages: ["thai"]},  
+      {id: "34_XFmKSu3A", title: "จีบได้บ่", moods:["vibes"], languages: ["thai"]}, 
+      {id: "i1IKnWDecwA", title: "Phoenix (avec Cailin Russo et Chrissy Costanza) | Mondial 2019 - League of Legends", moods:["slow-day", "chill"], languages: ["english"], backgroundType: "normal-video"},  
+      {id: "R1J8X1Q5K3Q", title: "I Tried to Act Your Age - Chrissy Costanza", moods:["slow-day", "chill"], languages: ["english"]}, 
 
 
             
