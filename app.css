@@ -975,3 +975,38 @@ body.theme-february {
   90% { opacity: 1; transform: translateY(-40px); }
   100% { opacity: 0; transform: translateY(-60px); }
 }
+
+/* Only affects the lofi-radio page */
+body.lofi-radio #queue-container {
+    max-width: 800px;       /* set the width of the playlist container */
+    margin: 0 auto;          /* center it */
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+}
+
+body.lofi-radio #queue {
+    max-height: 300px;      /* keeps it scrollable */
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    list-style: none;
+    width: 100%;             /* fill the container, not the full page */
+}
+body.lofi-radio .live-stats span {
+    padding: 4px 10px;         /* slightly bigger */
+    font-size: 14px;           /* larger text */
+    border-radius: 14px;       /* slightly more rounded */
+    text-shadow: 0 0 2px #fff; /* subtle glow */
+}
+
+body.lofi-radio .live-stats span#hearts-count {
+    background-color: rgba(255, 51, 102, 0.35);
+    animation: pulse 1.8s infinite; /* slightly faster pulse */
+}
+
+body.lofi-radio .live-stats span#viewers-count {
+    background-color: rgba(255, 153, 0, 0.35);
+}
+
+

@@ -443,3 +443,11 @@ setInterval(() => {
   const randomMsg = affirmations[Math.floor(Math.random() * affirmations.length)];
   addFloatingMessage(randomMsg);
 }, Math.floor(Math.random() * 5000) + 5000); // random 5–10s
+
+const viewers = document.getElementById('viewers-count');
+const hearts = document.getElementById('hearts-count');
+
+setInterval(() => {
+  viewers.textContent = `👀 ${Math.floor(1000 + Math.random()*5000)}`;
+  hearts.textContent = `❤️ ${Math.floor(100 + Math.random()*1000)}`;
+}, 5000);
