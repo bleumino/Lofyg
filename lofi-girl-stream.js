@@ -362,20 +362,84 @@ const affirmations = [
   "Remember to smile today.",
   "Your energy is enough.",
   "You are doing better than you think.",
-  "Rest is productive too."
-];
-
+  "Rest is productive too.",
+  "Believe in yourself and all that you are.",
+  "Every day is a new beginning.",
+  "You have the power to create change.",
+  "Stay positive, work hard, make it happen.",
+  "You are capable of amazing things.",
+  "You’re doing great, keep going.",
+  "Embrace the journey, not just the destination.",
+  "Your efforts are paying off.",
+  "You are stronger than you think.",
+  "Keep pushing, you're almost there!",
+  "You are worthy of success and happiness.",
+  "It needs to be said and heard: it's OK to be who you are. – Hailee Steinfeld",
+  "One step at a time is all it takes.",
+  "Take a moment to breathe and relax.",
+  "Progress, not perfection.",
+  "Let the rhythm calm your mind.",
+  "Your energy is enough.",
+  "Keep growing at your pace.",
+  "You’re doing better than you think.",
+  "Be gentle with yourself today.",
+  "You are enough, just as you are.",
+  "Rest is productive too.",
+  "The time is always right to do what is right. – Martin Luther King Jr.",
+  "Don't let anyone ever make you feel like you don't deserve what you want. – Heath Ledger",
+  "Imperfection is beauty, madness is genius and it's better to be absolutely ridiculous than absolutely boring. – Marilyn Monroe",
+  "You’re only human. You live once and life is wonderful, so eat the damn red velvet cupcake. – Emma Stone",
+  "The best thing to hold onto in life is each other. – Audrey Hepburn",
+  "No matter what happens in life, be good to people. Being good to people is a wonderful legacy to leave behind. – Taylor Swift",
+  "Success is most often achieved by those who don’t know that failure is inevitable. – Coco Chanel",
+  "Just because you're not where you want to be yet doesn't mean you're not making progress. – Zendaya",
+  "Be humble, hungry, and always be the hardest worker in the room. – Dwayne “The Rock” Johnson",
+  "Try and fail, but never fail to try. – Jared Leto",
+  "To thine own self be true. – Dolly Parton",
+  "Success is not final, failure is not fatal: It is the courage to continue that counts. – Winston Churchill",
+  "You miss 100% of the shots you don’t take. – Wayne Gretzky",
+  "The best revenge is massive success. – Frank Sinatra",
+  "The only way to do great work is to love what you do. – Steve Jobs",
+  "Spread love everywhere you go. Let no one ever come without leaving happier. — Mother Teresa",
+  "It does not matter how slowly you go, as long as you do not stop. —Confucius",
+  "The only person you are destined to become is the person you decide to be. — Ralph Waldo Emerson",
+  "The most difficult thing is the decision to act, the rest is merely tenacity. — Amelia Earhart",
+  "I didn't fail the test. I just found 100 ways to do it wrong. — Benjamin Franklin",
+  "Growth is quiet. But one day, it’ll speak for itself. -Bleumino",
+  "In union there is strength. – Aesop",
+  "The biggest adventure you can ever take is to live the life of your dreams.",
+  "Where there is love, there is life. – Mahatma Gandhi",
+  "When you do things from your soul, you feel a river moving in you, a joy. – Rumi",
+  "What lies behind us and what lies before us are tiny matters compared to what lies within us. – Ralph Waldo Emerson",
+  "What is meant to be will always find its way. Always.",
+  "Take it slow. You’re doing better than you think.",
+  "Progress isn’t loud. It’s quiet, steady, and real.",
+  "You don’t have to rush to be on time for your own life.",
+  "Rest is not laziness. It’s repair.",
+  "It’s okay if today you only managed to breathe.",
+  "You are soft, and that is your strength.",
+  "One step at a time still gets you there.",
+  "Create what you can’t find.",
+  "Bloom quietly. Grow wildly.",
+];  
+// --- Floating Affirmation Chat ---
 const chatList = document.getElementById('chat-messages');
 
-function addChatMessage(msg) {
+function addFloatingMessage(msg) {
   const li = document.createElement('li');
   li.textContent = msg;
+
   chatList.appendChild(li);
-  chatList.scrollTop = chatList.scrollHeight; // auto-scroll
+
+  // Remove after animation completes (5s)
+  setTimeout(() => li.remove(), 5000);
+
+  // Optional: auto-scroll (if chat overflows)
+  chatList.scrollTop = chatList.scrollHeight;
 }
 
 // Send a message every 5–10 seconds
 setInterval(() => {
   const randomMsg = affirmations[Math.floor(Math.random() * affirmations.length)];
-  addChatMessage(randomMsg);
-}, Math.floor(Math.random() * 5000) + 5000); // 5–10 seconds
+  addFloatingMessage(randomMsg);
+}, Math.floor(Math.random() * 5000) + 5000); // random 5–10s

@@ -942,39 +942,36 @@ body.theme-february {
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><circle cx="20" cy="20" r="1" fill="%23d9bfff"/></svg>');
     background-repeat: repeat;
 }
-
-.lofi-radio #lofi-chat {
+/* --- Floating Affirmation Chat for lofi-radio --- */
+.lofi-radio #chat-messages {
   position: fixed;
-  right: 20px;
-  bottom: 20px;
-  width: 280px;
-  max-height: 400px;
-  background: rgba(255, 230, 242, 0.85); /* soft pink */
-  border-radius: 12px;
-  padding: 12px;
-  overflow-y: auto;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-  font-family: 'Roboto', sans-serif;
-  font-size: 14px;
-}
-
-.lofi-radio #lofi-chat ul {
+  bottom: 10%;
+  right: 2%;
+  width: 220px;
   list-style: none;
   padding: 0;
   margin: 0;
+  z-index: 999;
+  pointer-events: none; /* allow clicks to pass through */
+  font-family: 'Arial', sans-serif;
 }
 
-.lofi-radio #lofi-chat li {
+.lofi-radio #chat-messages li {
+  background: rgba(255, 230, 242, 0.85); /* matches main page color */
+  color: #333;
+  padding: 6px 10px;
   margin-bottom: 6px;
-  padding: 4px 6px;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.5);
-  color: #1a001a;
-  animation: fadeIn 0.5s ease-in;
+  border-radius: 8px;
+  font-size: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: floatUp 5s forwards;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateX(10px); }
-  to { opacity: 1; transform: translateX(0); }
+@keyframes floatUp {
+  0% { opacity: 0; transform: translateY(20px); }
+  10% { opacity: 1; transform: translateY(0); }
+  90% { opacity: 1; transform: translateY(-40px); }
+  100% { opacity: 0; transform: translateY(-60px); }
 }
-
