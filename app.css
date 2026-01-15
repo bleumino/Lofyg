@@ -958,7 +958,7 @@ body.theme-february {
 
 .lofi-radio #chat-messages li {
   background: rgba(255, 230, 242, 0.85); /* matches main page color */
-  color: #333;
+  color: #ffffff;
   padding: 6px 10px;
   margin-bottom: 6px;
   border-radius: 8px;
