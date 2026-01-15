@@ -36,7 +36,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap" rel="stylesheet">
 </head>
-<body>
+
+<body class="lofi-radio">
 
     <header>
        <img class="logo"src="logo.png">
@@ -82,6 +83,10 @@
             <h3>Stations</h3>
             <ul id="queue"></ul>
 
+            <div id="lofi-chat" class="lofi-chat">
+                <ul id="chat-messages"></ul>
+            </div>
+
         <section id="navigation">
             <button onclick="window.location.href='index.html'"> Main Playlist</button>
             <button onclick="document.location='video-game-lofi.html'"> video game lofi </button>
@@ -95,8 +100,7 @@
     <script src="translate.js"></script>
     <script src="seasonalTheme.js"></script>
 </body>
-<br>
-<hr>
+
 <footer> 2025 Lofyg | All rights reserved 
     <a href="license.html">License & Terms</a>
     <br>

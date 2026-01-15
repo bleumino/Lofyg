@@ -1005,3 +1005,48 @@ body.theme-february {
     75% { transform: scale(1.05) rotate(3deg); }
     100% { transform: scale(1) rotate(0deg); }
 }
+
+.video-game-lofi-page * {
+  image-rendering: pixelated !important;
+  font-family: 'Press Start 2P', monospace !important; /* classic 8-bit font */
+}
+
+.video-game-lofi-page {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='8' height='8'><rect width='8' height='8' fill='white'/></svg>") 4 4, auto;
+}
+.video-game-lofi-page a:hover,
+.video-game-lofi-page button:hover,
+.video-game-lofi-page #queue li:hover {
+  background: #aac1de;
+  color: #000;
+  transform: translateY(-1px);
+}
+
+
+.video-game-lofi-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.25),
+      rgba(0,0,0,0.25) 2px,
+      transparent 4px
+    );
+}
+
+.video-game-lofi-page {
+  image-rendering: pixelated;
+  background: #000;
+  color: #33ff33;
+  font-family: 'Press Start 2P', monospace;
+}
+
+.video-game-lofi-page * {
+  image-rendering: pixelated !important;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+

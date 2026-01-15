@@ -226,9 +226,21 @@ document.head.appendChild(style);
       {id: "34_XFmKSu3A", title: "จีบได้บ่", moods:["vibes"], languages: ["thai"]}, 
       {id: "i1IKnWDecwA", title: "Phoenix (avec Cailin Russo et Chrissy Costanza) | Mondial 2019 - League of Legends", moods:["vibes"], languages: ["english"], backgroundType: "normal-video"},  
       {id: "R1J8X1Q5K3Q", title: "I Tried to Act Your Age - Chrissy Costanza", moods:["vibes"], languages: ["english"]}, 
-      {id: "YiWVNMn9Cyo", title: "Chrissy Costanza - Some Like It Hot (Official Lyric Video)", moods:["slow-day", "chill"], languages: ["english"], backgroundType: "lyrics-video"}, 
-      {id: "KDgaLhIOtSg", title: "Chrissy Costanza - Perfect Crime (Official Lyric Video)", moods:["slow-day", "chill"], languages: ["english"], backgroundType: "lyrics-video"}, 
-      {id: "eLkdOA0qKQE", title: "Chrissy Costanza - Pick Your Poison (Official Visualizer)", moods:["slow-day", "chill"], languages: ["english"]}, 
+      {id: "YiWVNMn9Cyo", title: "Chrissy Costanza - Some Like It Hot (Official Lyric Video)", moods:["vibes"], languages: ["english"], backgroundType: "lyrics-video"}, 
+      {id: "KDgaLhIOtSg", title: "Chrissy Costanza - Perfect Crime (Official Lyric Video)", moods:["svibes"], languages: ["english"], backgroundType: "lyrics-video"}, 
+      {id: "eLkdOA0qKQE", title: "Chrissy Costanza - Pick Your Poison (Official Visualizer)", moods:["vibes"], languages: ["english"]}, 
+      {id: "t_vr3uF9adk", title: "iKON - Love Scenario (사랑을 했다) Vocal Cover", moods:["slow-day", "chill"], languages: ["korean"]}, 
+      {id: "OlMXZ4sSjAM", title: "Blue (English Cover)【SnailWhale】", moods:["slow-day", "chill"], languages: ["english"]}, 
+      {id: "bM9j-cRvjhs", title: "COVER - Love Scenario (IKON)", moods:["slow-day", "chill"], languages: ["korean"]}, 
+      {id: "lyO_f9yQIpE", title: "Bırakman Doğru Mu 2", moods:["vibes"], languages: ["turkish"]}, 
+      {id: "HiFd-ucxgFQ", title: "Bırakman Doğru Mu", moods:["slow-day", "chill"], languages: ["turkish"]}, 
+      {id: "OdLAYEgbyjM", title: "Helin - Harder (Official Lyric Video)", moods:["vibes"], languages: ["english"], backgroundType: "lyrics-video"}, 
+      {id: "yIPX-FNJ9qk", title: "Idgitaf - Sedia Aku Sebelum Hujan (Official Lyric Video)", moods:["slow-day", "chill"], languages: ["indonesian"], backgroundType: "lyrics-video"}, 
+      {id: "YEyFPDJqnEg", title: "Idgitaf - Kehilangan (Official Lyric Video)", moods:["slow-day", "chill"], languages: ["indonesian"], backgroundType: "lyrics-video"}, 
+      {id: "i8um1rusYWE", title: "SNAP", moods:["slow-day", "chill"], languages: ["english"]}, 
+      {id: "HiQ8BVMyF6Q", title: "Sara Kays - Remember That Night? [Official Music Video]", moods:["slow-day", "chill"], languages: ["english"]}, 
+
+
 
 
             
