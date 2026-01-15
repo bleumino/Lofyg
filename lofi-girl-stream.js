@@ -349,3 +349,33 @@ vinyl.addEventListener('click', () => {
         vinyl.classList.remove('clicked');
     }, 400); // match the animation duration
 });
+
+
+// Chat feature with random affirmations
+const affirmations = [
+  "You're doing great today!",
+  "Take a deep breath and relax.",
+  "Progress is better than perfection.",
+  "Keep moving forward, step by step.",
+  "You are enough, just as you are.",
+  "Small wins still count!",
+  "Remember to smile today.",
+  "Your energy is enough.",
+  "You are doing better than you think.",
+  "Rest is productive too."
+];
+
+const chatList = document.getElementById('chat-messages');
+
+function addChatMessage(msg) {
+  const li = document.createElement('li');
+  li.textContent = msg;
+  chatList.appendChild(li);
+  chatList.scrollTop = chatList.scrollHeight; // auto-scroll
+}
+
+// Send a message every 5–10 seconds
+setInterval(() => {
+  const randomMsg = affirmations[Math.floor(Math.random() * affirmations.length)];
+  addChatMessage(randomMsg);
+}, Math.floor(Math.random() * 5000) + 5000); // 5–10 seconds
