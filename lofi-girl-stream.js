@@ -507,7 +507,7 @@ const usernames = [
 ];
 
 const name = usernames[Math.floor(Math.random() * usernames.length)];
-const message = `${name}: ${affirmation}`;
+const message = `${name}: ${affirmations}`;
 
 // --- Floating Affirmation Chat ---
 const chatList = document.getElementById('chat-messages');
