@@ -840,4 +840,39 @@ body.endless-vibes #on-air {
   }
 }
 
+body.endless-vibes .station-announcement {
+  font-family: 'Cherry Bomb One', sans-serif;
+  font-size: 13px;
+  color: #fff;
+  margin-top: 4px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  display: inline-block;
+  animation: pulse-announcement 2s infinite alternate;
+}
+
+
+body.endless-vibes .tuner-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+body.endless-vibes .tuner-bar::after {
+  content: "";
+  position: absolute;
+  left: -30%;
+  width: 30%;
+  height: 100%;
+  background: rgba(255,255,255,0.6);
+  animation: tunerMove 3s linear infinite;
+}
+
+@keyframes tunerMove {
+  0% { left: -30%; }
+  100% { left: 100%; }
+}
 

@@ -430,3 +430,17 @@ vinyl.addEventListener('click', () => {
     }, 400); // match the animation duration
 });
 
+const announcements = [
+  "Chill Beats 🌙 Relax and focus!",
+  "Next up: Study Mode 🎧",
+  "Take a deep breath while listening 💨",
+  "Endless Vibes Radio 🎶 Stay tuned!",
+  "Tip: Keep hydrated while studying 💧",
+];
+
+const announcementText = document.getElementById('announcement-text');
+
+setInterval(() => {
+  const msg = announcements[Math.floor(Math.random() * announcements.length)];
+  announcementText.textContent = msg;
+}, 15000); // rotate every 15s
