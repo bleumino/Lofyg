@@ -527,7 +527,9 @@ function addFloatingMessage(msg) {
 
 // Send a message every 5–10 seconds
 setInterval(() => {
-  const randomMsg = affirmations[Math.floor(Math.random() * affirmations.length)];
+  const randomName = usernames[Math.floor(Math.random() * usernames.length)];
+  const randomAffirmation = affirmations[Math.floor(Math.random() * affirmations.length)];
+  const randomMsg = `${randomName}: ${randomAffirmation}`;
   addFloatingMessage(randomMsg);
 }, Math.floor(Math.random() * 5000) + 5000); // random 5–10s
 
