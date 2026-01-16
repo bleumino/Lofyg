@@ -234,7 +234,7 @@ document.head.appendChild(style);
       {id: "bM9j-cRvjhs", title: "COVER - Love Scenario (IKON)", moods:["slow-day", "chill"], languages: ["korean"]}, 
       {id: "lyO_f9yQIpE", title: "Bırakman Doğru Mu 2", moods:["vibes"], languages: ["turkish"]}, 
       {id: "HiFd-ucxgFQ", title: "Bırakman Doğru Mu", moods:["slow-day", "chill"], languages: ["turkish"]}, 
-      {id: "OdLAYEgbyjM", title: "Helin - Harder (Official Lyric Video)", moods:["vibes"], languages: ["english"], backgroundType: "lyrics-video"}, 
+      {id: "OdLAYEgbyjM", title: "Helin - Harder (Official Lyric Video)", moods:["vibes"], languages: ["english", "turkish"], backgroundType: "lyrics-video"}, 
       {id: "yIPX-FNJ9qk", title: "Idgitaf - Sedia Aku Sebelum Hujan (Official Lyric Video)", moods:["slow-day", "chill"], languages: ["indonesian"], backgroundType: "lyrics-video"}, 
       {id: "YEyFPDJqnEg", title: "Idgitaf - Kehilangan (Official Lyric Video)", moods:["slow-day", "chill"], languages: ["indonesian"], backgroundType: "lyrics-video"}, 
       {id: "i8um1rusYWE", title: "SNAP", moods:["slow-day", "chill"], languages: ["english"]}, 
