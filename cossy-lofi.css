@@ -102,6 +102,19 @@ button.active-mode {
     margin: 20px 0;
 }
 
+body #queue li:hover {
+    transform: rotate(-1deg) scale(1.02);
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+body #queue {
+    max-height: 300px;
+    overflow-y: auto;
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 90%, rgba(0,0,0,0));
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 90%, rgba(0,0,0,0));
+}
+
+
 /* 🎶 Ensure Buttons Look Nice */
 button {
     padding: 12px 24px;
@@ -207,11 +220,6 @@ body.dark-theme {
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-#theme-toggle:hover {
-    background-color: #ff99cc;  /* Light pink hover effect */
-    transform: scale(1.1); /* Slight grow effect on hover */
-}
-
 /* Smooth transition for theme change */
 body {
     transition: background-color 0.5s ease, color 0.5s ease;
@@ -304,8 +312,8 @@ body {
   position: fixed;
   top: 20px;
   right: 20px;
-  background-color: #fff0f6;
-  color: #d63384;
+  background-color: #8a9cb3;
+  color:  #102c50;
   font-family: 'Cherry Bomb One', cursive;
   font-size: 18px;
   padding: 10px 15px;
@@ -399,6 +407,12 @@ button:hover {
   100% { box-shadow: 0 0 8px rgba(255, 204, 112, 0.5); }
 }
 
+#queue li:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
 #song-title {
   animation: bounce 2.5s ease-in-out infinite;
 }
@@ -410,19 +424,15 @@ button:hover {
 
 @keyframes pulse-shadow {
   0%, 100% {
-    box-shadow: 0 0 15px #ff69b4aa;
+    box-shadow: 0 0 15px  #8a9cb3
   }
   50% {
-    box-shadow: 0 0 25px #ff1493cc;
+    box-shadow: 0 0 25px  #8a9cb2cc;
   }
 }
 
 #vinyl.playing {
   animation: spin 5s linear infinite, pulse-shadow 2s ease-in-out infinite;
-}
-
-body {
-  cursor: url('Sakura Petal.png') 16 16, auto;
 }
 
 button:active {
@@ -433,30 +443,6 @@ button:active {
   0% { transform: scale(1); }
   50% { transform: scale(1.1); }
   100% { transform: scale(1); }
-}
-
-.elin-socials {
-  margin-bottom: 10px;
-  font-size: 0.9rem;
-  color: #d63384;
-  opacity: 0.8;
-  transition: opacity 0.3s ease;
-}
-
-.elin-socials a {
-  color: #d63384;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.elin-socials a:hover {
-  text-decoration: underline;
-  color: #ff66a3;
-  cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="%23000" stroke-width="2" stroke-linecap="round" d="M9.5 7H8c-3.31 0-6 1.69-6 5s2.69 5 6 5h1.5M14.5 17H16c3.31 0 6-1.69 6-5s-2.69-5-6-5h-1.5M7 12h10"></path></svg>'),auto;
-}
-
-.elin-socials:hover {
-  opacity: 1;
 }
 
 
@@ -544,42 +530,6 @@ button {
     transition: background-color 0.3s ease;
 }
 
-/* Theme-specific button colors */
-button.light-theme {
-    background: #ff99cc;
-    color: white;
-}
-
-button.dark-theme {
-    background: #661f46;
-    color: #ffccf9;
-}
-
-/* 📊 Progress Bar */
-#progress-container {
-    width: 80%;
-    height: 8px;
-    background: #ff99cc;
-    margin: 10px auto;
-    border-radius: 10px;
-}
-
-#progress-bar {
-    height: 100%;
-    background: #ff007f;
-    border-radius: 10px;
-}
-
-/* 🌀 Loop Mode Buttons */
-button.active-mode {
-    background: #ff007f;
-    color: white;
-}
-
-#loop-playlist.active-mode {
-    background: #ac095a;
-}
-
 /* 📀 Center Buttons Container */
 .button-container {
     display: flex;
@@ -613,6 +563,13 @@ button.active-mode {
     display: flex;
 }
 
+body button:hover {
+  transform: rotate(-2deg) scale(1.05);
+  transition: transform 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  cursor: pointer;
+}
+
 /* 🎼 Footer Styling */
 footer {
     margin-top: 50px;
@@ -631,7 +588,7 @@ footer {
     height: 50px;
     font-size: 24px;
     background-color: #fff0f5;
-    color: #d63384;
+    color:  #8a9cb3;
     border: none;
     border-radius: 50%;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -642,144 +599,6 @@ footer {
 #theme-toggle:hover {
     background-color: #ff99cc;
     transform: scale(1.1);
-}
-
-/* 💖 Vinyl Glow Animation */
-@keyframes pinkPulse {
-    0% { box-shadow: 0 0 15px rgba(255, 105, 180, 0.5); }
-    50% { box-shadow: 0 0 30px rgba(255, 105, 180, 1); }
-    100% { box-shadow: 0 0 15px rgba(255, 105, 180, 0.5); }
-}
-
-.pulsing {
-    animation: pinkPulse 1.5s infinite ease-in-out;
-    filter: drop-shadow(0 0 15px rgba(255, 105, 180, 0.8));
-}
-
-/* Global Font */
-* {
-    font-family: 'Cherry Bomb One', cursive;
-}
-
-#mood-selector button {
-  background: #ff99cc;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  margin: 0 8px;
-  border-radius: 20px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-#mood-selector button:hover {
-  background: #ff66a3;
-}
-
-
-#mood-selector button {
-    background: #ac095a; /* Deep rich pink for active mood */
-    box-shadow: 0 0 8px #ac095a;
-    transform: scale(1.05);
-    transition: 0.3s ease;
-}
-
-.particle {
-  position: fixed;
-  background: #ff66a3;
-  border-radius: 50%;
-  pointer-events: none;
-  animation: flyAway 600ms ease-out forwards;
-  width: 6px;
-  height: 6px;
-  opacity: 1;
-  mix-blend-mode: screen;
-}
-
-@keyframes flyAway {
-  to {
-    transform: translate(var(--x), var(--y)) scale(0);
-    opacity: 0;
-  }
-}
-
-/* Glow effect for the active song */
-.active-song {
-  box-shadow: 0 0 12px 3px #ff66a3; /* pinkish glow, you can change color */
-  background-color: rgba(255, 102, 163, 0.15);
-  border-radius: 8px;
-  transition: box-shadow 0.3s ease, background-color 0.3s ease;
-}
-
-#volume-control {
-  margin-top: 15px;
-  text-align: center;
-  font-family: 'Cherry Bomb One', sans-serif;
-  color: var(--accent-color, #FF69B4); /* Pretty pink */
-}
-
-#volume-slider {
-  width: 60%;
-  margin-top: 5px;
-  appearance: none;
-  height: 5px;
-  background: #FF69B4;
-  border-radius: 5px;
-  outline: none;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
-}
-
-#volume-slider::-webkit-slider-thumb {
-  appearance: none;
-  height: 16px;
-  width: 16px;
-  background: white;
-  border: 2px solid #FF69B4;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-.quote-popup {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  max-width: 250px;
-  background-color: #fff0f6;
-  color: #d6336c;
-  font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', cursive;
-  font-size: 14px;
-  padding: 12px 16px;
-  border-radius: 16px;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-  transition: opacity 0.4s ease, transform 0.4s ease;
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.quote-popup.hidden {
-  opacity: 0;
-  transform: translateY(20px);
-  pointer-events: none;
-}
-
-#clock-container {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background-color: #fff0f6;
-  color: #d63384;
-  font-family: 'Cherry Bomb One', cursive;
-  font-size: 18px;
-  padding: 10px 15px;
-  border-radius: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  z-index: 1000;
 }
 
 #google_translate_element {
@@ -879,10 +698,10 @@ button:hover {
 
 @keyframes pulse-shadow {
   0%, 100% {
-    box-shadow: 0 0 15px #ff69b4aa;
+    box-shadow: 0 0 15px  #8a9cb3;
   }
   50% {
-    box-shadow: 0 0 25px #ff1493cc;
+    box-shadow: 0 0 25px  #8a9cb3;
   }
 }
 
@@ -898,59 +717,6 @@ button:active {
   0% { transform: scale(1); }
   50% { transform: scale(1.1); }
   100% { transform: scale(1); }
-}
-
-.language-btn.active {
-  background-color: #ac095a; /* Deep rich pink for active mood */
-  color: white;
-  transform: scale(1.05);
-}
-
-.language-btn {
-  font-size: 10px;
-}
-
-.language-btn .tooltip {
-  visibility: hidden;
-  opacity: 0;
-  background-color: #333;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 4px 8px;
-  position: absolute;
-  bottom: 125%; /* Show above the button */
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1;
-  white-space: nowrap;
-  transition: opacity 0.3s;
-}
-
-.language-btn:hover .tooltip {
-  visibility: visible;
-  opacity: 1;
-}
-
-/* Special glow just for Bleumino when active */
-.active-song.highlight-bleumino {
-box-shadow: 0 0 12px 3px #B0C4DE; /* blueish glow, you can change color */
-  background-color: #8a9cb3;
-  border-radius: 8px;
-  transition: box-shadow 0.3s ease, background-color 0.3s ease;
-}
-
-#shuffle-surprise {
-  background-color: #ff66a3;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 999px;
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
-}
-#shuffle-surprise:hover {
-  background-color: #ff4c91;
 }
 
 a:hover {
@@ -1015,7 +781,6 @@ body.theme-february {
   cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='8' height='8'><rect width='8' height='8' fill='white'/></svg>") 4 4, auto;
 }
 .video-game-lofi-page a:hover,
-.video-game-lofi-page button:hover,
 .video-game-lofi-page #queue li:hover {
   background: #aac1de;
   color: #000;
@@ -1050,3 +815,71 @@ body.theme-february {
   text-transform: uppercase;
 }
 
+
+body.endless-vibes #on-air {
+    display: inline-block;
+    padding: 4px 10px;
+    font-weight: bold;
+    font-size: 14px;
+    color: #fff;
+    background-color: #ff0040;   /* classic live red */
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 5px;
+
+    /* Use your new pulse-red animation */
+    animation: pulse-red 1.5s infinite;
+}
+@keyframes pulse-red {
+  0%, 100% {
+    box-shadow: 0 0 8px #ff0040;
+  }
+  50% {
+    box-shadow: 0 0 16px #ff0040;
+  }
+}
+
+body.endless-vibes .endless-stations {
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 12px;
+  background-color: rgba(255, 230, 242, 0.15);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  max-width: 300px;
+}
+
+body.endless-vibes .endless-stations h3 {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #ff0040;
+  text-shadow: 0 0 5px #ff0040;
+}
+
+body.endless-vibes .endless-stations ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+body.endless-vibes .endless-stations li.station {
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #fff;
+  background-color: rgba(255, 0, 64, 0.2);
+}
+
+body.endless-vibes .endless-stations li.station:hover {
+  background-color: rgba(255, 0, 64, 0.4);
+  transform: scale(1.05);
+}
+
+body.endless-vibes .endless-stations li.station.active-station {
+  background: linear-gradient(90deg, #ff3366, #ff6699);
+  box-shadow: 0 0 10px #ff3366, 0 0 20px #ff6699;
+  font-weight: bold;
+  color: #fff;
+}
