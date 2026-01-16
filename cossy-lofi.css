@@ -840,46 +840,4 @@ body.endless-vibes #on-air {
   }
 }
 
-body.endless-vibes .endless-stations {
-  margin-top: 20px;
-  padding: 10px;
-  border-radius: 12px;
-  background-color: rgba(255, 230, 242, 0.15);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  max-width: 300px;
-}
 
-body.endless-vibes .endless-stations h3 {
-  margin-bottom: 10px;
-  font-size: 16px;
-  color: #ff0040;
-  text-shadow: 0 0 5px #ff0040;
-}
-
-body.endless-vibes .endless-stations ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-body.endless-vibes .endless-stations li.station {
-  padding: 8px 12px;
-  margin-bottom: 6px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  color: #fff;
-  background-color: rgba(255, 0, 64, 0.2);
-}
-
-body.endless-vibes .endless-stations li.station:hover {
-  background-color: rgba(255, 0, 64, 0.4);
-  transform: scale(1.05);
-}
-
-body.endless-vibes .endless-stations li.station.active-station {
-  background: linear-gradient(90deg, #ff3366, #ff6699);
-  box-shadow: 0 0 10px #ff3366, 0 0 20px #ff6699;
-  font-weight: bold;
-  color: #fff;
-}

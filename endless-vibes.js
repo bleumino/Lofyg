@@ -430,24 +430,3 @@ vinyl.addEventListener('click', () => {
     }, 400); // match the animation duration
 });
 
-const stationItems = document.querySelectorAll('.endless-stations li.station');
-
-stationItems.forEach(item => {
-  item.addEventListener('click', () => {
-    // Remove active from all stations
-    stationItems.forEach(i => i.classList.remove('active-station'));
-
-    // Set clicked as active
-    item.classList.add('active-station');
-
-    // Get station type
-    const station = item.dataset.station;
-
-    // Filter your playlist based on station
-    // Example:
-    currentPlaylist = playlist.filter(song => song.moods.includes(station));
-
-    // Start playing first song in this station
-    playSong(0, currentPlaylist);
-  });
-});
