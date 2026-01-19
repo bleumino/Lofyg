@@ -239,6 +239,7 @@ document.head.appendChild(style);
       {id: "YEyFPDJqnEg", title: "Idgitaf - Kehilangan (Official Lyric Video)", moods:["slow-day", "chill"], languages: ["indonesian"], backgroundType: "lyrics-video"}, 
       {id: "i8um1rusYWE", title: "SNAP", moods:["slow-day", "chill"], languages: ["english"]}, 
       {id: "HiQ8BVMyF6Q", title: "Sara Kays - Remember That Night? [Official Music Video]", moods:["slow-day", "chill"], languages: ["english"]}, 
+      {id: "EpCZXI5f08k", title: "the delegates · i only watch it for the weather...", moods:["slow-day", "chill"], languages: ["english"]},
 
 
 
