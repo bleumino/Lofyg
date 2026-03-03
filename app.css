@@ -1023,3 +1023,55 @@ body.lofi-radio .live-stats span#hearts-count {
 body.lofi-radio .live-stats span#viewers-count {
     background-color: rgba(255, 153, 0, 0.35);
 }
+
+
+/* -------------------------
+   Base style for language buttons
+-------------------------- */
+.language-btn {
+    padding: 8px 12px;
+    margin: 4px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    background-color: #f4f4f4;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+/* Hover effect */
+.language-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+/* Active button */
+.language-btn.active {
+    border-width: 3px;
+    box-shadow: 0 0 12px rgba(0,122,204,0.5);
+}
+
+/* Tooltip style */
+.language-btn .tooltip {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    bottom: 125%; /* above the button */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #222;
+    color: #fff;
+    padding: 4px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.language-btn:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+

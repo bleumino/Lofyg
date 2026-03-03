@@ -240,6 +240,29 @@ document.head.appendChild(style);
       {id: "i8um1rusYWE", title: "SNAP", moods:["slow-day", "chill"], languages: ["english"]}, 
       {id: "HiQ8BVMyF6Q", title: "Sara Kays - Remember That Night? [Official Music Video]", moods:["slow-day", "chill"], languages: ["english"]}, 
       {id: "EpCZXI5f08k", title: "the delegates · i only watch it for the weather...", moods:["slow-day", "chill"], languages: ["english"]},
+      {id: "heZqRIG7Dus", title: "Дора — Розовые волосы", moods:["vibes"], languages: ["russian"], backgroundType: "normal-video"},
+      {id: "8Zn89VJ01jQ", title: "Дора — Loverboy", moods:["vibes"], languages: ["russian"]},
+      {id: "ikeyJ-A8Ugo", title: "Дора — Маленькая леди", moods:["vibes"], languages: ["russian"], backgroundType: "normal-video"},
+      {id: "FyaGHw15fR4", title: "enina - кончил", moods:["vibes"], languages: ["russian"], backgroundType: "normal-video"},
+      {id: "v_bOywxL0AA", title: "ENINA - EX (премьера 2024 Lyrics video)", moods:["vibes"], languages: ["russian"], backgroundType: "lyrics-video"},
+      {id: "2hxVsCpzcr0", title: "Enina - Уважаю мужчин", moods:["vibes"], languages: ["russian"], backgroundType: "normal-video"},
+      {id: "bDvX111wcwg", title: "дора — Дорадура ", moods:["vibes"], languages: ["russian"], backgroundType: "normal-video"},
+      {id: "zvd3FKYZ00I", title: "ФРЕНДЗОНА — Бойчик", moods:["vibes"], languages: ["russian"]},
+      {id: "FOdZfIZKka0", title: "Дора — Я боюсь людей", moods:["vibes"], languages: ["russian"]},
+      {id: "wTTEtZ2k_mw", title: "Дора — Caprice", moods:["vibes"], languages: ["russian"]},
+      {id: "Hkyw2NDiyVM", title: "Дора, луни ана — Моя одежда ещё пахнет тобой", moods:["vibes"], languages: ["russian"], backgroundType: "normal-video"},
+      {id: "XCICEoOmYj8", title: "Дора — ЁК", moods:["vibes"], languages: ["russian"], backgroundType: "normal-video"},
+      {id: "sBLrEtpJrMg", title: "MIRAVI - Воля (Will, Lyric)", moods:["vibes"], languages: ["russian"], backgroundType: "normal-video"},
+      {id: "Pdqu0eTzHsw", title: "МЭЙБИ БЭЙБИ - Ахегао", moods:["vibes"], languages: ["russian"], backgroundType: "normal-video"},
+      {id: "7pv6vNkZoO0", title: "МЭЙБИ БЭЙБИ - Бла Бла", moods:["vibes"], languages: ["russian"]},
+      {id: "MwbnwmE098o", title: "МЭЙБИ БЭЙБИ — ЛАЛЛИПАП", moods:["vibes"], languages: ["russian"], backgroundType: "normal-video"},
+      {id: "/xk7_6qDzfnk", title: "MIRAVI - Калинка [VK Records]", moods:["vibes"], languages: ["russian"]},
+      {id: "4y5CZ5Cp3Fs", title: "ooes - права", moods:["vibes"], languages: ["russian"]},
+      {id: "_Mt018hXycA", title: "oes, senbonzakura — клирос", moods:["vibes"], languages: ["russian"]},
+  
+     
+     
+
 
 
 
@@ -1418,3 +1441,5 @@ let currentPlaylist = [...playlist];
 loadQueue(currentPlaylist);
 playSong(0, currentPlaylist);
 updateSongCount();
+
+

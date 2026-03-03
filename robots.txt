@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://comics6969.github.io/Lofyg/sitemap.xml
