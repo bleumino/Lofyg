@@ -256,7 +256,6 @@ document.head.appendChild(style);
       {id: "Pdqu0eTzHsw", title: "МЭЙБИ БЭЙБИ - Ахегао", moods:["vibes"], languages: ["russian"], backgroundType: "normal-video"},
       {id: "7pv6vNkZoO0", title: "МЭЙБИ БЭЙБИ - Бла Бла", moods:["vibes"], languages: ["russian"]},
       {id: "MwbnwmE098o", title: "МЭЙБИ БЭЙБИ — ЛАЛЛИПАП", moods:["vibes"], languages: ["russian"], backgroundType: "normal-video"},
-      {id: "/xk7_6qDzfnk", title: "MIRAVI - Калинка [VK Records]", moods:["vibes"], languages: ["russian"]},
       {id: "4y5CZ5Cp3Fs", title: "ooes - права", moods:["vibes"], languages: ["russian"]},
       {id: "_Mt018hXycA", title: "oes, senbonzakura — клирос", moods:["vibes"], languages: ["russian"]},
   
