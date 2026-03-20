@@ -89,7 +89,7 @@ document.head.appendChild(style);
       { id: "dMSVePKXYmg", title: "Ya No Es Lo Mismo", moods: ["calm", "relax",], languages: ["spanish"]},
       { id: "B3JcHWCA-VA", title: "Oscar Anton & Clementine - nuits d'été", moods: ["calm", "relax",], languages: ["french"]},
       {id: "vldYYjCQ7jc", title: "iñigo quintero - Si No Estás (Letra Oficial)", moods:["calm"], languages: ["spanish"]},
-      {id: "6ITUy1T3hd8", title: "si no estás ‐ Iñigo Quintero (cover)", moods:["calm", "relax", "slow-day"], languages: ["spanish"]},
+      {id: "6ITUy1T3hd8", title: "si no estás ‐ Iñigo Quintero (cover) by Paulina Borges", moods:["calm", "relax", "slow-day"], languages: ["spanish"]},
       {id: "Q1brFg4E-3c", title: "Tate McRae - r u ok", moods:["slow-day", "sad"], languages: ["english"]},
       {id: "hsaRX6lvEAI", title: "Tate McRae - feel like shit (Lyrics)", moods:["slow-day", "sad"], languages: ["english"]},
       {id: "IGCUmv0dtNE", title: "Tate McRae - happy face (Lyrics)", moods:["slow-day", "sad"], languages: ["english"], backgroundType: "lyrics-video"},
@@ -258,6 +258,18 @@ document.head.appendChild(style);
       {id: "MwbnwmE098o", title: "МЭЙБИ БЭЙБИ — ЛАЛЛИПАП", moods:["vibes"], languages: ["russian"], backgroundType: "normal-video"},
       {id: "4y5CZ5Cp3Fs", title: "ooes - права", moods:["vibes"], languages: ["russian"]},
       {id: "_Mt018hXycA", title: "oes, senbonzakura — клирос", moods:["vibes"], languages: ["russian"]},
+      {id: "ogEPzQ2V1OQ", title: "YSA - “I Dare Ya” (Official Music Video)", moods:["vibes"], languages: ["english"], backgroundType: "normal-video"},
+      {id: "93qx0OrMHlQ", title: "Your Name/Kimi No Nawa - Sparkle (Cover Español) – MIREE", moods:["slow-day", "chill", "vibes"], languages: ["spanish"]},
+      {id: "yLLeFru8zH8", title: "Si No Estás - Iñigo Quintero (Cover) / María Galey", moods:["vibes"], languages: ["spanish"]},
+      {id: "4KSDFEI5I00", title: "숀(Shaun) - Way back home COVER by 보라미유", moods:["vibes"], languages: ["korean"]},
+      {id: "LQJY0qS5hn4", title: "LOUISETTE & AMAURY - Mieux (J'aimerais bien dire à mon ex) (Paroles)", moods:["vibes"], languages: ["french"], backgroundType: "lyrics-video"},
+      {id: "19RY8MD79UY", title: "LOUISETTE & AMAURY - Dégage (Paroles)", moods:["vibes"], languages: ["french"], backgroundType: "lyrics-video"},
+      {id: "R8wUB4aMOnI", title: "LOUISETTE & AMAURY - Allô Maman (Paroles)", moods:["vibes"], languages: ["french"], backgroundType: "lyrics-video"},
+      {id: "Bw1HdLfJDDM", title: "Louane - On était beau ", moods:["vibes"], languages: ["french"], backgroundType: "normal-video"},
+      {id: "9g29vOn7M9A", title: "Wejdene - Coco (Audio Officiel)", moods:["vibes"], languages: ["french"], backgroundType: "normal-video"},
+      {id: "TJZFrDoz0S8", title: "Lilas Ikuta (幾田りら) - Lens 「レンズ」Lyrics Video [Kan/Rom/Eng]", moods:["vibes"], languages: ["japanese"], backgroundType: "lyrics-video"},
+      {id: "n53dV2hEhVA", title: "スパークル - From THE FIRST TAKE", moods:["vibes"], languages: ["japanese"], backgroundType: "normal-video"},
+       
   
      
      
