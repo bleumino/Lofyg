@@ -269,6 +269,7 @@ document.head.appendChild(style);
       {id: "9g29vOn7M9A", title: "Wejdene - Coco (Audio Officiel)", moods:["vibes"], languages: ["french"], backgroundType: "normal-video"},
       {id: "TJZFrDoz0S8", title: "Lilas Ikuta (幾田りら) - Lens 「レンズ」Lyrics Video [Kan/Rom/Eng]", moods:["vibes"], languages: ["japanese"], backgroundType: "lyrics-video"},
       {id: "n53dV2hEhVA", title: "スパークル - From THE FIRST TAKE", moods:["vibes"], languages: ["japanese"], backgroundType: "normal-video"},
+      {id:"h_IKqQ9-4OU", title: "VIDEOCLUB - Amour Plastique", moods:["vibes"], languages: ["french"], backgroundType: "normal-video"},
        
   
      
