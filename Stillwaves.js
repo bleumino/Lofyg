@@ -272,6 +272,7 @@ document.head.appendChild(style);
       {id:"h_IKqQ9-4OU", title: "VIDEOCLUB - Amour Plastique", moods:["vibes"], languages: ["french"], backgroundType: "normal-video"},
       {id:"pP6B1CAFkFk", title: "прости меня - Алевтина Дурова", moods:["vibes"], languages: ["russian"], backgroundType: "normal-video"},
       {id:"xEaqBSk4fJQ", title: "Намёки - левтина Дурова", moods:["vibes"], languages: ["russian"], backgroundType: "normal-video"},
+      {id:"Wlfkgn3yjeA", title: "Cliché - FERNANDA ", moods:["vibes"], languages: ["french", "portuguese"], backgroundType: "normal-video"},
        
   
      
