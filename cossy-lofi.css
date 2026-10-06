@@ -35,6 +35,7 @@ body {
     object-fit: cover;
     border-radius: 50%;
     animation: spin 5s linear infinite;
+    animation-play-state: paused; /* only spins while .playing is set */
 }
 
 /* 🔥 Remove unwanted "Spinning Vinyl" text */
@@ -160,7 +161,7 @@ button:hover {
 
 /* 🎀 Logo */
 .logo {
-    width: 60px;
+    width: auto;
     height: 60px;
     margin: auto;
     display: flex;
@@ -506,6 +507,7 @@ body.dark-mode.easter-egg {
     object-fit: cover;
     border-radius: 50%;
     animation: spin 5s linear infinite;
+    animation-play-state: paused; /* only spins while .playing is set */
 }
 
 /* 🔥 Remove unwanted "Spinning Vinyl" text */
@@ -557,7 +559,7 @@ button {
 
 /* 🎀 Logo */
 .logo {
-    width: 60px;
+    width: auto;
     height: 60px;
     margin: auto;
     display: flex;
@@ -738,19 +740,19 @@ a:hover {
     margin-left: 10px;
     font-size: 24px;
 }
-body.theme-december {
+body.theme-december:not(.dark-theme) {
   --accent-color: #2d87d6;
   background-color: #bde0ff;
   color: #1a1a1a; /* dark text for readability */
 }
 
-body.theme-halloween {
+body.theme-halloween:not(.dark-theme) {
   --accent-color: #ff7a00;
   background-color: #e6a970;
   color: #1a1a1a; /* dark text for readability */
 }
 
-body.theme-february {
+body.theme-february:not(.dark-theme) {
   --accent-color: #dd235e;
   background-color: #ff6f9c;
   color: #1a1a1a; /* dark text for readability */
@@ -876,3 +878,7 @@ body.endless-vibes .tuner-bar::after {
   100% { left: 100%; }
 }
 
+/* Vinyl: spin only while playing */
+#vinyl.playing {
+    animation-play-state: running;
+}

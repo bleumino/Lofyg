@@ -1,19 +1,15 @@
 # Security Policy
 
-## Supported Versions
+Lofyg is a static website (HTML, CSS and JavaScript). It has no accounts, no database and no server-side code, and it does not collect personal data itself. It embeds videos with the YouTube player and loads Google Analytics and Google Translate.
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+## Supported versions
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 2.0.x   | :supported: (latest version) |
-|
+Only the latest version, the one published at https://bleumino.github.io/Lofyg/, receives fixes.
 
-## Reporting a Vulnerability
+## Reporting a vulnerability
 
-Use this section to tell people how to report a vulnerability.
+If you find a security problem (for example a way to inject content into a page, or a broken or malicious link), please report it privately instead of opening a public issue:
 
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+- Use the contact form: https://forms.gle/yrDpBq2q6RtFcqHj7 (choose "Request a Feature / Video Removal" and start your message with "SECURITY").
+
+Please include the page, what you did, and what happened. You can expect a first reply within about 7 days. Confirmed issues are fixed as soon as possible and you will be told when the fix is live; reports that turn out not to be vulnerabilities will get a short explanation.

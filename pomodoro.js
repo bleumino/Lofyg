@@ -49,21 +49,7 @@ const longBreakBtn = document.getElementById('longBreak');
 const workSessionBtn = document.getElementById('workSession');
 
 // ---------- YouTube API ----------
-function loadYouTubeAPI() {
-    const script = document.createElement('script');
-    script.src = "https://www.youtube.com/iframe_api";
-    document.head.appendChild(script);
-}
-
-function onYouTubeIframeAPIReady() {
-    player = new YT.Player('youtube-player', {
-        height: '0',
-        width: '0',
-        videoId: playlist[currentSongIndex].id,
-        playerVars: { autoplay: 0, controls: 0, modestbranding: 1 },
-        events: { onStateChange: handleStateChange }
-    });
-}
+// (the loader and ready-callback are defined further down)
 
 function handleStateChange(event) {
     if(event.data === YT.PlayerState.ENDED){
@@ -88,13 +74,16 @@ function startTimer() {
     if (!isRunning) {
         isRunning = true;
         if(player) player.playVideo();
+        let lastTick = Date.now();
         timer = setInterval(() => {
-            console.log('Timer tick:', remainingTime); // see it counting down
+            // Count real elapsed seconds so a sleeping laptop or throttled tab can't stretch the session
+            const now = Date.now();
+            const elapsed = Math.max(1, Math.floor((now - lastTick) / 1000));
+            lastTick += elapsed * 1000;
             if (remainingTime > 0) {
-                remainingTime--;
+                remainingTime = Math.max(0, remainingTime - elapsed);
                 updateDisplay();
             } else {
-                console.log('Timer ended!'); // confirm it's called
                 timerEnded();
             }
         }, 1000);
@@ -310,14 +299,33 @@ bgUpload.addEventListener("change", (event) => {
 
     const reader = new FileReader();
     reader.onload = function(e) {
-        const imgData = e.target.result;
-        document.body.style.backgroundImage = `url('${imgData}')`;
-        document.body.style.backgroundSize = "cover";
-        document.body.style.backgroundPosition = "center";
-        document.body.style.backgroundRepeat = "no-repeat";
+        const img = new Image();
+        img.onload = function() {
+            // Shrink big photos first: localStorage holds ~5 MB, a raw photo usually doesn't fit
+            const maxSide = 1920;
+            const scale = Math.min(1, maxSide / Math.max(img.width, img.height));
+            const canvas = document.createElement("canvas");
+            canvas.width = Math.round(img.width * scale);
+            canvas.height = Math.round(img.height * scale);
+            const ctx = canvas.getContext("2d");
+            ctx.fillStyle = "#fff";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            const imgData = canvas.toDataURL("image/jpeg", 0.85);
 
-        // Save to localStorage
-        localStorage.setItem("customBg", imgData);
+            document.body.style.backgroundImage = `url('${imgData}')`;
+            document.body.style.backgroundSize = "cover";
+            document.body.style.backgroundPosition = "center";
+            document.body.style.backgroundRepeat = "no-repeat";
+
+            // Save to localStorage (don't crash if the browser says it's full)
+            try {
+                localStorage.setItem("customBg", imgData);
+            } catch (err) {
+                console.warn("Background is too large to save for next time:", err);
+            }
+        };
+        img.src = e.target.result;
     };
     reader.readAsDataURL(file);
 });
@@ -646,9 +654,12 @@ function checkMilestone() {
     }
 }
 
-if ("Notification" in window && Notification.permission === "default") {
-    Notification.requestPermission();
-}
+// Ask for notification permission on the first click (many browsers block prompts that fire on page load)
+document.addEventListener("click", function () {
+    if ("Notification" in window && Notification.permission === "default") {
+        Notification.requestPermission();
+    }
+}, { once: true });
 
 function timerEnded() {
     completeSession(); // increments session counter & handles Loaf

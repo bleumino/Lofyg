@@ -22,7 +22,7 @@ let playlist = [
     { id: "rJ6eGtsgbfM", title: "Animal Crossing Gamecube Full Theme Song (High Quality)" },
     { id: "lI_C1Bjdqn4", title: "Animal Crossing New Horizons - Main Theme Song" },
     { id: "243Uguc-6mQ", title: "Hollow Knight OST - Enter Hallownest" },
-    { id: "lkgHqBl12Cg", title: "ollow Knight OST - Dung Defender" },
+    { id: "lkgHqBl12Cg", title: "Hollow Knight OST - Dung Defender" },
     { id: "fhUqu-g0pVY", title: "Hollow Knight OST - Fungal Wastes" },
     { id: "r7hCJIC_y6Q", title: "Hollow Knight OST - Decisive Battle" },
     { id: "w5jR7WRsvZo", title: "“VORTEX” (NINJA GAIDEN 4 Soundtrack)" },
@@ -55,9 +55,12 @@ let isLooping = false;
 let notificationTimeout;
 
 // Request notification permission
-if ("Notification" in window && Notification.permission === "default") {
-    Notification.requestPermission();
-}
+// Ask for notification permission on the first click (many browsers block prompts that fire on page load)
+document.addEventListener("click", function () {
+    if ("Notification" in window && Notification.permission === "default") {
+        Notification.requestPermission();
+    }
+}, { once: true });
 
 // Load YouTube API
 function loadYouTubeAPI() {
@@ -72,6 +75,7 @@ function loadYouTubeAPI() {
 
 // YouTube API callback
 function onYouTubeIframeAPIReady() {
+    if (player) return; // this can be called twice (API script + initialize())
     player = new YT.Player("youtube-player", {
         height: "390",
         width: "640",
@@ -121,9 +125,9 @@ function loadQueue() {
 }
 
 function sanitizeTitle(title) {
-    const div = document.createElement("div");
-    div.innerText = title;
-    return div.innerHTML;
+    // Titles are only ever displayed through textContent, which is already safe.
+    // Escaping them here as well made "&" appear as "&amp;" on screen.
+    return String(title);
 }
 
 function isValidYouTubeId(id) {
@@ -136,7 +140,7 @@ function updateSongInfo() {
 
     loadQueue();
 
-    if (Notification.permission === "granted") {
+    if ("Notification" in window && Notification.permission === "granted") {
         clearTimeout(notificationTimeout);
         notificationTimeout = setTimeout(() => {
             new Notification("🎶 Now Playing", {
@@ -206,15 +210,13 @@ function startUpdatingTime() {
 }
 
 function startVinylAnimation() {
-    const vinyl = document.querySelector('.vinyl');
+    const vinyl = document.getElementById('vinyl');
     if (!vinyl) return;
 
     if (isPlaying) {
-        vinyl.classList.add('spinning');
-        vinyl.classList.add('pulsing');
+        vinyl.classList.add('playing');
     } else {
-        vinyl.classList.remove('spinning');
-        vinyl.classList.remove('pulsing');
+        vinyl.classList.remove('playing');
     }
 }
 
@@ -232,6 +234,7 @@ function handlePlayerStateChange(event) {
             break;
     }
     startVinylAnimation();
+    syncPlayButton();
 }
 
 function handlePlayerError(event) {
@@ -240,12 +243,6 @@ function handlePlayerError(event) {
 }
 
 // Buttons
-elements.playButton?.addEventListener("click", () => {
-    isPlaying ? player.pauseVideo() : player.playVideo();
-    isPlaying = !isPlaying;
-    startVinylAnimation();
-});
-
 elements.nextButton?.addEventListener("click", () => {
     playSong(currentSongIndex + 1);
 });
@@ -268,13 +265,12 @@ document.addEventListener("visibilitychange", () => {
     if (document.hidden && isPlaying) player.playVideo();
 });
 
+// Space bar toggles play/pause (unless you're typing, or a button/link has keyboard focus)
 document.addEventListener("keydown", (event) => {
-    if (event.code === "Space" && !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) {
-        event.preventDefault();
-        isPlaying ? player.pauseVideo() : player.playVideo();
-        isPlaying = !isPlaying;
-        startVinylAnimation();
-    }
+    if (event.code !== "Space") return;
+    if (["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"].includes(document.activeElement.tagName)) return;
+    event.preventDefault();
+    togglePlayPause();
 });
 
 document.addEventListener("click", e => {
@@ -342,29 +338,22 @@ function updateLocalTime() {
 updateLocalTime();
 setInterval(updateLocalTime, 1000); // Update every second
 
-document.addEventListener("keydown", (event) => {
-    if (event.code === "Space" && !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) {
-        event.preventDefault();
-        isPlaying ? player.pauseVideo() : player.playVideo();
-        isPlaying = !isPlaying;
-        startVinylAnimation();
-    }
-});
 
 const playButton = document.getElementById("play");
 
 function togglePlayPause() {
-  const isPlaying = player.getPlayerState && player.getPlayerState() === 1;
+  // Ask the player what it is doing instead of keeping our own flag (the flag drifts out of sync)
+  if (!player || typeof player.getPlayerState !== "function") return;
+  if (player.getPlayerState() === 1) player.pauseVideo();   // 1 = playing
+  else player.playVideo();
+}
 
-  if (isPlaying) {
-    player.pauseVideo();
-    playButton.textContent = "▶️ Paused";
-    playButton.classList.remove("playing");
-  } else {
-    player.playVideo();
-    playButton.textContent = "⏸️ Playing...";
-    playButton.classList.add("playing");
-  }
+// Keep the Play button label in step with the real player state
+function syncPlayButton() {
+  const btn = document.getElementById("play");
+  if (!btn) return;
+  btn.textContent = isPlaying ? "⏸️ Playing..." : "▶️ Paused";
+  btn.classList.toggle("playing", isPlaying);
 }
 
 playButton.addEventListener("click", togglePlayPause);

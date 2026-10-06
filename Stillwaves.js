@@ -131,12 +131,12 @@ document.head.appendChild(style);
       {id: "VNE0mvsERqI", title: "Pomme - soleil soleil", moods:["slow-day", "study"], languages: ["french"]},
       {id: "-_eEoJUqW5o", title: "Pomme - les oiseaux", moods:["slow-day", "study"], languages: ["french"]},
       {id: "a5RQ0z29XoU", title: "Sasha Alex Sloan - Dancing With Your Ghost (Acoustic Video)", moods:["slow-day", "study"], languages: ["english"]},
-      {id: "wzzbm87pQ-8?", title: "Evrencan Gündüz - Sen Beni Yine (Lyric Video)", moods:["slow-day", "study"], languages: ["turkish"]},
+      {id: "wzzbm87pQ-8", title: "Evrencan Gündüz - Sen Beni Yine (Lyric Video)", moods:["slow-day", "study"], languages: ["turkish"]},
       {id: "Q1zDD3K7Jpc", title: "Ah Yoluna!", moods:["slow-day", "study"], languages: ["turkish"]}, 
       {id: "X9pjweU2ocY", title: "Bul Beni", moods:["slow-day", "study"], languages: ["turkish"], backgroundType: "normal-video"}, 
       {id: "uw9KEin6_2o", title: "MIN - phải viết bao nhiêu bản tình ca (Official Audio)", moods:["slow-day", "study"], languages: ["vietnamese"], backgroundType: "normal-video"}, 
       {id: "SZPOXsT3mgM", title: "mer / tâm (orchestra version)", moods:["slow-day", "study"], languages: ["vietnamese"]}, 
-      {id: "_nCzgvdkHl8?", title: "Soudeni - Aya Moghraman (Official Lyrics Video) / سوداني- أيا مُغْرما", moods:["slow-day", "calm"], languages: ["arabic"]}, 
+      {id: "_nCzgvdkHl8", title: "Soudeni - Aya Moghraman (Official Lyrics Video) / سوداني- أيا مُغْرما", moods:["slow-day", "calm"], languages: ["arabic"]}, 
       {id: "o0riYsrmm24", title: "Meraih Bintang (Arab Version) | الحلم حان - The Official Asian Games 2018 Theme Song", moods:["slow-day", "study"], languages: ["arabic"]}, 
       {id: "py6GDNgye6k", title: "Armada - Asal Kau Bahagia (Official Lyric Video)", moods:["slow-day", "study"], languages: ["indonesian"]}, 
       {id: "1UovLrPGUqY", title: "Blinding Lights - The Weeknd (French Version by Chloé Stafler)", moods:["slow-day", "study"], languages: ["french"]}, 
@@ -427,9 +427,12 @@ function syncLyricsVideoWithAudio(bgPlayer) {
   bgYTPlayerSyncInterval = setInterval(doSync, 250);
 }
 
-  if ("Notification" in window && Notification.permission === "default") {
-      Notification.requestPermission();
-  }
+  // Ask for notification permission on the first click (many browsers block prompts that fire on page load)
+document.addEventListener("click", function () {
+    if ("Notification" in window && Notification.permission === "default") {
+        Notification.requestPermission();
+    }
+}, { once: true });
 
   const elements = {
       queueList: document.getElementById("queue"),
@@ -454,7 +457,7 @@ function syncLyricsVideoWithAudio(bgPlayer) {
           }
           const script = document.createElement("script");
           // Cache-busting query to avoid browser caching
-          script.src = "https://www.youtube.com/iframe_api?v=" + Date.now();
+          script.src = "https://www.youtube.com/iframe_api";
           script.onload = () => setTimeout(resolve, 500);
           script.onerror = () => reject("YouTube API failed");
           document.head.appendChild(script);
@@ -462,6 +465,7 @@ function syncLyricsVideoWithAudio(bgPlayer) {
   }
 
   window.onYouTubeIframeAPIReady = function() {
+      if (player) return; // can fire twice (API script + our own loader)
       player = new YT.Player("youtube-player", {
           height: "390",
           width: "640",
@@ -963,7 +967,7 @@ function syncLyricsVideoWithAudio(bgPlayer) {
       loadQueue(currentPlaylist);
       // After updating queue, always scroll to current (unless user is actively scrolling)
       setTimeout(() => scrollQueueToCurrent({behavior: "smooth"}), 100);
-      if (Notification.permission === "granted") {
+      if ("Notification" in window && Notification.permission === "granted") {
           clearTimeout(notificationTimeout);
           notificationTimeout = setTimeout(() => {
               try {
@@ -979,15 +983,13 @@ function syncLyricsVideoWithAudio(bgPlayer) {
   }
 
   function startVinylAnimation() {
-    const vinyl = document.querySelector('.vinyl');
+    const vinyl = document.getElementById('vinyl');
     if (!vinyl) return;
 
     if (isPlaying) {
-        vinyl.classList.add('spinning');
-        vinyl.classList.add('pulsing');
+        vinyl.classList.add('playing');
     } else {
-        vinyl.classList.remove('spinning');
-        vinyl.classList.remove('pulsing');
+        vinyl.classList.remove('playing');
     }
 }
 
@@ -1047,15 +1049,20 @@ function updateTime() {
       playSong(currentSongIndex + 1, currentPlaylist);
   }
 
-  elements.playButton?.addEventListener("click", () => {
-      if (!player) return;
-      if (isPlaying && typeof player.pauseVideo === "function") {
-          player.pauseVideo();
-      } else if (typeof player.playVideo === "function") {
-          player.playVideo();
-      }
-      isPlaying = !isPlaying;
-      startVinylAnimation();
+  // Play/pause: ask the player what it is doing instead of keeping our own flag
+  function togglePlayPause() {
+      if (!player || typeof player.getPlayerState !== "function") return;
+      if (player.getPlayerState() === YT.PlayerState.PLAYING) player.pauseVideo();
+      else player.playVideo();
+  }
+  elements.playButton?.addEventListener("click", togglePlayPause);
+
+  // Space bar toggles play/pause (unless you're typing, or a button/link has keyboard focus)
+  document.addEventListener("keydown", (event) => {
+      if (event.code !== "Space") return;
+      if (["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"].includes(document.activeElement.tagName)) return;
+      event.preventDefault();
+      togglePlayPause();
   });
 
   elements.nextButton?.addEventListener("click", () => {
@@ -1326,58 +1333,11 @@ function updateLocalTime() {
 updateLocalTime();
 setInterval(updateLocalTime, 1000); // Update every second
 
-document.addEventListener("keydown", (event) => {
-    if (event.code === "Space" && !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) {
-        event.preventDefault();
-        isPlaying ? player.pauseVideo() : player.playVideo();
-        isPlaying = !isPlaying;
-        startVinylAnimation();
-        // Lyrics-video: sync play/pause
-        const song = currentPlaylist[currentSongIndex];
-        if (song && song.backgroundType === "lyrics-video" && bgYTPlayer) {
-          try {
-            if (isPlaying && typeof bgYTPlayer.playVideo === "function") bgYTPlayer.playVideo();
-            else if (!isPlaying && typeof bgYTPlayer.pauseVideo === "function") bgYTPlayer.pauseVideo();
-          } catch (e) {}
-        }
-    }
-});
-const playButton = document.getElementById("play");
-
-function togglePlayPause() {
-  if (!player || typeof player.getPlayerState !== "function") return;
-  const currentlyPlaying = player.getPlayerState() === 1;
-  if (currentlyPlaying) {
-    player.pauseVideo();
-    playButton.textContent = "▶️ Paused";
-    playButton.classList.remove("playing");
-    // Lyrics-video: pause bgYTPlayer
-    const song = currentPlaylist[currentSongIndex];
-    if (song && song.backgroundType === "lyrics-video" && bgYTPlayer && typeof bgYTPlayer.pauseVideo === "function") {
-      try { bgYTPlayer.pauseVideo(); } catch (e) {}
-    }
-  } else {
-    player.playVideo();
-    playButton.textContent = "⏸️ Playing...";
-    playButton.classList.add("playing");
-    // Lyrics-video: play bgYTPlayer
-    const song = currentPlaylist[currentSongIndex];
-    if (song && song.backgroundType === "lyrics-video" && bgYTPlayer && typeof bgYTPlayer.playVideo === "function") {
-      try { bgYTPlayer.playVideo(); } catch (e) {}
-    }
-  }
-}
-
-// Remove duplicate playButton event listener (already handled above in elements.playButton?.addEventListener)
-// Only add if not already attached (for compatibility)
-if (playButton && !playButton.hasAttribute("data-play-handler")) {
-  playButton.addEventListener("click", togglePlayPause);
-  playButton.setAttribute("data-play-handler", "true");
-}
 
 function updateLanguageIndicator(language) {
   const langText = language === "all" ? "All" : language.charAt(0).toUpperCase() + language.slice(1);
-  document.getElementById("current-language").textContent = langText;
+  const langEl = document.getElementById("current-language");
+  if (langEl) langEl.textContent = langText;
 }
 
 const searchInput = document.getElementById('song-search');
@@ -1438,23 +1398,5 @@ function updateTextColorForBackground(bgType) {
         title.style.color = '#2E4A66';
     }
 }
-
-function updateSongCount() {
-  const total = playlist.length;  // full library
-  const shown = currentPlaylist.length; // after filters
-  const el = document.getElementById("song-count");
-  if (!el) return;
-  if (shown === total) {
-    el.textContent = `Total songs: ${total}`;
-  } else {
-    el.textContent = `Filtered: ${shown} / ${total}`;
-  }
-}
-
-// Initialize currentPlaylist with full library and update count on load
-let currentPlaylist = [...playlist];
-loadQueue(currentPlaylist);
-playSong(0, currentPlaylist);
-updateSongCount();
 
 

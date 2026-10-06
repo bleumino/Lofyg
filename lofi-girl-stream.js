@@ -100,25 +100,6 @@ function playSong(index) {
     startVinylAnimation();
 }
 
-// 🎵 Play or Pause
-function togglePlayPause() {
-    if (!playerReady || !player || typeof player.getPlayerState !== "function") {
-        console.error("❌ Player is not ready yet.");
-        return;
-    }
-
-    const playerState = player.getPlayerState();
-
-    if (playerState === YT.PlayerState.PLAYING) {
-        player.pauseVideo();
-        isPlaying = false;
-    } else {
-        player.playVideo();
-        isPlaying = true;
-    }
-
-    startVinylAnimation();
-}
 
 // ⏭ Play Next Song
 function playNext() {
@@ -152,6 +133,8 @@ function handlePlayerStateChange(event) {
             isPlaying = false;
             break;
     }
+    startVinylAnimation();
+    syncPlayButton();
 }
 
 // 🎶 Update Queue Display
@@ -167,19 +150,6 @@ function updateQueue() {
     });
 }
 
-// 🎵 Start Vinyl Record Animation
-function startVinylAnimation() {
-    const vinyl = document.querySelector('.vinyl');
-    if (!vinyl) return;
-
-    if (isPlaying) {
-        vinyl.classList.add('spinning');
-        vinyl.classList.add('pulsing');
-    } else {
-        vinyl.classList.remove('spinning');
-        vinyl.classList.remove('pulsing');
-    }
-}
 
 // 🚀 Initialize Function
 function initialize() {
@@ -198,12 +168,7 @@ function initialize() {
 
 // 🚀 Initialize
 initialize();
-setTimeout(() => {
-    if (!player || !player.getIframe()) {
-        console.warn("🔄 Player is not loading correctly. Reloading...");
-        location.reload();
-    }
-}, 2000); // Wait 2 seconds before checking
+// (removed: reloading the page after 2s broke slow connections; initialize() already retries until the API is ready)
 elements.playButton.addEventListener("click", togglePlayPause);
 elements.nextButton.addEventListener("click", playNext);
 window.addEventListener("resize", () => {
@@ -216,34 +181,15 @@ window.addEventListener("resize", () => {
 console.log("YouTube Iframe API Ready Function Loaded!");
 
 function startVinylAnimation() {
-    if (elements.vinylRecord) {
-        elements.vinylRecord.classList.toggle("spinning", isPlaying);
-
-        if (isPlaying) {
-            elements.vinylRecord.classList.add("pulsing");
-            console.log("✨ Glow added!"); // Debug message
-        } else {
-            elements.vinylRecord.classList.remove("pulsing");
-            console.log("🚫 Glow removed!");
-        }
-    }
+    if (elements.vinylRecord) elements.vinylRecord.classList.toggle("playing", isPlaying);
 }
 
-// 🔥 Spacebar Play/Pause Toggle 🔥
+// Space bar toggles play/pause (unless you're typing, or a button/link has keyboard focus)
 document.addEventListener("keydown", (event) => {
-    // Check if spacebar is pressed and no input is focused (so you don't mess up typing)
-    if (event.code === "Space" && 
-        !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) {
-        event.preventDefault(); // Prevent page scrolling on spacebar
-
-        if (isPlaying) {
-            player.pauseVideo();
-        } else {
-            player.playVideo();
-        }
-        isPlaying = !isPlaying;
-        startVinylAnimation();
-    }
+    if (event.code !== "Space") return;
+    if (["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"].includes(document.activeElement.tagName)) return;
+    event.preventDefault();
+    togglePlayPause();
 });
 
 document.addEventListener('click', e => {
@@ -313,28 +259,21 @@ updateLocalTime();
 setInterval(updateLocalTime, 1000); // Update every second
 
 
-document.addEventListener("keydown", (event) => {
-    if (event.code === "Space" && !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) {
-        event.preventDefault();
-        isPlaying ? player.pauseVideo() : player.playVideo();
-        isPlaying = !isPlaying;
-        startVinylAnimation();
-    }
-});
 const playButton = document.getElementById("play");
 
 function togglePlayPause() {
-  const isPlaying = player.getPlayerState && player.getPlayerState() === 1;
+  // Ask the player what it is doing instead of keeping our own flag (the flag drifts out of sync)
+  if (!player || typeof player.getPlayerState !== "function") return;
+  if (player.getPlayerState() === 1) player.pauseVideo();   // 1 = playing
+  else player.playVideo();
+}
 
-  if (isPlaying) {
-    player.pauseVideo();
-    playButton.textContent = "▶️ Paused";
-    playButton.classList.remove("playing");
-  } else {
-    player.playVideo();
-    playButton.textContent = "⏸️ Playing...";
-    playButton.classList.add("playing");
-  }
+// Keep the Play button label in step with the real player state
+function syncPlayButton() {
+  const btn = document.getElementById("play");
+  if (!btn) return;
+  btn.textContent = isPlaying ? "⏸️ Playing..." : "▶️ Paused";
+  btn.classList.toggle("playing", isPlaying);
 }
 
 playButton.addEventListener("click", togglePlayPause);

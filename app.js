@@ -41,7 +41,7 @@
       { id: "5eSSSspxGUo", title: "lukrembo - night (royalty free vlog music)", moods: ["study", "calm", "relax", "slow-day", "focus"] },
       { id: "wr4Lk0YGCvo", title: "(no copyright music) lofi type beat “tower” | royalty free vlog music | prod. by lukrembo", moods: ["chill", "relax"] },
       { id: "YmrHigi48D4", title: "komii - cappuccino (no copyright music)", moods: ["relax", "focus", "study"] },
-      { id: "UqPb65MKM60?", title: "komii - journey (no copyright music)", moods: ["relax", "focus","chill", "calm"] },
+      { id: "UqPb65MKM60", title: "komii - journey (no copyright music)", moods: ["relax", "focus","chill", "calm"] },
       { id: "xPOy2pkImiU", title: "(no copyright music) chill type beat “branch” | free vlog music | prod. by lukrembo", moods: ["study", "calm", "relax", "slow-day", "focus", "study"] },
       { id: "fROFG75yMRU", title: "lukrembo - boba tea (royalty free vlog music)", moods: ["relax", "focus", "study"] },
       { id: "B5YlDkIIQjE", title: "massobeats - stroll (royalty free lofi music)", moods: ["relax", "focus","chill", "calm"] },
@@ -77,7 +77,7 @@
       { id: "feubxN_OwMA", title: '[COPYRIGHT FREE] LO-FI BACKGROUND MUSIC "DREAMLAND" // BLUE', moods: ["relax","chill", "calm"]},
       { id: "NLyS4naMtOc", title: "Nights on Loop - LOV-Fi Beats", moods: ["relax","chill", "calm"]},
       { id: "QpXq0E_ZnP4", title: "spirited away made lofi", moods: ["relax","chill", "calm"]},
-      { id: "qvSPt6a2wTQ?", title: "Lunar Eclipse", moods: ["relax","chill", "calm"]},
+      { id: "qvSPt6a2wTQ", title: "Lunar Eclipse", moods: ["relax","chill", "calm"]},
       { id: "Wi1MBqYEg6Y", title: "Kingdom in Blue", moods: ["relax","chill", "calm","study"]},
       { id: "NAz41evweQs", title: "The Oldest Man In The Room", moods: ["relax","chill", "calm"]},
       { id: "xoopso_csJE", title: "Birds", moods: ["relax","chill", "calm"]},
@@ -107,7 +107,7 @@
   ];
 
   let currentPlaylist = [...playlist];
-  window.currentPlaylist = currentPlaylist;
+  Object.defineProperty(window, "currentPlaylist", { get: () => currentPlaylist, configurable: true }); // always the CURRENT list (Surprise Me uses it)
   let currentSongIndex = 0;
   let isPlaying = false;
   let isLooping = false;
@@ -115,9 +115,12 @@
   let player;
   let notificationTimeout;
 
-  if ("Notification" in window && Notification.permission === "default") {
-      Notification.requestPermission();
-  }
+  // Ask for notification permission on the first click (many browsers block prompts that fire on page load)
+document.addEventListener("click", function () {
+    if ("Notification" in window && Notification.permission === "default") {
+        Notification.requestPermission();
+    }
+}, { once: true });
 
   const elements = {
       queueList: document.getElementById("queue"),
@@ -142,7 +145,7 @@
           }
           const script = document.createElement("script");
           // Cache-busting query to avoid browser caching
-          script.src = "https://www.youtube.com/iframe_api?v=" + Date.now();
+          script.src = "https://www.youtube.com/iframe_api";
           script.onload = () => setTimeout(resolve, 500);
           script.onerror = () => reject("YouTube API failed");
           document.head.appendChild(script);
@@ -150,6 +153,7 @@
   }
 
   window.onYouTubeIframeAPIReady = function() {
+      if (player) return; // can fire twice (API script + our own loader)
       player = new YT.Player("youtube-player", {
           height: "390",
           width: "640",
@@ -205,7 +209,7 @@ elements.queueList.appendChild(li);
       currentSongIndex = index;
       const videoId = list[index].id;
 
-      if (!videoId || videoId.length < 10) {
+      if (!videoId || videoId.length !== 11) {
           playSong(index + 1, list, skipped + 1);
           return;
       }
@@ -226,7 +230,7 @@ elements.queueList.appendChild(li);
       if (elements.songTitle) elements.songTitle.textContent = `Now Playing: ${song.title}`;
       loadQueue(currentPlaylist);
 
-      if (Notification.permission === "granted") {
+      if ("Notification" in window && Notification.permission === "granted") {
           clearTimeout(notificationTimeout);
           notificationTimeout = setTimeout(() => {
               try {
@@ -242,15 +246,13 @@ elements.queueList.appendChild(li);
   }
 
   function startVinylAnimation() {
-    const vinyl = document.querySelector('.vinyl');
+    const vinyl = document.getElementById('vinyl');
     if (!vinyl) return;
 
     if (isPlaying) {
-        vinyl.classList.add('spinning');
-        vinyl.classList.add('pulsing');
+        vinyl.classList.add('playing');
     } else {
-        vinyl.classList.remove('spinning');
-        vinyl.classList.remove('pulsing');
+        vinyl.classList.remove('playing');
     }
 }
   function resetProgressBar() {
@@ -310,15 +312,20 @@ function updateTime() {
       playSong(currentSongIndex + 1, currentPlaylist);
   }
 
-  elements.playButton?.addEventListener("click", () => {
-      if (!player) return;
-      if (isPlaying && typeof player.pauseVideo === "function") {
-          player.pauseVideo();
-      } else if (typeof player.playVideo === "function") {
-          player.playVideo();
-      }
-      isPlaying = !isPlaying;
-      startVinylAnimation();
+  // Play/pause: ask the player what it is doing instead of keeping our own flag
+  function togglePlayPause() {
+      if (!player || typeof player.getPlayerState !== "function") return;
+      if (player.getPlayerState() === YT.PlayerState.PLAYING) player.pauseVideo();
+      else player.playVideo();
+  }
+  elements.playButton?.addEventListener("click", togglePlayPause);
+
+  // Space bar toggles play/pause (unless you're typing, or a button/link has keyboard focus)
+  document.addEventListener("keydown", (event) => {
+      if (event.code !== "Space") return;
+      if (["INPUT", "TEXTAREA", "SELECT", "BUTTON", "A"].includes(document.activeElement.tagName)) return;
+      event.preventDefault();
+      togglePlayPause();
   });
 
   elements.nextButton?.addEventListener("click", () => {
@@ -336,12 +343,12 @@ function updateTime() {
           btn.classList.add("active");
 
           const mood = btn.dataset.mood;
-          currentPlaylist = mood === "all" ? [...playlist] : playlist.filter(track => track.moods.includes(mood));
-
-          if (currentPlaylist.length === 0) {
+          const filtered = mood === "all" ? [...playlist] : playlist.filter(track => track.moods.includes(mood));
+          if (filtered.length === 0) {
               alert("No tracks found for this mood.");
               return;
           }
+          currentPlaylist = filtered;
 
           loadQueue(currentPlaylist);
           playSong(0, currentPlaylist);
@@ -509,46 +516,6 @@ function updateLocalTime() {
 updateLocalTime();
 setInterval(updateLocalTime, 1000); // Update every second
 
-document.addEventListener("keydown", (event) => {
-    if (event.code === "Space" && !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) {
-        event.preventDefault();
-        isPlaying ? player.pauseVideo() : player.playVideo();
-        isPlaying = !isPlaying;
-        startVinylAnimation();
-    }
-});
-const playButton = document.getElementById("play");
-
-function togglePlayPause() {
-  const isPlaying = player.getPlayerState && player.getPlayerState() === 1;
-  console.log("Play state:", isPlaying); // ✅ check if this logs correctly
-
-  if (isPlaying) {
-    player.pauseVideo();
-    playButton.innerHTML = "▶️ Play"; // <-- emoji + label
-    playButton.classList.remove("playing");
-  } else {
-    player.playVideo();
-    playButton.innerHTML = "⏸️ Playing..."; // <-- emoji + label
-    playButton.classList.add("playing");
-  }
-}
-function togglePlayPause() {
-  if (!player || typeof player.getPlayerState !== "function") {
-    console.warn("Player not ready");
-    return;
-  }
-
-  const isPlaying = player.getPlayerState() === 1;
-
-  if (isPlaying) {
-    player.pauseVideo();
-    updatePlayButton(false);
-  } else {
-    player.playVideo();
-    updatePlayButton(true);
-  }
-}
 
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("shuffle-surprise")?.addEventListener("click", () => {
